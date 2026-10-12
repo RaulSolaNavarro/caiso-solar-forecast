@@ -1,0 +1,27 @@
+# Secrets
+.env
+*.key
+
+# Data files stay local (folder placeholders are kept)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Office temp files
+~$*

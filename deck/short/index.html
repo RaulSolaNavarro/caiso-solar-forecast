@@ -263,6 +263,31 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
   overflow: hidden;
 }
 
+/* ---------- appendix: analytical steps ---------- */
+.appx .title { font-size: 64px; }
+.splitviz { width: 1680px; height: 364px; display: block; margin-top: 26px; }
+.mini3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 26px; }
+.mc, .gate { border: 1px solid var(--ring); background: var(--card); border-radius: 22px; padding: 26px 30px 28px; position: relative; }
+.b { width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--sun); color: var(--sun); display: flex; align-items: center; justify-content: center; font-family: var(--head); font-weight: 700; font-size: 28px; }
+.mc h3, .gate h3 { font-size: 40px; margin-top: 16px; line-height: 1.1; }
+.gate h3 { min-height: 88px; }
+.reveal .mc p, .reveal .gate p { font-size: 28px; line-height: 1.3; color: var(--ink-2); margin-top: 10px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 36px; }
+.panel { border: 1px solid var(--ring); background: var(--card); border-radius: 24px; padding: 34px 40px 30px; position: relative; overflow: hidden; }
+.panel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--sun); opacity: .9; }
+.panel h3 { font-size: 46px; margin-bottom: 20px; }
+.reveal .panel ul { list-style: none; margin: 0; padding: 0; font-size: 29px; line-height: 1.3; color: var(--ink-2); }
+.reveal .panel li { position: relative; margin: 0 0 18px; padding-left: 34px; }
+.reveal .panel li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 50%; background: var(--sun); }
+.reveal .panel li b { color: var(--ink); font-weight: 600; }
+.gates { display: flex; align-items: stretch; gap: 16px; margin-top: 44px; }
+.gate { flex: 1; }
+.gate.last { border-color: rgba(255, 183, 3, 0.6); background: rgba(255, 183, 3, 0.07); }
+.garrow { width: 44px; height: 24px; flex: none; align-self: center; }
+.verdict { margin-top: 44px; border-left: 6px solid var(--sun); padding: 6px 0 6px 28px; font-family: var(--head); font-weight: 700; font-size: 44px; line-height: 1.2; max-width: 1500px; }
+
+.reveal .s-title .meta .tn { display:inline-block; font-size:40px; font-weight:700; color:#ffb703; letter-spacing:.01em; margin-bottom:10px; }
+
 /* ---- short deck additions ---- */
 /* slide 2: business problem */
 .reveal .s-problem h2.title { font-size: 68px; max-width: 1680px; }
@@ -323,13 +348,14 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
       <h1>Tomorrow's <span class="accent">Sun</span>,<br>Today's Plan</h1>
       <p class="sub">Forecasting California's solar power one day ahead</p>
       <p class="meta">
+        <span class="tn">Team Solar Foresight</span><br>
         <b>Team:</b> Carolina Lenes Arreola, Juan David Jaimes, Mohammad Mahmud, Vince Lanzillo and Raúl J. Solá Navarro<br>
         October 2026
       </p>
     </div>
   </div>
   <aside class="notes">
-    [Finish by 0:20] Good morning. We're Carolina, Juan David, Mohammad, Vince, and Raúl. Our project is called Tomorrow's Sun, Today's Plan, and it comes down to one question: how do you plan tomorrow's electricity when you can't see tomorrow's weather?
+    [VINCE, slides 1 to 3. Finish by 0:20] Good morning. We're Team Solar Foresight: Carolina, Juan David, Mohammad, Vince, and Raúl. Our project is called Tomorrow's Sun, Today's Plan, and it comes down to one question: how do you plan tomorrow's electricity when you can't see tomorrow's weather?
   </aside>
 </section>
 
@@ -346,7 +372,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
         </div>
         <div class="fact fragment rise" data-fragment-index="2">
           <div class="n">1 day</div>
-          <div class="l">ahead: the plan is locked using a weather forecast.</div>
+          <div class="l">ahead. Bids close 10 a.m. Pacific, and the plan is out by 1 p.m.</div>
         </div>
         <div class="fact fragment rise" data-fragment-index="3">
           <div class="n">~1,000 MW</div>
@@ -367,7 +393,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <p class="foot">Sources: CAISO Key Statistics, May 2026; Enverus analysis of CAISO's day-ahead solar forecast (error of 1,082 MW in May and 930 MW in June 2026). The chart is an illustration, not real data.</p>
   </div>
   <aside class="notes">
-    [Finish by 1:55] Here is the problem. CAISO runs the electric grid for about 80 percent of California, 32 million people. [click] It makes a plan for tomorrow, and it locks that plan the day before, using a weather forecast. [click] Solar is a huge part of that plan, about 23,000 megawatts, and solar depends entirely on the weather. Even CAISO's own forecast is off by about 1,000 megawatts on average. That is roughly one large power plant. [click] Picture a cloudy afternoon. The orange line is what the plan expected. The blue line is what actually showed up. The gap is power the grid was counting on and did not get. [click] If the forecast is too high, operators buy backup power at the last minute. If it is too low, gas plants run for nothing. Either way, someone pays. That is the problem we are going after.
+    [Finish by 1:55] Here is the problem. CAISO runs the electric grid for about 80 percent of California, 32 million people. [click] It makes a plan for tomorrow. Bids close at 10 a.m. Pacific the day before, and the plan comes out by 1 p.m., all based on a weather forecast. [click] Solar is a huge part of that plan, about 23,000 megawatts, and solar depends entirely on the weather. Even CAISO's own forecast is off by about 1,000 megawatts on average. That is roughly one large power plant. [click] Picture a cloudy afternoon. The orange line is what the plan expected. The blue line is what actually showed up. The gap is power the grid was counting on and did not get. [click] If the forecast is too high, operators buy backup power at the last minute. If it is too low, gas plants run for nothing. Either way, someone pays. That is the problem we are going after.
   </aside>
 </section>
 
@@ -381,7 +407,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
       <svg class="arrow" viewBox="0 0 54 24" fill="none" stroke="#ffb703" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h44M36 3l12 9-12 9"/></svg>
       <div class="pill mid fragment rise"><div class="k">Our model</div><div class="v">Predicts tomorrow's solar, hour by hour</div></div>
       <svg class="arrow" viewBox="0 0 54 24" fill="none" stroke="#ffb703" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h44M36 3l12 9-12 9"/></svg>
-      <div class="pill fragment rise"><div class="k">Output</div><div class="v">Megawatts for every hour of tomorrow</div></div>
+      <div class="pill fragment rise"><div class="k">Output · Target variable</div><div class="v">Megawatts for every hour of tomorrow</div></div>
     </div>
     <div class="track compact fragment rise">
       <div class="start-lbl">Same days, same scorecard</div>
@@ -409,7 +435,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <p class="foot">Data, all public: weather by Open-Meteo.com (CC BY 4.0), solar output from the U.S. EIA, benchmark from CAISO.</p>
   </div>
   <aside class="notes">
-    [Finish by 3:00] So what are we testing? Can a forecast built only on free public data come close to the professionals? Here is how it works. We take the weather forecast from the day before, and our model turns it into a prediction of solar power for every hour of tomorrow. That is called a regression: predicting a number from past patterns. [click] Then we race four forecasts. The simple guess, same as yesterday. A simple model that is easy to explain. A flexible model that can pick up more complex patterns. And CAISO's own forecast, the professional benchmark. [click] We judge all four on what actually happened, on days none of our models have seen. The goal is to get close to the professionals, with a method anyone can follow.
+    [Finish by 3:00] So what are we testing? Can a forecast built only on free public data come close to the professionals? Here is how it works. We take the weather forecast from the day before, and our model turns it into a prediction of solar power for every hour of tomorrow. That is called a regression: predicting a number from past patterns. [click] Then we race four forecasts. The simple guess, same as yesterday. A simple model that is easy to explain. A flexible model that can pick up more complex patterns. And CAISO's own forecast, the professional benchmark. [click] We judge all four on what actually happened, on days none of our models have seen. The goal is to get close to the professionals, with a method anyone can follow. [Hand off] Mo will show you who this helps.
   </aside>
 </section>
 
@@ -419,6 +445,11 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <div class="kicker">Who it helps</div>
     <h2 class="title">Better forecasts, <span class="accent">four winners</span></h2>
     <div class="cards4">
+      <div class="who fragment rise">
+        <svg class="ic" viewBox="0 0 64 64" fill="none" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42 20 18h35L44 42z"/><path d="M14 30h36M28 18l-6 24M42 18l-6 24M32 42v12M22 54h20"/></svg>
+        <h3>Solar plant owners</h3>
+        <p>Sharper bids and schedules.</p>
+      </div>
       <div class="who fragment rise">
         <svg class="ic" viewBox="0 0 64 64" fill="none" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6 20 58M32 6l12 52M25 24h14M22 40h20M20 58h24M26 24l14 16M38 24 24 40"/><path d="M14 18h36M18 30h28"/></svg>
         <h3>Grid operators</h3>
@@ -430,11 +461,6 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
         <p>Less spent on emergency power.</p>
       </div>
       <div class="who fragment rise">
-        <svg class="ic" viewBox="0 0 64 64" fill="none" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42 20 18h35L44 42z"/><path d="M14 30h36M28 18l-6 24M42 18l-6 24M32 42v12M22 54h20"/></svg>
-        <h3>Solar and battery owners</h3>
-        <p>Sharper bids and schedules.</p>
-      </div>
-      <div class="who fragment rise">
         <svg class="ic" viewBox="0 0 64 64" fill="none" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 52C12 28 28 12 54 10c0 26-14 42-38 42z"/><path d="M12 52 36 28"/></svg>
         <h3>Communities and the climate</h3>
         <p>Less gas burned as insurance.</p>
@@ -442,7 +468,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     </div>
   </div>
   <aside class="notes">
-    [Finish by 3:40] Who does this help? Four groups. Grid operators get a clearer view of when forecasts miss. Utilities, and the people who pay their bills, spend less on emergency power. Owners of solar farms and batteries can bid and schedule more sharply. And communities and the climate benefit when less gas is burned as insurance. One better forecast, four winners.
+    [MO, slides 4 to 6. Finish by 3:40] Thank you, Vince. Who does this help? Four groups, in the order the process runs. Owners of solar farms can bid and schedule more sharply. Grid operators get a clearer view of when forecasts miss. Utilities, and the people who pay their bills, spend less on emergency power. And communities and the climate benefit when less gas is burned as insurance. One better forecast, four winners.
   </aside>
 </section>
 

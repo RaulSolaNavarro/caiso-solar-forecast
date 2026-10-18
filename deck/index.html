@@ -265,7 +265,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
 
 /* ---------- appendix: analytical steps ---------- */
 .appx .title { font-size: 64px; }
-.splitviz { width: 1680px; height: 352px; display: block; margin-top: 26px; }
+.splitviz { width: 1680px; height: 364px; display: block; margin-top: 26px; }
 .mini3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 26px; }
 .mc, .gate { border: 1px solid var(--ring); background: var(--card); border-radius: 22px; padding: 26px 30px 28px; position: relative; }
 .b { width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--sun); color: var(--sun); display: flex; align-items: center; justify-content: center; font-family: var(--head); font-weight: 700; font-size: 28px; }
@@ -286,6 +286,8 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
 .garrow { width: 44px; height: 24px; flex: none; align-self: center; }
 .verdict { margin-top: 44px; border-left: 6px solid var(--sun); padding: 6px 0 6px 28px; font-family: var(--head); font-weight: 700; font-size: 44px; line-height: 1.2; max-width: 1500px; }
 
+.reveal .s-title .meta .tn { display:inline-block; font-size:40px; font-weight:700; color:#ffb703; letter-spacing:.01em; margin-bottom:10px; }
+
 
 </style>
 </head>
@@ -302,13 +304,14 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
       <p class="sub">Forecasting California's solar power one day ahead</p>
       <p class="meta">
         <!-- EDIT: replace with your team members' names -->
+        <span class="tn">Team Solar Foresight</span><br>
         <b>Team:</b> Carolina Lenes Arreola, Juan David Jaimes, Mohammad Mahmud, Vince Lanzillo and Raúl J. Solá Navarro <br>
         October 13, 2026
       </p>
     </div>
   </div>
   <aside class="notes">
-    [0:10] Good morning. We're Carolina Lenes Arreola, Juan David Jaimes, Mohammad Mahmud, Vince Lanzillo and Raúl J. Solá Navarro. Our project asks one question: how do you plan tomorrow's electricity when you can't see tomorrow's weather?
+    [0:10] Good morning. We're Team Solar Foresight: Carolina Lenes Arreola, Juan David Jaimes, Mohammad Mahmud, Vince Lanzillo and Raúl J. Solá Navarro. Our project asks one question: how do you plan tomorrow's electricity when you can't see tomorrow's weather?
   </aside>
 </section>
 
@@ -335,14 +338,14 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <div class="clock">
       <div class="step fragment rise">
         <div class="node"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#b9c2d6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="22"/><path d="M32 18v15l10 6"/></svg></div>
-        <div class="when">Today, morning</div>
+        <div class="when">Today, 10 a.m. Pacific</div>
         <h3>Bids close</h3>
         <p>Power sellers and buyers tell the market what they can supply and what they need.</p>
       </div>
       <div class="step fragment rise">
         <div class="node"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#b9c2d6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="29" width="36" height="25" rx="5"/><path d="M21 29v-8a11 11 0 0 1 22 0v8"/><circle cx="32" cy="41" r="3.2"/></svg></div>
-        <div class="when">Today, afternoon</div>
-        <h3>CAISO locks the plan</h3>
+        <div class="when">Today, 1 p.m. Pacific</div>
+        <h3>CAISO publishes the plan</h3>
         <p>Which power plants run tomorrow, and how much each one makes.</p>
       </div>
       <div class="step fragment rise">
@@ -355,10 +358,10 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <div class="statband fragment rise">
       <span class="n">~80%</span><span class="t">of California's electricity demand is run by CAISO, serving 32 million consumers. It runs the grid and the market. It owns no power plants.</span>
     </div>
-    <p class="foot" style="bottom:36px;left:120px;">Source: CAISO Key Statistics, May 2026; California Energy Commission.</p>
+    <p class="foot" style="bottom:36px;left:120px;">Source: CAISO Key Statistics, May 2026; CAISO market operations; California Energy Commission.</p>
   </div>
   <aside class="notes">
-    [0:40] Here is how it works. CAISO runs the grid for about 80 percent of California. It does not own power plants. It runs the market. The day before, in the morning, power sellers and buyers submit their bids. That afternoon, CAISO locks the plan: which plants run tomorrow and how much each one makes. Then tomorrow arrives. If the solar forecast behind that plan was wrong, operators have to fix it on the fly.
+    [0:40] Here is how it works. CAISO runs the grid for about 80 percent of California. It does not own power plants. It runs the market. The day before, bids close at 10 a.m. Pacific. Power sellers and buyers have told the market what they can supply and what they need. By 1 p.m. Pacific, CAISO publishes the plan: which plants run tomorrow and how much each one makes. Then tomorrow arrives. If the solar forecast behind that plan was wrong, operators have to fix it on the fly.
   </aside>
 </section>
 
@@ -401,6 +404,11 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <p class="lead">Same forecast, four winners.</p>
     <div class="cards4">
       <div class="who fragment rise">
+        <svg class="ic" viewBox="0 0 64 64" fill="none" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42 20 18h35L44 42z"/><path d="M14 30h36M28 18l-6 24M42 18l-6 24M32 42v12M22 54h20"/></svg>
+        <h3>Solar plant owners</h3>
+        <p>Sharper bids and schedules.</p>
+      </div>
+      <div class="who fragment rise">
         <svg class="ic" viewBox="0 0 64 64" fill="none" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 6 20 58M32 6l12 52M25 24h14M22 40h20M20 58h24M26 24l14 16M38 24 24 40"/><path d="M14 18h36M18 30h28"/></svg>
         <h3>Grid operators</h3>
         <p>Fewer last-minute shortfalls.</p>
@@ -411,11 +419,6 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
         <p>Less spent on emergency power.</p>
       </div>
       <div class="who fragment rise">
-        <svg class="ic" viewBox="0 0 64 64" fill="none" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 42 20 18h35L44 42z"/><path d="M14 30h36M28 18l-6 24M42 18l-6 24M32 42v12M22 54h20"/></svg>
-        <h3>Solar and battery owners</h3>
-        <p>Sharper bids and schedules.</p>
-      </div>
-      <div class="who fragment rise">
         <svg class="ic" viewBox="0 0 64 64" fill="none" stroke="#ffb703" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 52C12 28 28 12 54 10c0 26-14 42-38 42z"/><path d="M12 52 36 28"/></svg>
         <h3>Communities and the climate</h3>
         <p>Less gas burned as insurance.</p>
@@ -423,7 +426,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     </div>
   </div>
   <aside class="notes">
-    [0:40] Who feels a miss? Four groups. Grid operators get fewer last-minute shortfalls. Utilities and ratepayers spend less on emergency power. Solar and battery owners can bid and schedule more sharply. And communities and the climate benefit when less gas burns as insurance. Same forecast, four winners.
+    [0:40] Who feels a miss? Four groups, in the order the process runs. Solar plant owners can bid and schedule more sharply. Grid operators get fewer last-minute shortfalls. Utilities and ratepayers spend less on emergency power. And communities and the climate benefit when less gas burns as insurance. Same forecast, four winners.
   </aside>
 </section>
 
@@ -437,7 +440,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
       <svg class="arrow" viewBox="0 0 54 24" fill="none" stroke="#ffb703" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h44M36 3l12 9-12 9"/></svg>
       <div class="pill mid fragment rise"><div class="k">Our model</div><div class="v">Predicts tomorrow's solar, hour by hour</div></div>
       <svg class="arrow" viewBox="0 0 54 24" fill="none" stroke="#ffb703" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h44M36 3l12 9-12 9"/></svg>
-      <div class="pill fragment rise"><div class="k">Output</div><div class="v">Megawatts for every hour of tomorrow</div></div>
+      <div class="pill fragment rise"><div class="k">Output · Target variable</div><div class="v">Megawatts for every hour of tomorrow</div></div>
     </div>
     <div class="track fragment rise">
       <div class="start-lbl">Start</div>
@@ -575,8 +578,8 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <div class="slide appx">
       <div class="kicker">Appendix · Analytical steps</div>
       <h2 class="title">Build it, validate it, test it</h2>
-      <svg class="splitviz" viewBox="0 0 1680 352" role="img"
-        aria-label="Timeline from January 2024 to the latest month. The first 80 percent of days are used for training and tuning, shown as three rolling checks where each check trains on earlier days and validates on the next block. The latest 20 percent of days are the test set, locked until the end.">
+      <svg class="splitviz" viewBox="0 0 1680 364" role="img"
+        aria-label="Timeline from January 2024 to the latest month. The first 80 percent of days are used for training and tuning, shown as four rolling checks of about three months each, where each check trains on earlier days and validates on the next block. The latest 20 percent of days are the test set, locked until the end.">
         <text x="280" y="26" fill="#8893ab" font-size="23" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Jan 2024</text>
         <text x="1680" y="26" text-anchor="end" fill="#8893ab" font-size="23" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Latest month</text>
         <path d="M410 18 H1500" stroke="#34436e" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>
@@ -591,39 +594,45 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
         <text x="1460" y="92" fill="#1a1300" font-size="27" font-weight="700" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Test (20%)</text>
         <text x="1542" y="140" text-anchor="middle" fill="#ffb703" font-size="22" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Locked until the end</text>
 
-        <text x="280" y="150" fill="#8893ab" font-size="22" font-weight="600" letter-spacing="2.6" font-family="Inter, 'Segoe UI', system-ui, sans-serif">ROLLING CHECKS ON THE TRAINING DAYS, USED TO TUNE SETTINGS</text>
+        <text x="280" y="150" fill="#8893ab" font-size="22" font-weight="600" letter-spacing="2.6" font-family="Inter, 'Segoe UI', system-ui, sans-serif">FOUR ROLLING CHECKS ON THE TRAINING DAYS, USED TO TUNE SETTINGS</text>
 
-        <g font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="25" font-weight="600">
-          <text x="0" y="195" fill="#b9c2d6" font-size="28">Check 1</text>
-          <rect x="280" y="164" width="560" height="46" rx="8" fill="#2a3a66"/><text x="560" y="195" text-anchor="middle" fill="#f1f4fb">Train</text>
-          <rect x="844" y="164" width="183" height="46" rx="8" fill="#7d889f"/><text x="935" y="195" text-anchor="middle" fill="#0b1226">Validate</text>
+        <g font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="24" font-weight="600">
+          <text x="0" y="192" fill="#b9c2d6" font-size="28">Check 1</text>
+          <rect x="280" y="164" width="436" height="40" rx="8" fill="#2a3a66"/><text x="498" y="192" text-anchor="middle" fill="#f1f4fb">Train</text>
+          <rect x="720" y="164" width="170" height="40" rx="8" fill="#7d889f"/><text x="805" y="192" text-anchor="middle" fill="#0b1226">Validate</text>
 
-          <text x="0" y="259" fill="#b9c2d6" font-size="28">Check 2</text>
-          <rect x="280" y="228" width="746" height="46" rx="8" fill="#2a3a66"/><text x="653" y="259" text-anchor="middle" fill="#f1f4fb">Train</text>
-          <rect x="1030" y="228" width="183" height="46" rx="8" fill="#7d889f"/><text x="1121" y="259" text-anchor="middle" fill="#0b1226">Validate</text>
+          <text x="0" y="242" fill="#b9c2d6" font-size="28">Check 2</text>
+          <rect x="280" y="214" width="606" height="40" rx="8" fill="#2a3a66"/><text x="583" y="242" text-anchor="middle" fill="#f1f4fb">Train</text>
+          <rect x="890" y="214" width="170" height="40" rx="8" fill="#7d889f"/><text x="975" y="242" text-anchor="middle" fill="#0b1226">Validate</text>
 
-          <text x="0" y="323" fill="#b9c2d6" font-size="28">Check 3</text>
-          <rect x="280" y="292" width="932" height="46" rx="8" fill="#2a3a66"/><text x="746" y="323" text-anchor="middle" fill="#f1f4fb">Train</text>
-          <rect x="1216" y="292" width="184" height="46" rx="8" fill="#7d889f"/><text x="1308" y="323" text-anchor="middle" fill="#0b1226">Validate</text>
+          <text x="0" y="292" fill="#b9c2d6" font-size="28">Check 3</text>
+          <rect x="280" y="264" width="776" height="40" rx="8" fill="#2a3a66"/><text x="668" y="292" text-anchor="middle" fill="#f1f4fb">Train</text>
+          <rect x="1060" y="264" width="170" height="40" rx="8" fill="#7d889f"/><text x="1145" y="292" text-anchor="middle" fill="#0b1226">Validate</text>
+
+          <text x="0" y="342" fill="#b9c2d6" font-size="28">Check 4</text>
+          <rect x="280" y="314" width="946" height="40" rx="8" fill="#2a3a66"/><text x="753" y="342" text-anchor="middle" fill="#f1f4fb">Train</text>
+          <rect x="1230" y="314" width="170" height="40" rx="8" fill="#7d889f"/><text x="1315" y="342" text-anchor="middle" fill="#0b1226">Validate</text>
+
         </g>
         <g fill="none" stroke="#34436e" stroke-width="2" stroke-dasharray="7 7">
-          <rect x="1404" y="164" width="276" height="46" rx="8"/>
-          <rect x="1404" y="228" width="276" height="46" rx="8"/>
-          <rect x="1404" y="292" width="276" height="46" rx="8"/>
+          <rect x="1404" y="164" width="276" height="40" rx="8"/>
+          <rect x="1404" y="214" width="276" height="40" rx="8"/>
+          <rect x="1404" y="264" width="276" height="40" rx="8"/>
+          <rect x="1404" y="314" width="276" height="40" rx="8"/>
         </g>
         <g fill="#8893ab" font-size="21" text-anchor="middle" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
-          <text x="1542" y="194">untouched</text><text x="1542" y="258">untouched</text><text x="1542" y="322">untouched</text>
+          <text x="1542" y="191">untouched</text><text x="1542" y="241">untouched</text><text x="1542" y="291">untouched</text><text x="1542" y="341">untouched</text>
         </g>
       </svg>
       <div class="mini3">
         <div class="mc"><div class="b">1</div><h3>Build</h3><p>Four models. Inputs are only what we would know the day before.</p></div>
-        <div class="mc"><div class="b">2</div><h3>Validate</h3><p>Rolling checks use earlier days to predict the next block, and pick the settings.</p></div>
+        <div class="mc"><div class="b">2</div><h3>Validate</h3><p>Four rolling checks of about three months each use earlier days to predict the next block, and pick the settings.</p></div>
         <div class="mc"><div class="b">3</div><h3>Test</h3><p>The latest 20% of days, scored once, on the same hours as CAISO.</p></div>
       </div>
       <p class="foot">Rolling checks (time-series cross-validation) only ever predict later days from earlier days. The test days are never used for tuning.</p>
     </div>
     <aside class="notes">
-      Backup slide. We split by time. The earliest 80 percent of days are for training and tuning, using three rolling checks that always train on earlier days and validate on the next block. The latest 20 percent is the test set. It stays locked until the end and is scored once.
+      Backup slide. We split by time. The earliest 80 percent of days are for training and tuning, using four rolling checks of about three months each, so every season is checked. Each check trains on earlier days, leaves a gap of at least one day, and validates on the next block. The latest 20 percent is the test set. It stays locked until the end and is scored once.
     </aside>
   </section>
 
@@ -722,6 +731,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
         <li><b>Short weather archive.</b> Day-before forecasts are available from January 2024, so each season appears only two or three times.</li>
         <li><b>Curtailment.</b> Reported generation is measured after solar is switched off for oversupply, so "actual" can understate what the sun could produce. We flag those hours.</li>
         <li><b>Utility-scale only.</b> Rooftop solar is mostly missing from hourly grid data.</li>
+        <li><b>Weather timing.</b> The weather forecast must come from a run issued before CAISO's 10 a.m. Pacific bid close the day before. A later run would use information the bidders did not have.</li>
         <li><b>Time zones.</b> EIA reports in UTC. We convert to Pacific time before matching sources.</li>
         <li><b>Benchmark scaling.</b> Enverus scales CAISO's error by the maximum observed solar output (roughly 23,000 MW). We scale by installed capacity. Close, not identical.</li>
         <li><b>Illustration.</b> The chart on slide 4 shows the idea, not real data.</li>
@@ -739,6 +749,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
         <li><b>California Energy Commission</b>, who is responsible for transmission: <a href="https://www.energy.ca.gov/programs-and-topics/topics/california-transmission-system/who-responsible-transmission">energy.ca.gov/.../who-responsible-transmission</a></li>
         <li><b>U.S. EIA</b>, Hourly Electric Grid Monitor and API (solar generation by balancing authority): <a href="https://www.eia.gov/opendata/">eia.gov/opendata</a></li>
         <li><b>Open-Meteo</b>, Previous Runs API (forecasts issued the day before), CC BY 4.0: <a href="https://open-meteo.com/">open-meteo.com</a></li>
+        <li><b>CAISO</b>, day-ahead market (bids close 10 a.m. Pacific, results about 1 p.m.): <a href="https://www.caiso.com/market-operations/products-services">caiso.com/market-operations/products-services</a></li>
         <li><b>CAISO OASIS</b> (day-ahead solar forecast, report SLD_REN_FCST): <a href="https://oasis.caiso.com/">oasis.caiso.com</a></li>
       </ul>
       <p class="foot">The chart on slide 4 is an illustration, not real data.</p>

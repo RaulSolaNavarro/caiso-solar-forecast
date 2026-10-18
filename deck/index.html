@@ -253,6 +253,40 @@ html, body { background: var(--bg); }
 .startline { position: absolute; left: 600px; top: 0; bottom: 0; width: 3px; background: var(--ink-2); opacity: .55; }
 .reveal.is-title .slide-number { display: none !important; }
 
+/* PDF export: keep the dark background on every page */
+html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !important; }
+.print-pdf, .print-pdf body, .print-pdf .reveal { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.print-pdf .reveal .slides .pdf-page {
+  background:
+    radial-gradient(1200px 700px at 88% -8%, rgba(255, 183, 3, 0.10), transparent 60%),
+    linear-gradient(#0b1226, #101a38) !important;
+  overflow: hidden;
+}
+
+/* ---------- appendix: analytical steps ---------- */
+.appx .title { font-size: 64px; }
+.splitviz { width: 1680px; height: 352px; display: block; margin-top: 26px; }
+.mini3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 26px; }
+.mc, .gate { border: 1px solid var(--ring); background: var(--card); border-radius: 22px; padding: 26px 30px 28px; position: relative; }
+.b { width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--sun); color: var(--sun); display: flex; align-items: center; justify-content: center; font-family: var(--head); font-weight: 700; font-size: 28px; }
+.mc h3, .gate h3 { font-size: 40px; margin-top: 16px; line-height: 1.1; }
+.gate h3 { min-height: 88px; }
+.reveal .mc p, .reveal .gate p { font-size: 28px; line-height: 1.3; color: var(--ink-2); margin-top: 10px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 36px; }
+.panel { border: 1px solid var(--ring); background: var(--card); border-radius: 24px; padding: 34px 40px 30px; position: relative; overflow: hidden; }
+.panel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--sun); opacity: .9; }
+.panel h3 { font-size: 46px; margin-bottom: 20px; }
+.reveal .panel ul { list-style: none; margin: 0; padding: 0; font-size: 29px; line-height: 1.3; color: var(--ink-2); }
+.reveal .panel li { position: relative; margin: 0 0 18px; padding-left: 34px; }
+.reveal .panel li::before { content: ""; position: absolute; left: 4px; top: 13px; width: 12px; height: 12px; border-radius: 50%; background: var(--sun); }
+.reveal .panel li b { color: var(--ink); font-weight: 600; }
+.gates { display: flex; align-items: stretch; gap: 16px; margin-top: 44px; }
+.gate { flex: 1; }
+.gate.last { border-color: rgba(255, 183, 3, 0.6); background: rgba(255, 183, 3, 0.07); }
+.garrow { width: 44px; height: 24px; flex: none; align-self: center; }
+.verdict { margin-top: 44px; border-left: 6px solid var(--sun); padding: 6px 0 6px 28px; font-family: var(--head); font-weight: 700; font-size: 44px; line-height: 1.2; max-width: 1500px; }
+
+
 </style>
 </head>
 <body>
@@ -529,27 +563,139 @@ html, body { background: var(--bg); }
         <div class="fragment rise"><div class="w">Doable.</div><p>Free data, nine weeks, three checkpoints.</p></div>
       </div>
       <p class="next fragment rise">Next: <b>pull the data</b> (Oct 14 to 20). Questions?</p>
-      <p class="foot">Appendix below: sources, scoring details, known limits (press the down arrow).</p>
+      <p class="foot">Appendix below: how we build and test the models, scoring, limits, sources (press the down arrow).</p>
     </div>
     <aside class="notes">
       [0:20] Why this problem? It matters: cleaner, cheaper grid operations for 32 million people. It is measurable: a clear benchmark, every hour, on public data. And it is doable: free data, nine weeks, three checkpoints. Thank you. We would love your questions.
     </aside>
   </section>
 
+  <!-- ===== APPENDIX A: BUILD, VALIDATE, TEST ===== -->
   <section>
     <div class="slide appx">
-      <div class="kicker">Appendix</div>
-      <h2 class="title">Sources</h2>
-      <ul>
-        <li><b>CAISO Key Statistics, May 2026</b> (installed solar, share of demand, consumers served): <a href="https://www.caiso.com/documents/key-statistics-may-2026.pdf">caiso.com/documents/key-statistics-may-2026.pdf</a></li>
-        <li><b>Enverus</b>, day-ahead solar forecast performance across ERCOT and CAISO (CAISO error, May and June 2026): <a href="https://www.enverus.com/blog/precision-power-forecasting-day-ahead-solar-forecast-performance-across-ercot-and-caiso/">enverus.com/blog/precision-power-forecasting-day-ahead-solar-forecast-performance-across-ercot-and-caiso</a></li>
-        <li><b>California Energy Commission</b>, who is responsible for transmission: <a href="https://www.energy.ca.gov/programs-and-topics/topics/california-transmission-system/who-responsible-transmission">energy.ca.gov/.../who-responsible-transmission</a></li>
-        <li><b>U.S. EIA</b>, Hourly Electric Grid Monitor and API (solar generation by balancing authority): <a href="https://www.eia.gov/opendata/">eia.gov/opendata</a></li>
-        <li><b>Open-Meteo</b>, Previous Runs API (forecasts issued the day before), CC BY 4.0: <a href="https://open-meteo.com/">open-meteo.com</a></li>
-        <li><b>CAISO OASIS</b> (day-ahead solar forecast, report SLD_REN_FCST): <a href="https://oasis.caiso.com/">oasis.caiso.com</a></li>
-      </ul>
-      <p class="foot">The chart on slide 4 is an illustration, not real data.</p>
+      <div class="kicker">Appendix · Analytical steps</div>
+      <h2 class="title">Build it, validate it, test it</h2>
+      <svg class="splitviz" viewBox="0 0 1680 352" role="img"
+        aria-label="Timeline from January 2024 to the latest month. The first 80 percent of days are used for training and tuning, shown as three rolling checks where each check trains on earlier days and validates on the next block. The latest 20 percent of days are the test set, locked until the end.">
+        <text x="280" y="26" fill="#8893ab" font-size="23" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Jan 2024</text>
+        <text x="1680" y="26" text-anchor="end" fill="#8893ab" font-size="23" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Latest month</text>
+        <path d="M410 18 H1500" stroke="#34436e" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>
+        <path d="M1514 18 l-12 -7 m12 7 l-12 7" stroke="#34436e" stroke-width="2.5" stroke-linecap="round"/>
+
+        <text x="0" y="92" fill="#f1f4fb" font-size="29" font-weight="600" font-family="'Space Grotesk', 'Segoe UI', system-ui, sans-serif">All the days</text>
+        <rect x="280" y="56" width="1120" height="56" rx="8" fill="#2a3a66"/>
+        <text x="840" y="92" text-anchor="middle" fill="#f1f4fb" font-size="27" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Training days (earliest 80%)</text>
+        <rect x="1404" y="56" width="276" height="56" rx="8" fill="#ffb703"/>
+        <rect x="1424" y="78" width="24" height="19" rx="4" fill="#1a1300"/>
+        <path d="M1429 78 v-6 a7 7 0 0 1 14 0 v6" stroke="#1a1300" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <text x="1460" y="92" fill="#1a1300" font-size="27" font-weight="700" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Test (20%)</text>
+        <text x="1542" y="140" text-anchor="middle" fill="#ffb703" font-size="22" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Locked until the end</text>
+
+        <text x="280" y="150" fill="#8893ab" font-size="22" font-weight="600" letter-spacing="2.6" font-family="Inter, 'Segoe UI', system-ui, sans-serif">ROLLING CHECKS ON THE TRAINING DAYS, USED TO TUNE SETTINGS</text>
+
+        <g font-family="Inter, 'Segoe UI', system-ui, sans-serif" font-size="25" font-weight="600">
+          <text x="0" y="195" fill="#b9c2d6" font-size="28">Check 1</text>
+          <rect x="280" y="164" width="560" height="46" rx="8" fill="#2a3a66"/><text x="560" y="195" text-anchor="middle" fill="#f1f4fb">Train</text>
+          <rect x="844" y="164" width="183" height="46" rx="8" fill="#7d889f"/><text x="935" y="195" text-anchor="middle" fill="#0b1226">Validate</text>
+
+          <text x="0" y="259" fill="#b9c2d6" font-size="28">Check 2</text>
+          <rect x="280" y="228" width="746" height="46" rx="8" fill="#2a3a66"/><text x="653" y="259" text-anchor="middle" fill="#f1f4fb">Train</text>
+          <rect x="1030" y="228" width="183" height="46" rx="8" fill="#7d889f"/><text x="1121" y="259" text-anchor="middle" fill="#0b1226">Validate</text>
+
+          <text x="0" y="323" fill="#b9c2d6" font-size="28">Check 3</text>
+          <rect x="280" y="292" width="932" height="46" rx="8" fill="#2a3a66"/><text x="746" y="323" text-anchor="middle" fill="#f1f4fb">Train</text>
+          <rect x="1216" y="292" width="184" height="46" rx="8" fill="#7d889f"/><text x="1308" y="323" text-anchor="middle" fill="#0b1226">Validate</text>
+        </g>
+        <g fill="none" stroke="#34436e" stroke-width="2" stroke-dasharray="7 7">
+          <rect x="1404" y="164" width="276" height="46" rx="8"/>
+          <rect x="1404" y="228" width="276" height="46" rx="8"/>
+          <rect x="1404" y="292" width="276" height="46" rx="8"/>
+        </g>
+        <g fill="#8893ab" font-size="21" text-anchor="middle" font-family="Inter, 'Segoe UI', system-ui, sans-serif">
+          <text x="1542" y="194">untouched</text><text x="1542" y="258">untouched</text><text x="1542" y="322">untouched</text>
+        </g>
+      </svg>
+      <div class="mini3">
+        <div class="mc"><div class="b">1</div><h3>Build</h3><p>Four models. Inputs are only what we would know the day before.</p></div>
+        <div class="mc"><div class="b">2</div><h3>Validate</h3><p>Rolling checks use earlier days to predict the next block, and pick the settings.</p></div>
+        <div class="mc"><div class="b">3</div><h3>Test</h3><p>The latest 20% of days, scored once, on the same hours as CAISO.</p></div>
+      </div>
+      <p class="foot">Rolling checks (time-series cross-validation) only ever predict later days from earlier days. The test days are never used for tuning.</p>
     </div>
+    <aside class="notes">
+      Backup slide. We split by time. The earliest 80 percent of days are for training and tuning, using three rolling checks that always train on earlier days and validate on the next block. The latest 20 percent is the test set. It stays locked until the end and is scored once.
+    </aside>
+  </section>
+
+  <!-- ===== APPENDIX B: COMPARE + OVERFITTING ===== -->
+  <section>
+    <div class="slide appx">
+      <div class="kicker">Appendix · Analytical steps</div>
+      <h2 class="title">Comparing models, avoiding overfitting</h2>
+      <div class="two">
+        <div class="panel">
+          <h3>Comparing the models</h3>
+          <ul>
+            <li>All four forecasts are scored on the <b>same days and hours</b>, daylight only.</li>
+            <li>The <b>same scorecard</b> for each: average miss, improvement over "same as yesterday," worst-case overshoot.</li>
+            <li>Compared <b>day by day</b>, with an uncertainty range, so we can tell a real gap from luck.</li>
+            <li>Results split by <b>season and weather</b>, to see when each model struggles.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Avoiding overfitting</h3>
+          <ul>
+            <li>Split by <b>time, in whole days</b>. Never at random.</li>
+            <li>Tune only on validation. The test days are <b>scored once</b>.</li>
+            <li>Keep models <b>modest</b>: few inputs, limits on how deep and large the trees grow.</li>
+            <li>Use only <b>information known the day before</b>. No peeking at tomorrow.</li>
+            <li>Watch the <b>gap</b> between practice and validation scores. A big gap means memorizing.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="foot">Overfitting means a model memorizes the past instead of learning the pattern, so it looks great on old days and fails on new ones.</p>
+    </div>
+    <aside class="notes">
+      Backup slide. Comparisons are fair because every forecast is scored on the same hours with the same scorecard, and we look at day-by-day differences with an uncertainty range. To avoid overfitting we split by time, tune only on validation, keep models modest, and only use information known the day before.
+    </aside>
+  </section>
+
+  <!-- ===== APPENDIX C: CHOOSING THE FINAL MODEL ===== -->
+  <section>
+    <div class="slide appx">
+      <div class="kicker">Appendix · Analytical steps</div>
+      <h2 class="title">Choosing the final model</h2>
+      <div class="gates">
+        <div class="gate">
+          <div class="b">1</div>
+          <h3>Beat the baseline</h3>
+          <p>At least 30% lower error than "same as yesterday" on validation.</p>
+        </div>
+        <svg class="garrow" viewBox="0 0 54 24" fill="none" stroke="#ffb703" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h44M36 3l12 9-12 9"/></svg>
+        <div class="gate">
+          <div class="b">2</div>
+          <h3>Win on validation</h3>
+          <p>Best score across all the rolling checks, not one lucky stretch.</p>
+        </div>
+        <svg class="garrow" viewBox="0 0 54 24" fill="none" stroke="#ffb703" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h44M36 3l12 9-12 9"/></svg>
+        <div class="gate">
+          <div class="b">3</div>
+          <h3>Prefer simple</h3>
+          <p>If two models are close, pick the one we can explain.</p>
+        </div>
+        <svg class="garrow" viewBox="0 0 54 24" fill="none" stroke="#ffb703" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h44M36 3l12 9-12 9"/></svg>
+        <div class="gate last">
+          <div class="b">4</div>
+          <h3>Confirm once</h3>
+          <p>Score the winner on the locked test days against CAISO. Target: within 1.25&times; CAISO's average miss.</p>
+        </div>
+      </div>
+      <div class="verdict">The final model is the one that clears every gate. If none does, we report that honestly.</div>
+      <p class="foot">Targets are starting points and are rechecked once validation results are in.</p>
+    </div>
+    <aside class="notes">
+      Backup slide. We choose the final model with four gates: it must beat the baseline, win on validation across all rolling checks, be the simpler option when scores are close, and then be confirmed once on the locked test days against CAISO.
+    </aside>
   </section>
 
   <section>
@@ -580,6 +726,22 @@ html, body { background: var(--bg); }
         <li><b>Benchmark scaling.</b> Enverus scales CAISO's error by the maximum observed solar output (roughly 23,000 MW). We scale by installed capacity. Close, not identical.</li>
         <li><b>Illustration.</b> The chart on slide 4 shows the idea, not real data.</li>
       </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="slide appx">
+      <div class="kicker">Appendix</div>
+      <h2 class="title">Sources</h2>
+      <ul>
+        <li><b>CAISO Key Statistics, May 2026</b> (installed solar, share of demand, consumers served): <a href="https://www.caiso.com/documents/key-statistics-may-2026.pdf">caiso.com/documents/key-statistics-may-2026.pdf</a></li>
+        <li><b>Enverus</b>, day-ahead solar forecast performance across ERCOT and CAISO (CAISO error, May and June 2026): <a href="https://www.enverus.com/blog/precision-power-forecasting-day-ahead-solar-forecast-performance-across-ercot-and-caiso/">enverus.com/blog/precision-power-forecasting-day-ahead-solar-forecast-performance-across-ercot-and-caiso</a></li>
+        <li><b>California Energy Commission</b>, who is responsible for transmission: <a href="https://www.energy.ca.gov/programs-and-topics/topics/california-transmission-system/who-responsible-transmission">energy.ca.gov/.../who-responsible-transmission</a></li>
+        <li><b>U.S. EIA</b>, Hourly Electric Grid Monitor and API (solar generation by balancing authority): <a href="https://www.eia.gov/opendata/">eia.gov/opendata</a></li>
+        <li><b>Open-Meteo</b>, Previous Runs API (forecasts issued the day before), CC BY 4.0: <a href="https://open-meteo.com/">open-meteo.com</a></li>
+        <li><b>CAISO OASIS</b> (day-ahead solar forecast, report SLD_REN_FCST): <a href="https://oasis.caiso.com/">oasis.caiso.com</a></li>
+      </ul>
+      <p class="foot">The chart on slide 4 is an illustration, not real data.</p>
     </div>
   </section>
 </section>
@@ -718,13 +880,14 @@ html, body { background: var(--bg); }
     var svg = document.getElementById('cloudchart');
     if (!svg) return;
     var tip = document.getElementById('cloudtip');
+    var DIP = parseFloat(svg.getAttribute('data-dip')) || 1200;
     var L = 96, R = 1120, T = 100, B = 560, H0 = 6, H1 = 20, YMAX = 20000;
     function X(h) { return L + (h - H0) / (H1 - H0) * (R - L); }
     function Y(v) { return B - v / YMAX * (B - T); }
     function f(h) { var c = Math.cos(Math.PI * (h - 13) / 13.4); return c > 0 ? 18000 * Math.pow(c, 1.35) : 0; }
     function a(h) {
       var fh = f(h); if (fh === 0) return 0;
-      var dip = (1200 / 18000) * Math.exp(-Math.pow((h - 13) / 2.4, 2));
+      var dip = (DIP / 18000) * Math.exp(-Math.pow((h - 13) / 2.4, 2));
       var noise = 0.006 * Math.sin(9.7 * (h - 13));
       return fh * (1 - dip - noise);
     }
@@ -774,7 +937,7 @@ html, body { background: var(--bg); }
     el('line', { x1: x13 + 18, y1: ya, x2: x13 + 34, y2: ya, stroke: C.ink, 'stroke-width': 3 }, svg);
     el('line', { x1: x13 + 34, y1: yf, x2: x13 + 80, y2: yf - 26, stroke: C.ink, 'stroke-width': 2 }, svg);
     el('rect', { x: x13 + 84, y: yf - 76, width: 322, height: 72, rx: 12, fill: '#0c1530', stroke: C.axis, 'stroke-width': 1.5 }, svg);
-    txt(svg, '1,200 MW short', { x: x13 + 100, y: yf - 42, fill: C.ink, 'font-size': 33, 'font-weight': 700, 'font-family': FONT_H });
+    txt(svg, num(DIP) + ' MW short', { x: x13 + 100, y: yf - 42, fill: C.ink, 'font-size': 33, 'font-weight': 700, 'font-family': FONT_H });
     txt(svg, 'at 1 pm', { x: x13 + 100, y: yf - 16, fill: C.ink2, 'font-size': 24, 'font-family': FONT_B });
     el('circle', { cx: x13, cy: yf, r: 8, fill: C.orange, stroke: C.bg, 'stroke-width': 3 }, svg);
     el('circle', { cx: x13, cy: ya, r: 8, fill: C.blue, stroke: C.bg, 'stroke-width': 3 }, svg);
@@ -800,8 +963,9 @@ html, body { background: var(--bg); }
         '<div><i style="background:' + C.orange + '"></i>Forecast ' + num(fv) + ' MW</div>' +
         '<div><i style="background:' + C.blue + '"></i>Actual ' + num(av) + ' MW</div>' +
         '<div>Short by ' + num(gap) + ' MW</div>';
-      var left = Math.min(X(h) + 20, 1170 - 330);
-      tip.style.left = left + 'px'; tip.style.top = (Y(Math.max(fv, av)) + 70) + 'px'; tip.style.opacity = 1;
+      var k = svg.clientWidth / 1170 || 1;
+      var left = Math.min(X(h) + 20, 1170 - 330) * k;
+      tip.style.left = left + 'px'; tip.style.top = ((Y(Math.max(fv, av)) + 70) * k) + 'px'; tip.style.opacity = 1;
     }
     function hide() { cross.setAttribute('opacity', 0); m1.setAttribute('opacity', 0); m2.setAttribute('opacity', 0); tip.style.opacity = 0; }
     hit.addEventListener('mousemove', show); hit.addEventListener('mouseleave', hide);

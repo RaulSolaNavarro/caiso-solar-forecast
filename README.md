@@ -37,7 +37,20 @@ CAISO is the balancing authority for about 80% of California's electricity deman
 
 Open-Meteo data is licensed CC BY 4.0. Cite "Weather data by Open-Meteo.com" in any published report or deck.
 
-Raw and processed data files are not committed. See `data/README.md`.
+Raw source files are saved as CSV in `data/raw/` and committed, so every teammate starts from the same copy. Cleaned and merged tables in `data/processed/` are not committed. See `data/README.md`.
+
+## Load the data in Python
+
+Raw CSVs are public on GitHub, so you can read them straight into pandas without cloning anything:
+
+```python
+import pandas as pd
+
+BASE = "https://raw.githubusercontent.com/RaulSolaNavarro/caiso-solar-forecast/main/data/raw/"
+df = pd.read_csv(BASE + "<file name>.csv")        # use .csv.gz files the same way
+```
+
+The exact file names, row counts and date ranges are listed in `data/README.md`. From a local clone you can also use `src/load_data.py`, which reads from GitHub or from your local `data/raw/` folder. GitHub can take a few minutes to show a newly pushed file.
 
 ## Approach
 
@@ -67,12 +80,12 @@ Targets are starting points and get rechecked once the baseline exists. See `doc
 ## Repo layout
 
 ```
-data/raw/         Downloaded source files (not committed)
+data/raw/         Raw source CSVs, exactly as downloaded (committed)
 data/processed/   Cleaned, merged tables (not committed)
 notebooks/        Exploration and model experiments
-src/              Reusable code: data pulls, features, models, scoring
+src/              Reusable code: data pulls (src/data_pull/), features, models, scoring
 reports/figures/  Charts for the deck and final report
-docs/             Project plan, Task 1 memo, Task 2 data source list
+docs/             Task 1 memo, Task 2 data source list, data pull brief (the project plan lives in the team's Google Sheet)
 deck/             Capstone presentation decks (HTML versions; the slides sent to the professor are PowerPoint or Google Slides)
 ```
 
@@ -87,7 +100,7 @@ pip install -r requirements.txt
 cp .env.example .env             # then paste your own API keys into .env
 ```
 
-Each teammate requests their own free EIA API key. Never commit `.env`.
+Only whoever runs the data pulls needs the free EIA API key (and the optional NLR key). Never commit `.env`. Teammates who only analyze the CSVs in `data/raw/` can skip the `.env` step.
 
 ## Team workflow
 
@@ -95,7 +108,7 @@ Each teammate requests their own free EIA API key. Never commit `.env`.
 2. Work on a branch for anything bigger than a typo: `git checkout -b your-name/short-topic`.
 3. Commit small and often with a clear message.
 4. Open a pull request and have one teammate look at it before merging into `main`.
-5. Do not commit data files, API keys, or large binaries.
+5. Do not commit processed data, API keys, or large binaries. The raw CSVs in `data/raw/` are the exception.
 
 ## Presentation rules
 

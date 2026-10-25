@@ -2,10 +2,9 @@
 .env
 *.key
 
-# Data files stay local (folder placeholders are kept)
-data/raw/*
+# Raw CSV pulls ARE committed (data/raw/). Pull caches and cleaned tables stay local.
+data/raw/.cache/
 data/processed/*
-!data/raw/.gitkeep
 !data/processed/.gitkeep
 
 # Python

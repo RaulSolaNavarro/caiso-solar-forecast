@@ -352,7 +352,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     </div>
   </div>
   <aside class="notes">
-    Good morning. Last time we told you the problem and the plan. Today we show the data: what we collected, what we found, and how we are getting it ready for modeling. We will start with a short reminder of the problem, because everything else depends on it.
+    [RAUL, slides 1 to 5] Good morning. Last time we told you the problem and the plan. Today we show the data: what we collected, what we found, and how we are getting it ready for modeling. We will start with a short reminder of the problem, because everything else depends on it.
   </aside>
 </section>
 
@@ -458,7 +458,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <p class="foot">Final choice of forecast offset is confirmed in project plan Task 6.</p>
   </div>
   <aside class="notes">
-    CAISO closes bids at 10 a.m. Pacific the day before. Any input we use has to be available by then. Weather models publish a few hours after they start running, so a forecast made one day before the target hour may arrive after the deadline for afternoon hours. Our main model therefore uses the forecast made two days before, and the one-day-before version is shown only as a clearly labeled comparison.
+    CAISO closes bids at 10 a.m. Pacific the day before. Any input we use has to be available by then. Weather models publish a few hours after they start running, so a forecast made one day before the target hour may arrive after the deadline for afternoon hours. Our main model therefore uses the forecast made two days before, and the one-day-before version is shown only as a clearly labeled comparison. [Hand off] Carolina will show you what the data looks like.
   </aside>
 </section>
 
@@ -475,7 +475,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     </div>
   </div>
   <aside class="notes">
-    Replace each bracket with the number from the merged table. Say the period covered first, then how many usable hours we have, then how much is missing and what we did about it.
+    [CAROLINA, slides 6 to 9] Thank you, Raul. Replace each bracket with the number from the merged table. Say the period covered first, then how many usable hours we have, then how much is missing and what we did about it.
   </aside>
 </section>
 
@@ -532,7 +532,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     </div>
   </div>
   <aside class="notes">
-    Before building any model we score the two reference forecasts: the simple same-as-yesterday guess and CAISO's own day-ahead forecast. This replaces the rough outside estimate from Capstone 1 with a number measured on our own data, and it lets us confirm that our target is reachable.
+    Before building any model we score the two reference forecasts: the simple same-as-yesterday guess and CAISO's own day-ahead forecast. This replaces the rough outside estimate from Capstone 1 with a number measured on our own data, and it lets us confirm that our target is reachable. [Hand off] Juan David will take you through how we prepare the data.
   </aside>
 </section>
 
@@ -550,7 +550,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     </div>
   </div>
   <aside class="notes">
-    Five steps. Pull the sources for the same dates. Align them on one clock with one row per hour. Clean gaps and flag curtailed hours. Add features such as hour of day, season and sun angle. Then split the table in time order so the models are always tested on days they have not seen.
+    [JUAN DAVID, slides 10 to 14] Thank you, Carolina. Five steps. Pull the sources for the same dates. Align them on one clock with one row per hour. Clean gaps and flag curtailed hours. Add features such as hour of day, season and sun angle. Then split the table in time order so the models are always tested on days they have not seen.
   </aside>
 </section>
 

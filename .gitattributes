@@ -1,0 +1,6 @@
+# Keep line endings stable across Windows and Mac, and never touch compressed files
+* text=auto
+*.csv text eol=lf
+*.gz binary
+*.pptx binary
+*.pdf binary

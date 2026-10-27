@@ -510,12 +510,12 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
         <tr><td>Clocks disagree</td><td>EIA reports in UTC. Other sources use other clocks.</td><td>Convert everything to one clock, then check against sunrise and sunset.</td><td><span class="ph">[Result]</span></td></tr>
         <tr><td>Missing hours</td><td>Gaps and repeated hours in each source.</td><td>Fill short gaps, drop long ones, and say which.</td><td><span class="ph">[N hours]</span></td></tr>
         <tr><td>Turned-down solar</td><td>Hours when plants made less than the sun allowed (curtailment).</td><td>Flag those hours and report results with and without them.</td><td><span class="ph">[N hours]</span></td></tr>
-        <tr><td>More panels over time</td><td>Installed capacity grows month by month.</td><td>Scale errors by installed capacity so months compare fairly.</td><td><span class="ph">[Growth, MW]</span></td></tr>
+        <tr><td>More panels over time</td><td>Installed capacity grows month by month (CAISO: about 12,000 MW in 2019, about 24,000 MW in 2026).</td><td>Scale errors by installed capacity so months compare fairly.</td><td><span class="ph">[Growth, MW]</span></td></tr>
       </tbody>
     </table>
   </div>
   <aside class="notes">
-    These are the four problems we expect in this data. Replace the last column with what we found. The important point for the audience is that each problem has a rule, and the rule is written down.
+    These are the four problems we expect in this data. On capacity: CAISO reports installed solar of about 12,000 MW in July 2019 and about 24,000 MW in August 2026, so we scale errors by the capacity installed at the time. Replace the last column with what we found. The important point for the audience is that each problem has a rule, and the rule is written down.
   </aside>
 </section>
 
@@ -706,7 +706,8 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
       <li><b>Open-Meteo</b>, Previous Runs API, CC BY 4.0: <a href="https://open-meteo.com/en/docs/previous-runs-api">open-meteo.com/en/docs/previous-runs-api</a></li>
       <li><b>CAISO</b>, day-ahead market (bids close 10 a.m. Pacific, results about 1 p.m.): <a href="https://www.caiso.com/market-operations/products-services">caiso.com/market-operations/products-services</a></li>
       <li><b>CAISO OASIS</b>, day-ahead solar forecast, report SLD_REN_FCST: <a href="https://oasis.caiso.com/">oasis.caiso.com</a></li>
-      <li><b>CAISO Key Statistics, May 2026</b>: <a href="https://www.caiso.com/documents/key-statistics-may-2026.pdf">caiso.com/documents/key-statistics-may-2026.pdf</a></li>
+      <li><b>CAISO Key Statistics, July 2026</b> (installed solar 23,920 MW as of Aug 5, 2026): <a href="https://www.caiso.com/documents/key-statistics-jul-2026.pdf">caiso.com/documents/key-statistics-jul-2026.pdf</a></li>
+      <li><b>CAISO Monthly Stats, June 2019</b> (installed solar 12,049 MW as of July 1, 2019): <a href="https://www.caiso.com/Documents/MonthlyStats-June2019.pdf">caiso.com/Documents/MonthlyStats-June2019.pdf</a></li>
     </ul>
   </div>
 </section>

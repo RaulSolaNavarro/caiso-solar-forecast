@@ -1,6 +1,7 @@
 # Data folder
 
 - `raw/` holds the source files exactly as downloaded, saved as CSV (some gzip-compressed, `.csv.gz`) and committed to Git so every teammate starts from the same copy. Raúl runs the pulls (see `docs/DATA_PULL_BRIEF.md` and `src/data_pull/`) and logs each one in `raw/PULL_LOG.md`.
+- Questions about the data? Read `../docs/DATA_FAQ.md` (sources, time frames, limits, cleaning advice), `../docs/DATA_DICTIONARY.md` (every file and column) and `../docs/DATA_HOWTO.md` (Python and R starter code).
 - `processed/` holds cleaned and merged tables (hourly, Pacific time, one row per hour). These are not committed. Each teammate builds their own in their preferred tool, so keep your cleaning in a notebook or script that someone else can re-run.
 
 ## Rules
@@ -22,7 +23,7 @@ Read `raw/PULL_LOG.md` first. Points that change how the files are matched:
 
 ## Files in `raw/`
 
-The raw GitHub URLs below point to `main`, like `BASE` in the root `README.md`. **They work once the pull request from branch `raul/data-pulls` is merged into `main`.** Until then, replace `main` with `raul/data-pulls` in a URL to read the file from the branch. GitHub can take a few minutes to show a newly pushed file. Sizes are on-disk sizes; `.csv.gz` files are gzip-compressed.
+The raw GitHub URLs below point to `main`, like `BASE` in the root `README.md`. To read a file from a branch that is not merged yet, replace `main` with the branch name. GitHub can take a few minutes to show a newly pushed file. Sizes are on-disk sizes; `.csv.gz` files are gzip-compressed.
 
 | File | Source | Rows | Date range | Size | Raw GitHub URL |
 |---|---|---|---|---|---|
@@ -103,7 +104,7 @@ The repo is public, so pandas can read any file straight from GitHub. pandas rea
 ```python
 import pandas as pd
 
-BRANCH = "main"   # works once the pull request is merged; before that, use "raul/data-pulls"
+BRANCH = "main"   # use your branch name to read files from a branch that is not merged yet
 BASE = f"https://raw.githubusercontent.com/RaulSolaNavarro/caiso-solar-forecast/{BRANCH}/data/raw/"
 
 eia = pd.read_csv(BASE + "eia_ciso_solar_hourly_2024-01-01_2026-10-17.csv")
@@ -113,4 +114,4 @@ wx = pd.read_csv(BASE + "openmeteo/openmeteo_prev_runs_ecmwf_ifs025_g24_2024-03-
 curt = pd.read_csv(BASE + "caiso_curtailment_2024-01-01_2025-12-31.csv.gz")
 ```
 
-From a local clone, `src/load_data.py` does the same: `read_raw("<file name>")` reads from `main` on GitHub (`branch="raul/data-pulls"` reads the branch before the merge), and `read_raw("<file name>", source="local")` reads your `data/raw/` folder.
+From a local clone, `src/load_data.py` does the same: `read_raw("<file name>")` reads from `main` on GitHub (`branch="<branch name>"` reads another branch), and `read_raw("<file name>", source="local")` reads your `data/raw/` folder.

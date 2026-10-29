@@ -21,7 +21,7 @@ CAISO is the balancing authority for about 80% of California's electricity deman
 ## Scope
 
 - Solar generation only (utility-scale, so rooftop solar is mostly excluded from the hourly data)
-- CAISO balancing area only (EIA respondent code `CISO`). The EIA CISO total includes some plants in Arizona and Nevada (about 2.8 GW of nameplate in September 2026).
+- CAISO balancing area only (EIA respondent code `CISO`). The EIA 860M list of CISO solar plants includes some plants in Arizona and Nevada (about 2.8 GW of nameplate in September 2026). We assume the hourly CISO series covers them too, which is not verified.
 - Day-ahead horizon only, using only information available before the 10:00 a.m. Pacific bid close
 - Modeling window: 2024-03-08 to 2026-10-17 (954 days). EIA and CAISO data start on 2024-01-01, but the weather forecast archive has every variable for both forecast offsets only from 2024-03-08.
 
@@ -40,6 +40,8 @@ Open-Meteo data is licensed CC BY 4.0. Cite "Weather data by Open-Meteo.com" in 
 
 Raw source files are saved in `data/raw/` and committed, so every teammate starts from the same copy. Cleaned and merged tables in `data/processed/` are not committed. See `data/README.md` for the file list and `data/raw/PULL_LOG.md` for how each file was pulled, the checks run, the gaps found and the open issues.
 
+New to the data? Start with `docs/DATA_FAQ.md` (where each file comes from, why we use it, its limits, and advice on cleaning and merging), `docs/DATA_DICTIONARY.md` (every file and column) and `docs/DATA_HOWTO.md` (starter code in Python and R).
+
 ## Load the data in Python
 
 Raw files are public on GitHub, so you can read them straight into pandas without cloning anything:
@@ -51,7 +53,7 @@ BASE = "https://raw.githubusercontent.com/RaulSolaNavarro/caiso-solar-forecast/m
 df = pd.read_csv(BASE + "<file name>.csv")        # .csv.gz files read the same way
 ```
 
-The exact file names, row counts and date ranges are listed in `data/README.md`. The links work once the data pull has been merged into `main`. From a local clone you can also use `src/load_data.py`, which reads from GitHub or from your local `data/raw/` folder. GitHub can take a few minutes to show a newly pushed file.
+The exact file names, row counts and date ranges are listed in `data/README.md`. The same steps in R, with retries and a merge example, are in `docs/DATA_HOWTO.md`. From a local clone you can also use `src/load_data.py`, which reads from GitHub or from your local `data/raw/` folder. GitHub can take a few minutes to show a newly pushed file.
 
 ## Approach
 
@@ -86,7 +88,7 @@ data/processed/   Cleaned, merged tables (not committed)
 notebooks/        Exploration and model experiments
 src/              Reusable code: data pulls (src/data_pull/), features, models, scoring
 reports/figures/  Charts for the deck and final report
-docs/             Task 1 memo, Task 2 data source list, data pull brief (the project plan lives in the team's Google Sheet)
+docs/             Task 1 memo, Task 2 data source list, data pull brief, data FAQ, data dictionary, data how-to (the project plan lives in the team's Google Sheet)
 deck/             Capstone presentation decks (HTML versions; the slides sent to the professor are PowerPoint or Google Slides)
 ```
 
@@ -135,5 +137,5 @@ Details and counts for each item are in `data/raw/PULL_LOG.md`.
 - **Missing data, none filled.** EIA is missing one Pacific day (2024-11-02, 24 hours). CAISO's day-ahead forecast has no data for three days (2024-03-09, 2025-03-08, 2026-03-07). Open-Meteo has a 129-hour gap (2026-04-17 15:00 to 2026-04-22 23:00 UTC) in two columns, `cloud_cover_previous_day2` and `relative_humidity_2m_previous_day1`, inside the test period. The curtailment workbook has no rows for 2025-06-16, and the daily report page for 2025-11-05 does not exist. EIA 860M has no file for 2026-10 yet.
 - **Night values.** EIA solar output is slightly negative at night and some hours at deep night show 100 to 413 MW. They stay in the raw file. Decide in processing.
 - **Capacity and peak figures disagree across sources.** EIA 860M, CAISO's published statistics, the EIA hourly peak and the OASIS ACTUAL peak differ by several thousand MW in August 2026, and the reasons are not verified. Always name the source and scope next to a capacity or peak figure.
-- **Curtailment.** EIA generation is measured after curtailment, so on curtailed days the recorded output is lower than what the sun could have produced. CAISO defines curtailment as the shortfall of actual production against its own forecast, so the series includes forecast error. We flag those days.
+- **Curtailment.** EIA generation is measured after curtailment, so on curtailed days the recorded output is lower than what the sun could have produced. CAISO defines curtailment as the shortfall of actual production against its own forecast, so the series may include forecast error (our reading of the definition). We flag those days.
 - **Bid-close timing.** Weather forecasts must be published before the bid close. A forecast issued later would make results look better than they could be in practice.

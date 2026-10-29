@@ -21,36 +21,37 @@ CAISO is the balancing authority for about 80% of California's electricity deman
 ## Scope
 
 - Solar generation only (utility-scale, so rooftop solar is mostly excluded from the hourly data)
-- CAISO balancing area only (EIA respondent code `CISO`)
+- CAISO balancing area only (EIA respondent code `CISO`). The EIA CISO total includes some plants in Arizona and Nevada (about 2.8 GW of nameplate in September 2026).
 - Day-ahead horizon only, using only information available before the 10:00 a.m. Pacific bid close
-- Data from January 2024 onward (set by the weather forecast archive)
+- Modeling window: 2024-03-08 to 2026-10-17 (954 days). EIA and CAISO data start on 2024-01-01, but the weather forecast archive has every variable for both forecast offsets only from 2024-03-08.
 
 ## Data
 
 | Role | Source | What we use it for |
 |---|---|---|
-| Y (known outcome) | EIA Hourly Electric Grid Monitor, API v2 | Actual hourly solar generation for CISO |
-| X (inputs) | Open-Meteo Previous Runs API | Weather forecasts published before the bid close (cloud cover, sunlight, temperature). The forecast offset is set in plan Task 6. |
-| Benchmark | CAISO OASIS (report SLD_REN_FCST) | CAISO's day-ahead solar forecast, scored against Y, never used for training |
-| Capacity | EIA Form 860M | Installed solar capacity, used to normalize errors |
-| Optional | NLR (formerly NREL) NSRDB, CAISO curtailment files, pvlib | Historical sunlight checks, curtailed hours, clear-sky values |
+| Y (known outcome) | EIA Hourly Electric Grid Monitor, API v2 (respondent CISO, fuel SUN) | Actual hourly solar generation. Timestamps need an alignment rule (see Known limits). |
+| X (inputs) | Open-Meteo Previous Runs API, model `ecmwf_ifs025`, 51 locations (41 grid points plus 10 plant-cluster points) | Weather forecasts made 1 and 2 days before each hour. The main model uses the day-2 forecast, which is published before the bid close. Day 1 is only a labeled comparison. Plan Task 6 sets the offset. |
+| Benchmark | CAISO OASIS (report SLD_REN_FCST, market run DAM) | CAISO's day-ahead solar forecast by trading hub (NP15, SP15, ZP26), scored against Y, never used for training |
+| Backup actuals | CAISO OASIS (same report, market run ACTUAL) | CAISO's own actual solar by hub. Used for the timing check and as a backup series. |
+| Capacity | EIA Form 860M, monthly, 2024-01 to 2026-09 | CISO solar generators with nameplate capacity and location, used to normalize errors and to place weather points |
+| Curtailment | CAISO Production and Curtailments workbooks (2024 to 2025) and Daily Renewable Report pages (2025-06 on) | Hours where solar was curtailed, so we can flag days when output is below what the sun could produce |
 
 Open-Meteo data is licensed CC BY 4.0. Cite "Weather data by Open-Meteo.com" in any published report or deck.
 
-Raw source files are saved as CSV in `data/raw/` and committed, so every teammate starts from the same copy. Cleaned and merged tables in `data/processed/` are not committed. See `data/README.md`.
+Raw source files are saved in `data/raw/` and committed, so every teammate starts from the same copy. Cleaned and merged tables in `data/processed/` are not committed. See `data/README.md` for the file list and `data/raw/PULL_LOG.md` for how each file was pulled, the checks run, the gaps found and the open issues.
 
 ## Load the data in Python
 
-Raw CSVs are public on GitHub, so you can read them straight into pandas without cloning anything:
+Raw files are public on GitHub, so you can read them straight into pandas without cloning anything:
 
 ```python
 import pandas as pd
 
 BASE = "https://raw.githubusercontent.com/RaulSolaNavarro/caiso-solar-forecast/main/data/raw/"
-df = pd.read_csv(BASE + "<file name>.csv")        # use .csv.gz files the same way
+df = pd.read_csv(BASE + "<file name>.csv")        # .csv.gz files read the same way
 ```
 
-The exact file names, row counts and date ranges are listed in `data/README.md`. From a local clone you can also use `src/load_data.py`, which reads from GitHub or from your local `data/raw/` folder. GitHub can take a few minutes to show a newly pushed file.
+The exact file names, row counts and date ranges are listed in `data/README.md`. The links work once the data pull has been merged into `main`. From a local clone you can also use `src/load_data.py`, which reads from GitHub or from your local `data/raw/` folder. GitHub can take a few minutes to show a newly pushed file.
 
 ## Approach
 
@@ -63,9 +64,9 @@ We do not fix the model types in advance. The steps are:
 
 ## Validation
 
-The data is split in time order, in whole days, so models never see the answers they are graded on.
+The data is split in time order, in whole days, so models never see the answers they are graded on. Every model and both reference forecasts use the same window (2024-03-08 to 2026-10-17) so their scores compare.
 
-- The latest 20% of days (about late March to mid-October 2026) is the locked test set. It has no winter.
+- The latest 20% of days (191 days, 2026-04-10 to 2026-10-17) is the locked test set. It has no winter.
 - The earlier 80% is used for training and for four rolling validation folds of about three months each, with a gap of at least one day between training and validation.
 
 ## Success metrics
@@ -80,7 +81,7 @@ Targets are starting points and get rechecked once the baseline exists. See `doc
 ## Repo layout
 
 ```
-data/raw/         Raw source CSVs, exactly as downloaded (committed)
+data/raw/         Raw source files, exactly as pulled (committed). PULL_LOG.md documents every pull.
 data/processed/   Cleaned, merged tables (not committed)
 notebooks/        Exploration and model experiments
 src/              Reusable code: data pulls (src/data_pull/), features, models, scoring
@@ -100,7 +101,7 @@ pip install -r requirements.txt
 cp .env.example .env             # then paste your own API keys into .env
 ```
 
-Only whoever runs the data pulls needs the free EIA API key (and the optional NLR key). Never commit `.env`. Teammates who only analyze the CSVs in `data/raw/` can skip the `.env` step.
+Only whoever re-runs the data pulls needs the free EIA API key (`python -m src.data_pull.run_all --start 2024-01-01 --end 2026-10-17`). Never commit `.env`. Teammates who only analyze the files in `data/raw/` can skip the `.env` step.
 
 ## Team workflow
 
@@ -108,7 +109,7 @@ Only whoever runs the data pulls needs the free EIA API key (and the optional NL
 2. Work on a branch for anything bigger than a typo: `git checkout -b your-name/short-topic`.
 3. Commit small and often with a clear message.
 4. Open a pull request and have one teammate look at it before merging into `main`.
-5. Do not commit processed data, API keys, or large binaries. The raw CSVs in `data/raw/` are the exception.
+5. Do not commit processed data, API keys, or large binaries. The raw files in `data/raw/` are the exception.
 
 ## Presentation rules
 
@@ -126,8 +127,13 @@ Only whoever runs the data pulls needs the free EIA API key (and the optional NL
 
 ## Known limits
 
-- The weather forecast archive starts in January 2024, so seasonal coverage is short and each calendar month appears only two to three times.
-- The final test period has no winter, so winter accuracy is checked only in validation.
-- EIA generation is measured after curtailment, so on curtailed days the recorded output is lower than what the sun could have produced. We flag those days.
-- Weather forecasts must be published before the bid close. A forecast issued later would make results look better than they could be in practice.
-- EIA timestamps are in UTC and are converted to Pacific time before matching.
+Details and counts for each item are in `data/raw/PULL_LOG.md`.
+
+- **Short history.** Weather forecasts start on 2024-03-08, so the modeling window is 954 days. January and February appear twice, and other months two or three times.
+- **No winter in the test period.** Winter accuracy is checked only in validation.
+- **EIA timestamps.** EIA label L holds the hour that CAISO reports as ending at L minus 1 hour (hourly correlation 0.998 to 0.9999 in January, March and July 2025). CAISO OASIS and Open-Meteo times match the sun. The recommended rule, still the team's decision, is to align EIA label L to the hour ending at L minus 1 hour in UTC. Raw files are never shifted. All raw timestamps are UTC and are converted to Pacific time in processing.
+- **Missing data, none filled.** EIA is missing one Pacific day (2024-11-02, 24 hours). CAISO's day-ahead forecast has no data for three days (2024-03-09, 2025-03-08, 2026-03-07). Open-Meteo has a 129-hour gap (2026-04-17 15:00 to 2026-04-22 23:00 UTC) in two columns, `cloud_cover_previous_day2` and `relative_humidity_2m_previous_day1`, inside the test period. The curtailment workbook has no rows for 2025-06-16, and the daily report page for 2025-11-05 does not exist. EIA 860M has no file for 2026-10 yet.
+- **Night values.** EIA solar output is slightly negative at night and some hours at deep night show 100 to 413 MW. They stay in the raw file. Decide in processing.
+- **Capacity and peak figures disagree across sources.** EIA 860M, CAISO's published statistics, the EIA hourly peak and the OASIS ACTUAL peak differ by several thousand MW in August 2026, and the reasons are not verified. Always name the source and scope next to a capacity or peak figure.
+- **Curtailment.** EIA generation is measured after curtailment, so on curtailed days the recorded output is lower than what the sun could have produced. CAISO defines curtailment as the shortfall of actual production against its own forecast, so the series includes forecast error. We flag those days.
+- **Bid-close timing.** Weather forecasts must be published before the bid close. A forecast issued later would make results look better than they could be in practice.

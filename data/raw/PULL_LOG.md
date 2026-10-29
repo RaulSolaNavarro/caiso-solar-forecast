@@ -543,4 +543,20 @@ The first attempt of this test stopped at once on a missing import in `src/data_
 - CAISO capacity and peak figures versus 860M and the hourly peaks (source 4): no figure chosen.
 - Positive EIA values at deep night in 2024 (source 1), to recheck once the timing rule is applied.
 - How CAISO maps 24 report positions onto the 23-hour and 25-hour days (source 5).
-- Pandas-by-URL test: to run after the branch is pushed (raw GitHub URLs exist only after the push).
+
+## Pandas-by-URL test (2026-10-29)
+
+After commit `c75bdbe` was pushed to branch `raul/data-pulls`, one file from each source was read with `pandas.read_csv` from the branch URL `https://raw.githubusercontent.com/RaulSolaNavarro/caiso-solar-forecast/raul/data-pulls/data/raw/<file>`.
+
+| Source | File | Rows read by URL | Rows in this log | Match |
+|---|---|---|---|---|
+| 1. EIA hourly | `eia_ciso_solar_hourly_2024-01-01_2026-10-17.csv` | 24,480 | 24,480 | yes |
+| 2. OASIS DAM | `caiso_dam_solar_forecast_2024-01-01_2026-10-17.csv.gz` | 146,706 | 146,706 | yes |
+| 2. OASIS ACTUAL | `caiso_actual_solar_2024-01-01_2026-10-17.csv.gz` | 146,210 | 146,210 | yes |
+| 3. Open-Meteo (g24) | `openmeteo/openmeteo_prev_runs_ecmwf_ifs025_g24_2024-03-08_2026-10-17.csv.gz` | 22,896 | 22,896 | yes |
+| 3. Weather locations | `weather_locations.csv` | 51 | 51 | yes |
+| 4. EIA 860M | `eia860m_solar_ciso_capacity_by_month.csv` | 32,503 | 32,503 | yes |
+| 5. Curtailment workbooks | `caiso_curtailment_2024-01-01_2025-12-31.csv.gz` | 111,289 | 111,289 | yes |
+| 5. Curtailment daily reports | `caiso_curtailment_daily_report_2025-06-01_2026-10-17.csv.gz` | 24,144 | 24,144 | yes (fourth read) |
+
+The daily-report file needed retries: its first three reads failed with a connection reset (`WinError 10054`) during the secure-connection handshake, before any data arrived, and the fourth read succeeded (in a retry loop with 30 seconds between tries, it was that loop's second try). In the same minutes, Python reads of other files from the branch were reset too, while the Windows web client downloaded this file without error (HTTP 200, 287,922 bytes) and `git ls-tree` showed it in the pushed branch at that size. The cause was not determined; Norton's HTTPS scanning on the pull machine is one possibility (unverified).

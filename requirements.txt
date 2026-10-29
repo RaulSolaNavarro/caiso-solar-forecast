@@ -7,3 +7,5 @@ pvlib
 matplotlib
 pyarrow
 jupyterlab
+openpyxl
+truststore

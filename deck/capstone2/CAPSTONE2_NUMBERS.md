@@ -10,15 +10,15 @@ All numbers are from the merged hourly table (22,896 rows, 2024-03-08 to 2026-10
 | Hours with a gap | 225 (<1%) | EIA 24 + CAISO forecast 72 + weather 129 missing hours |
 | Capacity | 21.0 GW (Mar 2024) to 26.0 GW (Sep 2026), +24% | EIA 860M monthly, all CISO nameplate (includes about 2.8 GW in AZ and NV) |
 | Summer vs winter peak | 17,400 vs 11,900 MW, +47% | Average EIA output by Pacific hour and season, training and validation days |
-| Cloud effect | 68%, 57%, 52%, 41% of capacity | Mean midday (11 a.m. to 2 p.m. Pacific) output / capacity, by day-2 forecast cloud cover bucket (0-10, 10-30, 30-60, 60-100%); includes all seasons |
-| Sunshine correlation | 0.87 | Correlation of day-2 forecast shortwave radiation with output / capacity over 9,188 daylight hours |
-| Biggest one-day drop | 161 to 73 GWh (-55%), 2026-10-10 | Daily EIA sum, full days only |
+| Cloud effect | 68%, 57%, 52%, 41% of capacity | Mean midday (10 a.m. to 1 p.m. Pacific) output / capacity, by day-2 forecast cloud cover bucket (0-10, 10-30, 30-60, 60-100%); includes all seasons |
+| Sunshine correlation | 0.87 | Correlation of day-2 forecast shortwave radiation with output / capacity over 9,191 daylight hours |
+| Biggest one-day drop | 161 to 73 GWh (-54%), 2026-10-10 | Daily EIA sum, full days only |
 | Turned-down solar | 7.6% overall; 24% in Apr 2026; 20% in Mar 2025 | Curtailed MWh / (curtailed + EIA output). Month boundaries in UTC; a Pacific-month recount differs by up to 0.4 points |
 | Same as yesterday | 4.9% (6.1% using the two-days-ago value) | Mean absolute error / capacity, daylight hours |
 | CAISO as published | 5.7%, bias +828 MW | Same metric, CAISO day-ahead (NP15+SP15+ZP26) vs EIA |
 | CAISO adjusted | 3.7% | CAISO vs (EIA + curtailed MWh). Partly by construction, because CAISO defines curtailment against its own forecast |
 | Target range | 4.6% to about 7% | 1.25 x 3.68% and 1.25 x 5.72% |
-| Hours scored | 9,144 over 759 days | Daylight hours with EIA, CAISO and persistence values, before 2026-04-10 |
+| Hours scored | 9,133 over 758 days | Daylight hours with EIA, CAISO and persistence values, before 2026-04-10 |
 | Split | 763 training and validation days, 191 test days (2026-04-10 to 2026-10-17) | Latest 20% of days locked |
 | Weather API use | about 6,500 of 10,000 daily calls | Pull log (6,455 weighted calls on 2026-10-28) |
 

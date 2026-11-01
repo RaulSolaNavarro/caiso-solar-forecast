@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Tomorrow's Sun, Today's Plan: Capstone 2</title>
+<title>Tomorrow's Sun, Today's Plan (Capstone 2)</title>
 <meta name="description" content="BUS 9430 project: forecasting California's solar power one day ahead.">
 <style>
 /**
@@ -518,7 +518,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
       <div class="m fragment rise"><span class="tag">What we see</span><b>Summer peaks about 47% higher than winter</b><p>About 17,400 MW at midday in summer, versus 11,900 MW in winter.</p></div>
       <div class="m fragment rise"><span class="tag">What it means for the model</span><b>Hour of day and season matter</b><p>The model has to know both, so we give them to it directly.</p></div>
     </div>
-    <p class="foot">Average over March 2024 to April 2026. Winter is December to February. Source: EIA.</p>
+    <p class="foot">Average over March 2024 to October 2026. Winter is December to February. Source: EIA.</p>
   </div>
   <aside class="notes">
     This is the average solar day, by season. Output starts around 6 a.m., peaks at midday and is finished by about 8 p.m. in every season. In summer the midday peak averages about 17,400 megawatts. In winter it is about 11,900, roughly a third lower. The shape is very regular, which is good news. The hard part is not the shape, it is how much of that shape the weather gives us on a particular day. For the model, that means hour of day and season have to be inputs.
@@ -534,14 +534,14 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
     <div class="pair">
       <div class="chartbox fragment rise"><svg class="chart" viewBox="0 0 1000 500" width="1000" height="500" role="img" aria-label="Midday solar output as a share of installed capacity, by forecast cloud cover: 68 percent when clear, 57 percent with some cloud, 52 percent when cloudy, 41 percent when very cloudy."><line x1="20" x2="980" y1="400" y2="400" stroke="#34436e" stroke-width="2"/><path d="M65.6 400 V118.7 a6 6 0 0 1 6 -6 H208.4 a6 6 0 0 1 6 6 V400 Z" fill="#3987e5"/><text x="140.0" y="98.7" text-anchor="middle" fill="#f1f4fb" font-size="38" font-weight="700" font-family="'Space Grotesk', 'Segoe UI', system-ui, sans-serif">68%</text><text x="140.0" y="436" text-anchor="middle" fill="#f1f4fb" font-size="24" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Clear</text><text x="140.0" y="468" text-anchor="middle" fill="#8893ab" font-size="22" font-family="Inter, 'Segoe UI', system-ui, sans-serif">0 to 10%</text><path d="M305.6 400 V162.0 a6 6 0 0 1 6 -6 H448.4 a6 6 0 0 1 6 6 V400 Z" fill="#3987e5"/><text x="380.0" y="142.0" text-anchor="middle" fill="#f1f4fb" font-size="38" font-weight="700" font-family="'Space Grotesk', 'Segoe UI', system-ui, sans-serif">57%</text><text x="380.0" y="436" text-anchor="middle" fill="#f1f4fb" font-size="24" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Some cloud</text><text x="380.0" y="468" text-anchor="middle" fill="#8893ab" font-size="22" font-family="Inter, 'Segoe UI', system-ui, sans-serif">10 to 30%</text><path d="M545.6 400 V186.7 a6 6 0 0 1 6 -6 H688.4 a6 6 0 0 1 6 6 V400 Z" fill="#3987e5"/><text x="620.0" y="166.7" text-anchor="middle" fill="#f1f4fb" font-size="38" font-weight="700" font-family="'Space Grotesk', 'Segoe UI', system-ui, sans-serif">52%</text><text x="620.0" y="436" text-anchor="middle" fill="#f1f4fb" font-size="24" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Cloudy</text><text x="620.0" y="468" text-anchor="middle" fill="#8893ab" font-size="22" font-family="Inter, 'Segoe UI', system-ui, sans-serif">30 to 60%</text><path d="M785.6 400 V230.1 a6 6 0 0 1 6 -6 H928.4 a6 6 0 0 1 6 6 V400 Z" fill="#3987e5"/><text x="860.0" y="210.1" text-anchor="middle" fill="#f1f4fb" font-size="38" font-weight="700" font-family="'Space Grotesk', 'Segoe UI', system-ui, sans-serif">41%</text><text x="860.0" y="436" text-anchor="middle" fill="#f1f4fb" font-size="24" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Very cloudy</text><text x="860.0" y="468" text-anchor="middle" fill="#8893ab" font-size="22" font-family="Inter, 'Segoe UI', system-ui, sans-serif">60 to 100%</text><text x="20" y="26" fill="#8893ab" font-size="22" font-weight="600" font-family="Inter, 'Segoe UI', system-ui, sans-serif">Midday output, % of installed solar capacity, by forecast cloud cover</text></svg></div>
       <div class="side">
-        <div class="stat fragment rise"><div class="n">0.87</div><div class="l">How closely forecast sunshine tracks actual output, on a scale where 1.0 is perfect. Measured across 9,188 daylight hours.</div></div>
-        <div class="stat fragment rise"><div class="n">55%</div><div class="l">Biggest one-day drop: on October 10, 2026, output fell from 161 to 73 gigawatt-hours (GWh) in a day.</div></div>
+        <div class="stat fragment rise"><div class="n">0.87</div><div class="l">How closely forecast sunshine tracks actual output, on a scale where 1.0 is perfect. Measured across 9,191 daylight hours.</div></div>
+        <div class="stat fragment rise"><div class="n">54%</div><div class="l">Biggest one-day drop: on October 10, 2026, output fell from 161 to 73 gigawatt-hours (GWh) in a day.</div></div>
       </div>
     </div>
-    <p class="foot">Midday = 11 a.m. to 2 p.m. Pacific. Cloud cover is the forecast made two days earlier. Includes all seasons, so winter's lower sun also plays a part. Sources: EIA, Open-Meteo.</p>
+    <p class="foot">Midday = 10 a.m. to 1 p.m. Pacific. Cloud cover is the forecast made two days earlier. Includes all seasons, so winter's lower sun also plays a part. Sources: EIA, Open-Meteo.</p>
   </div>
   <aside class="notes">
-    Here is why weather is worth forecasting. We grouped midday hours by how cloudy the forecast said it would be. On clear days, solar delivers about 68 percent of installed capacity at midday. On very cloudy days it is about 41 percent. Part of that gap is winter sun, which is lower, but the link is strong. Across more than nine thousand daylight hours, the forecast sunshine and the actual output move together with a correlation of 0.87. And the weather can change fast: on October 10 of this year, output fell by 55 percent from one day to the next. That is the kind of day that costs a grid operator money.
+    Here is why weather is worth forecasting. We grouped midday hours by how cloudy the forecast said it would be. On clear days, solar delivers about 68 percent of installed capacity at midday. On very cloudy days it is about 41 percent. Part of that gap is winter sun, which is lower, but the link is strong. Across more than nine thousand daylight hours, the forecast sunshine and the actual output move together with a correlation of 0.87. And the weather can change fast: on October 10 of this year, output fell by 54 percent from one day to the next. That is the kind of day that costs a grid operator money.
   </aside>
 </section>
 
@@ -636,7 +636,7 @@ html.reveal-print, html.print-pdf, .print-pdf body { background: #0b1226 !import
       <b>That means 4.6% to about 7%, depending on which CAISO number counts</b>
       <p>We will fix this before modeling and show both numbers.</p>
     </div>
-    <p class="foot">Scored on 9,144 daylight hours in the training and validation days (March 2024 to April 9, 2026). The test days stay locked.</p>
+    <p class="foot">Scored on 9,133 daylight hours over 758 days in the training and validation days (March 2024 to April 9, 2026). The test days stay locked.</p>
   </div>
   <aside class="notes">
     Before building any model we score the reference forecasts on our own data. Same-as-yesterday misses by 4.9 percent of installed capacity. CAISO's published day-ahead forecast misses by 5.7 percent, and it runs about 830 megawatts too high on average. Most of that bias disappears when we add back the solar that was turned down, and then CAISO's miss is 3.7 percent. Part of that is by construction, because CAISO defines curtailment against its own forecast, so we show both. Our target was to be within 1.25 times CAISO's miss. That is 4.6 percent or about 7 percent depending on which number counts. We will settle that before modeling and report both. One more detail: same-as-yesterday uses afternoon information that is not available at 10 a.m., and if we limit it to what is known then, it is 6.1 percent. [Hand off] Juan David will take you through how we prepare the data.

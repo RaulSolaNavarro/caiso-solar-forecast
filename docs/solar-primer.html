@@ -1,0 +1,997 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solar Power, Explained</title><style>
+:root{--bg:#fcfcfb;--card:#ffffff;--ink:#0b0b0b;--ink2:#52514e;--muted:#77756f;--line:#e4e3de;--soft:#f4f3ef;
+--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--s5:#e87ba4;--s6:#008300;--s7:#6250d6;--s8:#e34948}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#1a1a19;--card:#232321;--ink:#f0efec;--ink2:#c3c2b7;--muted:#9a988f;--line:#383835;--soft:#2a2a28;
+--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767}}
+:root[data-theme="dark"]{--bg:#1a1a19;--card:#232321;--ink:#f0efec;--ink2:#c3c2b7;--muted:#9a988f;--line:#383835;--soft:#2a2a28;
+--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--s5:#d55181;--s6:#008300;--s7:#9085e9;--s8:#e66767}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:940px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:2.3rem;line-height:1.15;margin:.2em 0 .1em}h2{font-size:1.6rem;line-height:1.2;margin:0}h3{margin:.2em 0}h4{font-size:1.05rem;margin:.1em 0 .4em}
+.mt{margin-top:1.4em}.tagline{color:var(--ink2);font-size:1.15rem;margin:0 0 1.2em}
+section{margin:44px 0;padding-top:8px}
+.sh{display:flex;gap:14px;align-items:center;margin-bottom:14px}.num{flex:none;width:44px;height:44px;border-radius:50%;background:var(--s4);color:#0b0b0b;font-weight:800;display:grid;place-items:center;font-size:1.2rem}
+.sub{margin:.2em 0 0;color:var(--ink2);font-size:1.05rem}
+.lead{font-size:1.15rem}
+figure{margin:18px 0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+figure svg{width:100%;height:auto;display:block}figure{overflow-x:auto}@media(max-width:760px){figure svg{min-width:680px}figure{border:1px solid var(--line);border-radius:12px}figure::after{content:'Swipe sideways to see the whole picture';display:block;font-size:.78rem;color:var(--muted);padding:2px 10px 6px}}
+figcaption{margin-top:8px;color:var(--ink2);font-size:.9rem}
+ul.short{padding-left:1.2em;margin:.6em 0}ul.short li{margin:.35em 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}.card.hi{border:2px solid var(--s4)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+@media(max-width:760px){.duo,.trio{grid-template-columns:1fr}}
+.callout{background:var(--soft);border-left:6px solid var(--s1);border-radius:10px;padding:12px 16px;margin:14px 0}
+.example{background:var(--soft);border-left:6px solid var(--s2);border-radius:10px;padding:10px 16px;margin:14px 0}
+.note{color:var(--ink2);font-style:italic}
+.center{text-align:center;margin-top:4px}
+.b{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;line-height:1.25;border:1.5px solid var(--line);border-radius:14px;padding:2px 10px;margin:2px 4px 2px 0;background:var(--card);color:var(--ink2)}
+.b i{font-style:normal;font-weight:800}.b strong{letter-spacing:.04em;color:var(--ink);white-space:nowrap}
+.b.est{border-style:dashed;border-color:var(--s4)}.b.chk{border-color:var(--s8);border-style:dotted}.b.our{border-color:var(--s1)}.b.calc{border-color:var(--s3)}.b.src{border-color:var(--ink2)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0}@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column}
+.stat .n,.nc .n{font-size:1.9rem;font-weight:800;line-height:1.1}.stat .l,.nc .l{color:var(--ink2);font-size:.92rem}
+.ngrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:760px){.ngrid{grid-template-columns:1fr}}
+.nc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}.nc .n{color:var(--ink)}.nc .tg{margin-top:auto}
+.t{width:100%;border-collapse:collapse;font-size:.92rem;margin:10px 0;background:var(--card)}
+.t th,.t td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.t th{background:var(--soft)}
+.scroll{overflow-x:auto}.data td.ic{width:56px}
+.hbars{display:grid;gap:8px;margin:10px 0}.hb{display:grid;grid-template-columns:230px 1fr 130px;gap:10px;align-items:center;font-size:.92rem}
+.hbar{background:var(--soft);border-radius:6px;height:20px;overflow:hidden}.hbar span{display:block;height:100%;border-radius:6px}.hv em{color:var(--ink2);font-style:normal}
+@media(max-width:760px){.hb{grid-template-columns:1fr;gap:2px}}
+.seg{display:flex;height:34px;border-radius:8px;overflow:hidden;margin:8px 0}.seg span{display:grid;place-items:center;color:#fff;font-weight:700;font-size:.85rem;border-right:2px solid var(--card)}
+.seg em{font-style:normal}
+.leg{list-style:none;padding:0;margin:6px 0;display:grid;gap:4px;font-size:.9rem}.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px}
+.split{display:flex;height:40px;border-radius:10px;overflow:hidden;margin:14px 0 4px}.split .s1{background:var(--s1);color:#fff;display:grid;place-items:center}.split .s2{background:var(--s2);min-width:10px}.splitcap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.95rem;margin-bottom:6px}
+.quad{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0}@media(max-width:900px){.quad{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.quad{grid-template-columns:1fr}}.big2{font-size:1.5rem;font-weight:800;margin:.2em 0 0}
+.rgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}@media(max-width:760px){.rgrid{grid-template-columns:1fr}}
+.rk .tag{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.06em;border:1.5px solid var(--ink2);border-radius:6px;padding:0 6px;margin-right:6px}.rk .tag.do{border-color:var(--s3)}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0}.faq summary{cursor:pointer;font-weight:700}
+.legend{background:var(--soft);border-radius:12px;padding:10px 16px;margin:0 0 26px;font-size:.95rem}.legend p{margin:.4em 0}
+.srcs{font-size:.85rem}.srcs a{color:var(--s1)}
+svg text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+svg .ax{fill:var(--muted);font-size:13px}svg .lg{fill:var(--ink);font-size:14.5px;font-weight:600}svg .lbl{fill:var(--ink);font-size:14px;font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:4px}
+svg .lbl.small{font-size:13px;font-weight:500;stroke:none}svg .lbl.dark{stroke:none;fill:#0b0b0b}svg .ph{fill:var(--ink);font-size:16px;font-weight:700}svg .big{fill:var(--ink);font-size:19px;font-weight:800}
+svg .barlbl{fill:#fff;font-size:13px;font-weight:600}
+svg .grid{stroke:var(--line);stroke-width:1}svg .zero{stroke:var(--ink2);stroke-width:1.5}
+@media print{figure::after{display:none!important}figure svg{min-width:0!important}body{font-size:15px}section{break-inside:auto}.sh{break-after:avoid;break-inside:avoid}.sh+*{break-before:avoid}.sh+figure{break-before:avoid}h4{break-after:avoid}.card,.callout,.stat,.t tr,.b{break-inside:avoid}.legend{break-inside:avoid}figure{break-inside:avoid}.faq details{break-inside:avoid}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-sun" viewBox="0 0 48 48"><g stroke="var(--s4)" stroke-width="3" stroke-linecap="round"><path d="M24 3v7M24 38v7M3 24h7M38 24h7M9 9l5 5M34 34l5 5M39 9l-5 5M14 34l-5 5"/></g><circle cx="24" cy="24" r="10" fill="var(--s4)"/></symbol>
+<symbol id="i-panels" viewBox="0 0 48 48"><g fill="var(--s1)" stroke="var(--card)" stroke-width="1.5"><path d="M4 30l8-14h14l-8 14z"/><path d="M22 30l8-14h14l-8 14z"/><path d="M2 42l8-12h14l-8 12z"/><path d="M20 42l8-12h14l-8 12z"/></g></symbol>
+<symbol id="i-gas" viewBox="0 0 48 48"><g fill="var(--s2)"><rect x="6" y="26" width="36" height="16" rx="2"/><rect x="12" y="12" width="7" height="16"/><rect x="26" y="8" width="7" height="20"/></g><g fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"><path d="M16 8c-3-3 3-5 0-8"/><path d="M30 4c-3-3 3-4 0-6"/></g></symbol>
+<symbol id="i-dam" viewBox="0 0 48 48"><path d="M6 10h36l-6 26H12z" fill="var(--s3)"/><g fill="none" stroke="var(--s3)" stroke-width="2.5" stroke-linecap="round"><path d="M4 42c5-4 8 4 13 0s8 4 13 0 8 4 14 0"/></g></symbol>
+<symbol id="i-wind" viewBox="0 0 48 48"><g fill="var(--s5)" stroke="var(--s5)" stroke-width="2" stroke-linejoin="round"><path d="M24 24L22 4l4 0z"/><path d="M24 24l17 10-2 3z"/><path d="M24 24L7 34l2 3z"/><circle cx="24" cy="24" r="3"/><path d="M23 26h2l2 20h-6z"/></g></symbol>
+<symbol id="i-nuke" viewBox="0 0 48 48"><path d="M10 44c4-10 4-20 2-30h24c-2 10-2 20 2 30z" fill="var(--s1)"/><path d="M14 10c0-4 6-3 6-6M26 10c0-4 6-3 6-6" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linecap="round"/></symbol>
+<symbol id="i-pylon" viewBox="0 0 48 48"><g fill="none" stroke="var(--ink2)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"><path d="M24 4L10 44h28z"/><path d="M12 14h24M16 28h16M24 4v40"/><path d="M2 10h44"/></g></symbol>
+<symbol id="i-house" viewBox="0 0 48 48"><path d="M6 24L24 8l18 16" fill="none" stroke="var(--ink2)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><rect x="10" y="24" width="28" height="18" fill="var(--line)" stroke="var(--ink2)" stroke-width="2.5"/><path d="M15 21l7-8h8l-7 8z" fill="var(--s1)"/></symbol>
+<symbol id="i-city" viewBox="0 0 48 48"><g fill="var(--ink2)"><rect x="4" y="22" width="12" height="22"/><rect x="18" y="8" width="12" height="36"/><rect x="32" y="16" width="12" height="28"/></g><g fill="var(--card)"><rect x="7" y="26" width="3" height="3"/><rect x="7" y="33" width="3" height="3"/><rect x="21" y="13" width="3" height="3"/><rect x="21" y="21" width="3" height="3"/><rect x="21" y="29" width="3" height="3"/><rect x="35" y="21" width="3" height="3"/><rect x="35" y="29" width="3" height="3"/></g></symbol>
+<symbol id="i-bulb" viewBox="0 0 48 48"><path d="M24 4a14 14 0 0 0-8 25c2 2 2 4 2 6h12c0-2 0-4 2-6A14 14 0 0 0 24 4z" fill="var(--s4)"/><rect x="18" y="37" width="12" height="3" rx="1.5" fill="var(--ink2)"/><rect x="20" y="42" width="8" height="3" rx="1.5" fill="var(--ink2)"/></symbol>
+<symbol id="i-micro" viewBox="0 0 48 48"><rect x="4" y="12" width="40" height="26" rx="4" fill="var(--ink2)"/><rect x="9" y="17" width="22" height="16" rx="2" fill="var(--card)"/><circle cx="38" cy="22" r="2.5" fill="var(--card)"/><circle cx="38" cy="30" r="2.5" fill="var(--card)"/></symbol>
+<symbol id="i-battery" viewBox="0 0 48 48"><rect x="6" y="14" width="32" height="22" rx="4" fill="var(--s7)"/><rect x="38" y="21" width="5" height="8" rx="2" fill="var(--s7)"/><path d="M24 17l-6 9h5l-2 7 8-10h-5z" fill="var(--card)"/></symbol>
+<symbol id="i-clock" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" fill="none" stroke="var(--ink2)" stroke-width="3"/><path d="M24 12v13l8 5" fill="none" stroke="var(--ink2)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 48 48"><path d="M13 36a9 9 0 0 1 0-18 12 12 0 0 1 23 3 8 8 0 0 1-2 15z" fill="var(--muted)"/></symbol>
+<symbol id="i-pizza" viewBox="0 0 48 48"><circle cx="24" cy="24" r="19" fill="var(--s4)"/><circle cx="24" cy="24" r="19" fill="none" stroke="var(--s2)" stroke-width="4"/><circle cx="17" cy="18" r="3" fill="var(--s8)"/><circle cx="30" cy="20" r="3" fill="var(--s8)"/><circle cx="22" cy="31" r="3" fill="var(--s8)"/><circle cx="32" cy="32" r="3" fill="var(--s8)"/></symbol>
+</defs></svg>
+<main>
+<h1>Solar Power, Explained for Everyone</h1>
+<p class="tagline">Why Team Solar Foresight guesses tomorrow's sunshine power. Project: "Tomorrow's Sun, Today's Plan".</p>
+<p class="ax">Team Solar Foresight &middot; BUS 9430 &middot; November 2026</p>
+<div class="legend"><p><strong>How to read the tags.</strong> Every number says where it came from. Take your time. Read 1 section a day if you like.</p>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> a published source</span> <span class="b our"><i>&#9679;</i><strong>OUR DATA</strong> our own data pulls</span> <span class="b calc"><i>=</i><strong>CALCULATED</strong> simple math on sourced numbers</span> <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> a rough estimate or educated guess</span> <span class="b chk"><i>?</i><strong>NOT CONFIRMED</strong> we could not confirm it, so treat it with care</span></p></div><section><div class="sh"><span class="num">1</span><div><h2>The 1-minute story</h2><p class="sub">Electricity is like water in a bathtub.</p></div></div><figure><svg viewBox="0 0 820 360" role="img" aria-labelledby="tb1 db1" class="chart ill"><title id="tb1">The bathtub picture of the power grid</title>
+<desc id="db1">A tap pours water into a bathtub while a drain lets it out. The water level has to stay level.</desc>
+<g><use href="#i-sun" x="40" y="8" width="50" height="50"/><use href="#i-gas" x="98" y="8" width="50" height="50"/><use href="#i-wind" x="156" y="8" width="50" height="50"/><use href="#i-dam" x="214" y="8" width="50" height="50"/></g>
+<text x="40" y="82" class="lg">Power plants and solar panels</text><text x="40" y="102" class="ax">= the tap (power going IN)</text>
+<path d="M150 114v66" stroke="var(--s1)" stroke-width="10" stroke-linecap="round" opacity=".55"/><path d="M150 188l-9-12h18z" fill="var(--s1)" opacity=".7"/>
+<path d="M30 190h360l-26 100q-4 16-20 16H76q-16 0-20-16z" fill="var(--card)" stroke="var(--ink2)" stroke-width="4" stroke-linejoin="round"/>
+<path d="M46 226h328l-12 62q-3 12-16 12H74q-13 0-16-12z" fill="var(--s1)" opacity=".4"/>
+<line x1="24" x2="396" y1="226" y2="226" stroke="var(--s1)" stroke-width="3" stroke-dasharray="8 6"/>
+<path d="M395 262h70" stroke="var(--s1)" stroke-width="10" stroke-linecap="round" opacity=".55"/><path d="M475 262l-12-9v18z" fill="var(--s1)" opacity=".7"/>
+<g><use href="#i-bulb" x="500" y="150" width="46" height="46"/><use href="#i-micro" x="556" y="152" width="46" height="46"/><use href="#i-city" x="612" y="150" width="50" height="50"/><use href="#i-house" x="672" y="150" width="50" height="50"/></g>
+<text x="500" y="228" class="lg">Lights, fridges, chargers, factories</text><text x="500" y="248" class="ax">= the drain (power going OUT)</text>
+<text x="30" y="334" class="lbl">Dashed line = balance. The water level must stay flat, every second.</text>
+<text x="30" y="354" class="ax">Too little power: blackouts. Too much: equipment can be damaged.</text>
+</svg><figcaption>The grid is a bathtub. Plants fill it. Everything we plug in drains it.</figcaption></figure><ul class="short">
+<li>Electricity is used at the moment it is made. Very little can be saved for later.</li>
+<li>The water level must stay flat every second.</li>
+<li>Solar is a tap that opens with the sun. Clouds squeeze it.</li>
+<li>Solar is big: <strong>25%</strong> of California's power in 2025. At noon on our 4 sample days, solar matched <strong>78% to 95%</strong> of what CAISO's area was using.</li>
+<li>The power plan is locked the day before: about <strong>97%</strong> of tomorrow's power is lined up by 1 p.m. the day before. So we must guess tomorrow's sun today.</li>
+</ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> 25%: California Energy Commission, 2025</span> <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> 78% to 95%: 4 sample days; CAISO’s solar file reads 12% to 13% above the U.S. Energy Information Administration</span> <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> 97%: see section 7</span></p>
+<div class="duo">
+<div class="card hi"><h4>Our business problem</h4><p>Tomorrow's sun is the hardest part of tomorrow's power plan to know. The plan is locked at 10 a.m. the day before. A wrong guess costs money.</p></div>
+<div class="card hi"><h4>Our business question</h4><p>Can we guess how much solar power California will make in each hour of tomorrow, using only what is known by 10 a.m. today, almost as well as the experts at CAISO (the California Independent System Operator, the grid referee)?</p></div>
+</div>
+<p class="note">Our goal: our average miss is at most 1.25 times CAISO's average miss.</p>
+<div class="callout"><h4>Who is CAISO, and why does it exist?</h4>
+<p><strong>CAISO</strong> is short for the California Independent System Operator. Think of an airport. Many airlines own the planes (the power plants). Other companies own the runways (the wires). If everyone moved on their own, planes would crash. So 1 neutral air traffic controller tells everyone when and where to go. For California's power, that is CAISO.</p>
+<ul class="short"><li>Many companies make power. Many companies own the wires. Power cannot be stored in bulk, so supply must match use every second.</li>
+<li>CAISO runs the market where power is offered and bought, and keeps the balance. It is a not-for-profit, independent of the companies that make and sell power.</li>
+<li>Created by California's legislature in 1998, when the state opened electricity markets to competition. The Governor appoints its leaders.</li>
+<li>Looks after about <strong>80%</strong> of California's power.</li></ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Wikipedia, California Independent System Operator</span></p></div></section><section><div class="sh"><span class="num">2</span><div><h2>The ruler: how we count electricity</h2><p class="sub">Power is how fast. Energy is how much.</p></div></div><p class="lead">Think of a car. Speed is miles per hour. Distance is miles. <strong>Power</strong> is the speed of using electricity. <strong>Energy</strong> is the distance: how much was used over time.</p><figure><svg viewBox="0 0 830 252" role="img" aria-labelledby="tu1 du1" class="chart ill"><title id="tu1">The ladder of power units</title><desc id="du1">Watt, kilowatt, megawatt and gigawatt, each 1,000 times bigger than the one before.</desc>
+<rect x="2" y="6" width="198" height="240" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<use href="#i-bulb" x="75" y="16" width="52" height="52"/>
+<text x="101" y="92" class="big" text-anchor="middle">1 watt (W)</text>
+<text x="101" y="112" class="ax" text-anchor="middle">the small tap</text>
+<text x="101" y="140" class="lg" text-anchor="middle">uses 1 Wh</text>
+<text x="101" y="158" class="lg" text-anchor="middle">every hour</text>
+<text x="101" y="188" class="ax" text-anchor="middle">A bright LED bulb</text>
+<text x="101" y="205" class="ax" text-anchor="middle">is 10 W:</text>
+<text x="101" y="222" class="ax" text-anchor="middle">10 Wh every hour</text>
+<rect x="210" y="6" width="198" height="240" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<use href="#i-micro" x="283" y="16" width="52" height="52"/>
+<text x="309" y="92" class="big" text-anchor="middle">1 kilowatt (kW)</text>
+<text x="309" y="112" class="ax" text-anchor="middle">= 1,000 W</text>
+<text x="309" y="140" class="lg" text-anchor="middle">uses 1 kWh</text>
+<text x="309" y="158" class="lg" text-anchor="middle">every hour</text>
+<text x="309" y="188" class="ax" text-anchor="middle">A microwave is about</text>
+<text x="309" y="205" class="ax" text-anchor="middle">1 kW. A typical home</text>
+<text x="309" y="222" class="ax" text-anchor="middle">rooftop system is 7.7 kW</text>
+<rect x="418" y="6" width="198" height="240" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<use href="#i-panels" x="491" y="16" width="52" height="52"/>
+<text x="517" y="92" class="big" text-anchor="middle">1 megawatt (MW)</text>
+<text x="517" y="112" class="ax" text-anchor="middle">= 1,000 kW</text>
+<text x="517" y="140" class="lg" text-anchor="middle">makes 1 MWh</text>
+<text x="517" y="158" class="lg" text-anchor="middle">every hour</text>
+<text x="517" y="188" class="ax" text-anchor="middle">1 MW of solar powers</text>
+<text x="517" y="205" class="ax" text-anchor="middle">about 173 U.S. homes</text>
+<text x="517" y="222" class="ax" text-anchor="middle">(national average)</text>
+<rect x="626" y="6" width="198" height="240" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<use href="#i-city" x="699" y="16" width="52" height="52"/>
+<text x="725" y="92" class="big" text-anchor="middle">1 gigawatt (GW)</text>
+<text x="725" y="112" class="ax" text-anchor="middle">= 1,000 MW</text>
+<text x="725" y="140" class="lg" text-anchor="middle">makes 1 GWh</text>
+<text x="725" y="158" class="lg" text-anchor="middle">every hour</text>
+<text x="725" y="188" class="ax" text-anchor="middle">California uses about</text>
+<text x="725" y="205" class="ax" text-anchor="middle">31 GW on average,</text>
+<text x="725" y="222" class="ax" text-anchor="middle">24 hours a day</text>
+</svg><figcaption>Each step is 1,000 times bigger. Wh = watt-hour = 1 watt used for 1 hour. kWh = 1,000 Wh. MWh = 1,000 kWh. GWh = 1,000 MWh.</figcaption></figure><div class="duo">
+<div class="card"><h4>Energy over a longer time</h4><p><strong>1 TWh</strong> (terawatt-hour) = 1,000,000 MWh. We use TWh for a whole year.</p>
+<p>California uses <strong>273 TWh per year</strong>. That is the same as <strong>31 GW for 24 hours a day, 365 days a year</strong> (31 GW x 8,760 hours = 273 TWh).</p>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Energy Commission, 2025 planning figure: 272,743 GWh</span> <span class="b calc"><i>=</i><strong>CALCULATED</strong> 272.7 TWh &divide; 8,760 hours = 31.1 GW</span></p></div>
+<div class="card"><h4>Our rule: 1 unit per job</h4><ul class="short"><li>An hour or a moment: <strong>MW</strong>. Whole state: <strong>GW</strong>.</li><li>A day or month: <strong>GWh</strong>. A year: <strong>TWh</strong>.</li><li>Homes: <strong>kW</strong> and <strong>kWh</strong>.</li><li>We never mix GWh and TWh in 1 table.</li><li>1 MW for 1 hour = 1 MWh. So hourly MWh and MW are the same number.</li></ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> 1 MW of solar powers about 173 U.S. homes: Solar Energy Industries Association, national average through Q2 2022</span></p></div>
+</div>
+<h4 class="mt">What each of our sources uses, and what we show</h4><div class="scroll"><table class="t"><thead><tr><th>Where the number comes from</th><th>What it reports</th><th>Unit we show</th></tr></thead><tbody>
+<tr><td>Hourly solar count, U.S. Energy Information Administration</td><td>MWh for each hour (= average MW in that hour)</td><td><strong>MW</strong></td></tr>
+<tr><td>CAISO market files</td><td>MW for each hour</td><td><strong>MW</strong></td></tr>
+<tr><td>California Energy Commission yearly tables</td><td>GWh per year</td><td><strong>TWh per year</strong></td></tr>
+<tr><td>Plant list, U.S. Energy Information Administration</td><td>Capacity in MW: the most a plant can make</td><td><strong>MW</strong></td></tr>
+<tr><td>Weather forecasts, Open-Meteo</td><td>Sunshine strength in watts per square meter (W/m&sup2;). 1,000 = full midday sun.<br>Cloud cover in %.</td><td><strong>W/m&sup2;, %</strong></td></tr>
+<tr><td>CAISO turned-down solar files</td><td>MW for each 5 minutes</td><td><strong>MWh</strong> (MW &divide; 12)</td></tr>
+</tbody></table><div class="callout"><strong>Names to know.</strong> <strong>CAISO</strong> is short for the California Independent System Operator. Some data files, including ours from the U.S. Energy Information Administration, write <strong>"CISO"</strong>. That is the 4-letter code for the same grid area. Whenever you see CISO, read CAISO.
+<br><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> U.S. Energy Information Administration, hourly grid data guide</span></div></section><section><div class="sh"><span class="num">3</span><div><h2>How much power does California use?</h2><p class="sub">A lot, and it changes every hour.</p></div></div><div class="stats">
+<div class="stat"><span class="n">273 TWh</span><span class="l">per year</span></div>
+<div class="stat"><span class="n">747 GWh</span><span class="l">per day, on average</span></div>
+<div class="stat"><span class="n">31 GW</span><span class="l">every hour, on average</span></div>
+<div class="stat"><span class="n">48.3 GW</span><span class="l">biggest moment of 2024, 4 to 5 p.m. on Sep 5</span></div>
+</div>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Energy Commission, 2025</span> <span class="b calc"><i>=</i><strong>CALCULATED</strong> 273 TWh &divide; 365 days; &divide; 8,760 hours</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO 2024 market report: peak 48,323 MW</span></p><figure><svg viewBox="0 0 820 380" role="img" aria-labelledby="t1 d1" class="chart"><title id="t1">How much power California uses across a day, by season</title><desc id="d1">Four lines, one per season. Use is lowest in the early morning and early afternoon and highest between 6 and 8 p.m. Summer is highest, peaking at 34.6 GW.</desc>
+<line x1="58" x2="798" y1="334.0" y2="334.0" class="grid"/><text x="50" y="338.0" class="ax" text-anchor="end">15</text>
+<line x1="58" x2="798" y1="268.3" y2="268.3" class="grid"/><text x="50" y="272.3" class="ax" text-anchor="end">20</text>
+<line x1="58" x2="798" y1="202.6" y2="202.6" class="grid"/><text x="50" y="206.6" class="ax" text-anchor="end">25</text>
+<line x1="58" x2="798" y1="136.9" y2="136.9" class="grid"/><text x="50" y="140.9" class="ax" text-anchor="end">30</text>
+<line x1="58" x2="798" y1="71.1" y2="71.1" class="grid"/><text x="50" y="75.1" class="ax" text-anchor="end">35</text>
+<text x="50" y="44" class="ax" text-anchor="end">GW</text>
+<text x="58.0" y="354" class="ax" text-anchor="middle">12 a.m.</text>
+<text x="154.5" y="354" class="ax" text-anchor="middle">3 a.m.</text>
+<text x="251.0" y="354" class="ax" text-anchor="middle">6 a.m.</text>
+<text x="347.6" y="354" class="ax" text-anchor="middle">9 a.m.</text>
+<text x="444.1" y="354" class="ax" text-anchor="middle">12 p.m.</text>
+<text x="540.6" y="354" class="ax" text-anchor="middle">3 p.m.</text>
+<text x="637.1" y="354" class="ax" text-anchor="middle">6 p.m.</text>
+<text x="733.7" y="354" class="ax" text-anchor="middle">9 p.m.</text>
+<line x1="58" x2="80" y1="20" y2="20" stroke="var(--s1)" stroke-width="3" stroke-linecap="round"/><text x="86" y="24" class="lg">Winter</text><text x="86" y="40" class="ax">avg 23.0 GW</text>
+<line x1="208" x2="230" y1="20" y2="20" stroke="var(--s3)" stroke-width="3" stroke-linecap="round"/><text x="236" y="24" class="lg">Spring</text><text x="236" y="40" class="ax">avg 22.4 GW</text>
+<line x1="358" x2="380" y1="20" y2="20" stroke="var(--s2)" stroke-width="3" stroke-linecap="round"/><text x="386" y="24" class="lg">Summer</text><text x="386" y="40" class="ax">avg 28.2 GW</text>
+<line x1="508" x2="530" y1="20" y2="20" stroke="var(--s7)" stroke-width="3" stroke-linecap="round"/><text x="536" y="24" class="lg">Fall</text><text x="536" y="40" class="ax">avg 22.0 GW</text>
+<polyline points="58.0,242.2 90.2,246.5 122.3,251.4 154.5,257.5 186.7,258.2 218.9,244.7 251.0,218.0 283.2,184.4 315.4,184.7 347.6,209.9 379.7,245.0 411.9,265.9 444.1,279.5 476.3,282.0 508.4,274.1 540.6,259.4 572.8,229.4 605.0,193.7 637.1,178.1 669.3,184.7 701.5,190.4 733.7,195.9 765.8,207.1 798.0,225.1" fill="none" stroke="var(--s1)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="58.0,241.8 90.2,248.6 122.3,255.4 154.5,264.8 186.7,267.0 218.9,257.6 251.0,238.7 283.2,222.7 315.4,218.3 347.6,219.7 379.7,230.7 411.9,242.3 444.1,257.1 476.3,266.9 508.4,270.8 540.6,276.3 572.8,263.5 605.0,246.8 637.1,211.2 669.3,189.2 701.5,183.7 733.7,191.9 765.8,201.1 798.0,227.5" fill="none" stroke="var(--s3)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="58.0,161.6 90.2,177.5 122.3,191.1 154.5,209.7 186.7,213.9 218.9,209.3 251.0,198.6 283.2,189.4 315.4,182.8 347.6,183.4 379.7,194.6 411.9,200.1 444.1,200.9 476.3,191.9 508.4,172.8 540.6,151.2 572.8,126.8 605.0,107.2 637.1,86.0 669.3,76.9 701.5,85.8 733.7,94.1 765.8,111.5 798.0,143.2" fill="none" stroke="var(--s2)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="58.0,248.2 90.2,254.1 122.3,265.0 154.5,271.4 186.7,274.3 218.9,266.7 251.0,246.7 283.2,217.1 315.4,215.8 347.6,227.5 379.7,246.8 411.9,259.2 444.1,273.0 476.3,283.3 508.4,276.9 540.6,270.9 572.8,256.3 605.0,233.1 637.1,205.5 669.3,187.9 701.5,195.5 733.7,205.1 765.8,212.3 798.0,229.9" fill="none" stroke="var(--s7)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="669.3" cy="76.9" r="5" fill="var(--s2)" stroke="var(--card)" stroke-width="2"/><text x="659.3" y="66.9" class="lbl" text-anchor="end">Summer peak: 34.6 GW at 7 p.m.</text>
+<circle cx="540.6" cy="276.3" r="5" fill="var(--s3)" stroke="var(--card)" stroke-width="2"/><text x="544.6" y="298.3" class="lbl" text-anchor="middle">Spring dip at 3 p.m.: solar is doing the work</text>
+<circle cx="58.0" cy="242.2" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 12 a.m.: 22.0 GW</title></circle>
+<circle cx="90.2" cy="246.5" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 1 a.m.: 21.7 GW</title></circle>
+<circle cx="122.3" cy="251.4" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 2 a.m.: 21.3 GW</title></circle>
+<circle cx="154.5" cy="257.5" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 3 a.m.: 20.8 GW</title></circle>
+<circle cx="186.7" cy="258.2" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 4 a.m.: 20.8 GW</title></circle>
+<circle cx="218.9" cy="244.7" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 5 a.m.: 21.8 GW</title></circle>
+<circle cx="251.0" cy="218.0" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 6 a.m.: 23.8 GW</title></circle>
+<circle cx="283.2" cy="184.4" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 7 a.m.: 26.4 GW</title></circle>
+<circle cx="315.4" cy="184.7" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 8 a.m.: 26.4 GW</title></circle>
+<circle cx="347.6" cy="209.9" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 9 a.m.: 24.4 GW</title></circle>
+<circle cx="379.7" cy="245.0" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 10 a.m.: 21.8 GW</title></circle>
+<circle cx="411.9" cy="265.9" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 11 a.m.: 20.2 GW</title></circle>
+<circle cx="444.1" cy="279.5" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 12 p.m.: 19.1 GW</title></circle>
+<circle cx="476.3" cy="282.0" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 1 p.m.: 19.0 GW</title></circle>
+<circle cx="508.4" cy="274.1" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 2 p.m.: 19.6 GW</title></circle>
+<circle cx="540.6" cy="259.4" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 3 p.m.: 20.7 GW</title></circle>
+<circle cx="572.8" cy="229.4" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 4 p.m.: 23.0 GW</title></circle>
+<circle cx="605.0" cy="193.7" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 5 p.m.: 25.7 GW</title></circle>
+<circle cx="637.1" cy="178.1" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 6 p.m.: 26.9 GW</title></circle>
+<circle cx="669.3" cy="184.7" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 7 p.m.: 26.4 GW</title></circle>
+<circle cx="701.5" cy="190.4" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 8 p.m.: 25.9 GW</title></circle>
+<circle cx="733.7" cy="195.9" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 9 p.m.: 25.5 GW</title></circle>
+<circle cx="765.8" cy="207.1" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 10 p.m.: 24.7 GW</title></circle>
+<circle cx="798.0" cy="225.1" r="9" fill="transparent"><title>Winter (Jan 15, 2025), 11 p.m.: 23.3 GW</title></circle>
+<circle cx="58.0" cy="241.8" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 12 a.m.: 22.0 GW</title></circle>
+<circle cx="90.2" cy="248.6" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 1 a.m.: 21.5 GW</title></circle>
+<circle cx="122.3" cy="255.4" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 2 a.m.: 21.0 GW</title></circle>
+<circle cx="154.5" cy="264.8" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 3 a.m.: 20.3 GW</title></circle>
+<circle cx="186.7" cy="267.0" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 4 a.m.: 20.1 GW</title></circle>
+<circle cx="218.9" cy="257.6" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 5 a.m.: 20.8 GW</title></circle>
+<circle cx="251.0" cy="238.7" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 6 a.m.: 22.3 GW</title></circle>
+<circle cx="283.2" cy="222.7" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 7 a.m.: 23.5 GW</title></circle>
+<circle cx="315.4" cy="218.3" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 8 a.m.: 23.8 GW</title></circle>
+<circle cx="347.6" cy="219.7" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 9 a.m.: 23.7 GW</title></circle>
+<circle cx="379.7" cy="230.7" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 10 a.m.: 22.9 GW</title></circle>
+<circle cx="411.9" cy="242.3" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 11 a.m.: 22.0 GW</title></circle>
+<circle cx="444.1" cy="257.1" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 12 p.m.: 20.9 GW</title></circle>
+<circle cx="476.3" cy="266.9" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 1 p.m.: 20.1 GW</title></circle>
+<circle cx="508.4" cy="270.8" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 2 p.m.: 19.8 GW</title></circle>
+<circle cx="540.6" cy="276.3" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 3 p.m.: 19.4 GW</title></circle>
+<circle cx="572.8" cy="263.5" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 4 p.m.: 20.4 GW</title></circle>
+<circle cx="605.0" cy="246.8" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 5 p.m.: 21.6 GW</title></circle>
+<circle cx="637.1" cy="211.2" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 6 p.m.: 24.3 GW</title></circle>
+<circle cx="669.3" cy="189.2" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 7 p.m.: 26.0 GW</title></circle>
+<circle cx="701.5" cy="183.7" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 8 p.m.: 26.4 GW</title></circle>
+<circle cx="733.7" cy="191.9" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 9 p.m.: 25.8 GW</title></circle>
+<circle cx="765.8" cy="201.1" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 10 p.m.: 25.1 GW</title></circle>
+<circle cx="798.0" cy="227.5" r="9" fill="transparent"><title>Spring (Apr 15, 2025), 11 p.m.: 23.1 GW</title></circle>
+<circle cx="58.0" cy="161.6" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 12 a.m.: 28.1 GW</title></circle>
+<circle cx="90.2" cy="177.5" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 1 a.m.: 26.9 GW</title></circle>
+<circle cx="122.3" cy="191.1" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 2 a.m.: 25.9 GW</title></circle>
+<circle cx="154.5" cy="209.7" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 3 a.m.: 24.5 GW</title></circle>
+<circle cx="186.7" cy="213.9" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 4 a.m.: 24.1 GW</title></circle>
+<circle cx="218.9" cy="209.3" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 5 a.m.: 24.5 GW</title></circle>
+<circle cx="251.0" cy="198.6" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 6 a.m.: 25.3 GW</title></circle>
+<circle cx="283.2" cy="189.4" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 7 a.m.: 26.0 GW</title></circle>
+<circle cx="315.4" cy="182.8" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 8 a.m.: 26.5 GW</title></circle>
+<circle cx="347.6" cy="183.4" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 9 a.m.: 26.5 GW</title></circle>
+<circle cx="379.7" cy="194.6" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 10 a.m.: 25.6 GW</title></circle>
+<circle cx="411.9" cy="200.1" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 11 a.m.: 25.2 GW</title></circle>
+<circle cx="444.1" cy="200.9" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 12 p.m.: 25.1 GW</title></circle>
+<circle cx="476.3" cy="191.9" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 1 p.m.: 25.8 GW</title></circle>
+<circle cx="508.4" cy="172.8" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 2 p.m.: 27.3 GW</title></circle>
+<circle cx="540.6" cy="151.2" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 3 p.m.: 28.9 GW</title></circle>
+<circle cx="572.8" cy="126.8" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 4 p.m.: 30.8 GW</title></circle>
+<circle cx="605.0" cy="107.2" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 5 p.m.: 32.3 GW</title></circle>
+<circle cx="637.1" cy="86.0" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 6 p.m.: 33.9 GW</title></circle>
+<circle cx="669.3" cy="76.9" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 7 p.m.: 34.6 GW</title></circle>
+<circle cx="701.5" cy="85.8" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 8 p.m.: 33.9 GW</title></circle>
+<circle cx="733.7" cy="94.1" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 9 p.m.: 33.3 GW</title></circle>
+<circle cx="765.8" cy="111.5" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 10 p.m.: 31.9 GW</title></circle>
+<circle cx="798.0" cy="143.2" r="9" fill="transparent"><title>Summer (Jul 15, 2025), 11 p.m.: 29.5 GW</title></circle>
+<circle cx="58.0" cy="248.2" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 12 a.m.: 21.5 GW</title></circle>
+<circle cx="90.2" cy="254.1" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 1 a.m.: 21.1 GW</title></circle>
+<circle cx="122.3" cy="265.0" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 2 a.m.: 20.2 GW</title></circle>
+<circle cx="154.5" cy="271.4" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 3 a.m.: 19.8 GW</title></circle>
+<circle cx="186.7" cy="274.3" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 4 a.m.: 19.5 GW</title></circle>
+<circle cx="218.9" cy="266.7" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 5 a.m.: 20.1 GW</title></circle>
+<circle cx="251.0" cy="246.7" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 6 a.m.: 21.6 GW</title></circle>
+<circle cx="283.2" cy="217.1" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 7 a.m.: 23.9 GW</title></circle>
+<circle cx="315.4" cy="215.8" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 8 a.m.: 24.0 GW</title></circle>
+<circle cx="347.6" cy="227.5" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 9 a.m.: 23.1 GW</title></circle>
+<circle cx="379.7" cy="246.8" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 10 a.m.: 21.6 GW</title></circle>
+<circle cx="411.9" cy="259.2" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 11 a.m.: 20.7 GW</title></circle>
+<circle cx="444.1" cy="273.0" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 12 p.m.: 19.6 GW</title></circle>
+<circle cx="476.3" cy="283.3" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 1 p.m.: 18.9 GW</title></circle>
+<circle cx="508.4" cy="276.9" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 2 p.m.: 19.3 GW</title></circle>
+<circle cx="540.6" cy="270.9" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 3 p.m.: 19.8 GW</title></circle>
+<circle cx="572.8" cy="256.3" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 4 p.m.: 20.9 GW</title></circle>
+<circle cx="605.0" cy="233.1" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 5 p.m.: 22.7 GW</title></circle>
+<circle cx="637.1" cy="205.5" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 6 p.m.: 24.8 GW</title></circle>
+<circle cx="669.3" cy="187.9" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 7 p.m.: 26.1 GW</title></circle>
+<circle cx="701.5" cy="195.5" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 8 p.m.: 25.5 GW</title></circle>
+<circle cx="733.7" cy="205.1" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 9 p.m.: 24.8 GW</title></circle>
+<circle cx="765.8" cy="212.3" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 10 p.m.: 24.3 GW</title></circle>
+<circle cx="798.0" cy="229.9" r="9" fill="transparent"><title>Fall (Oct 15, 2025), 11 p.m.: 22.9 GW</title></circle>
+</svg><figcaption>CAISO's area on 1 sample day per season (the 15th of Jan, Apr, Jul, Oct 2025). Sample days, not averages. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO public daily files</span> <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> 1 day per season</span></figcaption></figure><ul class="short">
+<li>Lowest: early morning, and early afternoon when rooftop solar is working.</li>
+<li>Highest: 6 to 8 p.m. when people get home.</li>
+</ul></section><section><div class="sh"><span class="num">4</span><div><h2>Where does it come from?</h2><p class="sub">A mix of sources. Solar fills the middle of the day.</p></div></div><h4>California's 2025 electricity mix: 267.7 TWh</h4><div class="hbars"><div class="hb"><span class="hl">Natural gas</span><span class="hbar"><span style="width:100.0%;background:var(--s2)"></span></span><span class="hv">81.3 TWh <em>30%</em></span></div><div class="hb"><span class="hl">Solar (big farms)</span><span class="hbar"><span style="width:81.8%;background:var(--s4)"></span></span><span class="hv">66.5 TWh <em>25%</em></span></div><div class="hb"><span class="hl">Wind</span><span class="hbar"><span style="width:40.8%;background:var(--s5)"></span></span><span class="hv">33.2 TWh <em>12%</em></span></div><div class="hb"><span class="hl">Hydro (big dams)</span><span class="hbar"><span style="width:36.8%;background:var(--s3)"></span></span><span class="hv">29.9 TWh <em>11%</em></span></div><div class="hb"><span class="hl">Nuclear</span><span class="hbar"><span style="width:32.5%;background:var(--s1)"></span></span><span class="hv">26.4 TWh <em>10%</em></span></div><div class="hb"><span class="hl">Other (biomass, small hydro, unspecified)</span><span class="hbar"><span style="width:21.3%;background:var(--muted)"></span></span><span class="hv">17.3 TWh <em>6%</em></span></div><div class="hb"><span class="hl">Geothermal</span><span class="hbar"><span style="width:16.2%;background:var(--s6)"></span></span><span class="hv">13.2 TWh <em>5%</em></span></div></div>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Energy Commission, 2025 Total System Electric Generation. Includes imports.</span></p>
+<ul class="short"><li>About 23% (62 TWh) came from other states.</li>
+<li>Rooftop solar is not in these bars. It adds about 30 to 34 TWh more.</li></ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Rooftop estimates: California Energy Commission 30.3 TWh; U.S. Energy Information Administration 34.4 TWh</span></p><figure><svg viewBox="0 0 820 656" role="img" aria-labelledby="t2 d2" class="chart"><title id="t2">Where California power comes from across a day, by season</title><desc id="d2">Four panels, one per season, each a layered chart of power sources by hour with demand drawn as a black line. Solar fills midday, natural gas and batteries fill the evening.</desc>
+<rect x="8" y="5" width="14" height="14" rx="3" fill="var(--s1)"/><text x="28" y="17" class="lg">Nuclear</text>
+<rect x="210" y="5" width="14" height="14" rx="3" fill="var(--s2)"/><text x="230" y="17" class="lg">Natural gas</text>
+<rect x="412" y="5" width="14" height="14" rx="3" fill="var(--s3)"/><text x="432" y="17" class="lg">Hydro (dams)</text>
+<rect x="614" y="5" width="14" height="14" rx="3" fill="var(--s4)"/><text x="634" y="17" class="lg">Solar</text>
+<rect x="8" y="25" width="14" height="14" rx="3" fill="var(--s5)"/><text x="28" y="37" class="lg">Wind</text>
+<rect x="210" y="25" width="14" height="14" rx="3" fill="var(--s6)"/><text x="230" y="37" class="lg">Geothermal and biomass</text>
+<rect x="412" y="25" width="14" height="14" rx="3" fill="var(--s7)"/><text x="432" y="37" class="lg">Batteries</text>
+<rect x="614" y="25" width="14" height="14" rx="3" fill="var(--s8)"/><text x="634" y="37" class="lg">Imports from other states</text>
+<line x1="816" x2="816" y1="0" y2="0"/>
+<g transform="translate(0,56)">
+<text x="44" y="16" class="ph">Winter</text><text x="128" y="16" class="ax">sample day, Jan 15, 2025</text>
+<line x1="44" x2="400" y1="270.0" y2="270.0" class="grid"/><text x="38" y="274.0" class="ax" text-anchor="end">-10</text>
+<line x1="44" x2="400" y1="220.0" y2="220.0" class="zero"/><text x="38" y="224.0" class="ax" text-anchor="end">0</text>
+<line x1="44" x2="400" y1="170.0" y2="170.0" class="grid"/><text x="38" y="174.0" class="ax" text-anchor="end">10</text>
+<line x1="44" x2="400" y1="120.0" y2="120.0" class="grid"/><text x="38" y="124.0" class="ax" text-anchor="end">20</text>
+<line x1="44" x2="400" y1="70.0" y2="70.0" class="grid"/><text x="38" y="74.0" class="ax" text-anchor="end">30</text>
+<text x="44.0" y="290" class="ax" text-anchor="middle">12 a.m.</text>
+<text x="136.9" y="290" class="ax" text-anchor="middle">6 a.m.</text>
+<text x="229.7" y="290" class="ax" text-anchor="middle">12 p.m.</text>
+<text x="322.6" y="290" class="ax" text-anchor="middle">6 p.m.</text>
+<polygon points="44.0,208.7 59.5,208.7 75.0,208.7 90.4,208.7 105.9,208.7 121.4,208.7 136.9,208.7 152.3,208.7 167.8,208.7 183.3,208.7 198.8,208.7 214.3,208.7 229.7,208.7 245.2,208.7 260.7,208.7 276.2,208.7 291.7,208.7 307.1,208.7 322.6,208.7 338.1,208.7 353.6,208.7 369.0,208.7 384.5,208.7 400.0,208.6 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,220.0 276.2,220.0 260.7,220.0 245.2,220.0 229.7,220.0 214.3,220.0 198.8,220.0 183.3,220.0 167.8,220.0 152.3,220.0 136.9,220.0 121.4,220.0 105.9,220.0 90.4,220.0 75.0,220.0 59.5,220.0 44.0,220.0" fill="var(--s1)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Nuclear</title></polygon>
+<polygon points="44.0,152.0 59.5,154.3 75.0,154.8 90.4,157.0 105.9,156.8 121.4,157.2 136.9,154.0 152.3,154.4 167.8,166.4 183.3,175.5 198.8,180.5 214.3,181.3 229.7,183.0 245.2,184.7 260.7,183.7 276.2,180.6 291.7,174.6 307.1,161.2 322.6,155.9 338.1,156.0 353.6,154.7 369.0,154.0 384.5,155.2 400.0,157.4 400.0,208.6 384.5,208.7 369.0,208.7 353.6,208.7 338.1,208.7 322.6,208.7 307.1,208.7 291.7,208.7 276.2,208.7 260.7,208.7 245.2,208.7 229.7,208.7 214.3,208.7 198.8,208.7 183.3,208.7 167.8,208.7 152.3,208.7 136.9,208.7 121.4,208.7 105.9,208.7 90.4,208.7 75.0,208.7 59.5,208.7 44.0,208.7" fill="var(--s2)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Natural gas</title></polygon>
+<polygon points="44.0,143.4 59.5,146.5 75.0,147.7 90.4,149.1 105.9,149.1 121.4,148.0 136.9,144.1 152.3,142.6 167.8,156.0 183.3,169.3 198.8,175.3 214.3,176.2 229.7,177.9 245.2,179.5 260.7,178.5 276.2,174.8 291.7,166.6 307.1,149.7 322.6,144.7 338.1,144.6 353.6,142.9 369.0,142.3 384.5,143.6 400.0,146.3 400.0,157.4 384.5,155.2 369.0,154.0 353.6,154.7 338.1,156.0 322.6,155.9 307.1,161.2 291.7,174.6 276.2,180.6 260.7,183.7 245.2,184.7 229.7,183.0 214.3,181.3 198.8,180.5 183.3,175.5 167.8,166.4 152.3,154.4 136.9,154.0 121.4,157.2 105.9,156.8 90.4,157.0 75.0,154.8 59.5,154.3 44.0,152.0" fill="var(--s3)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Hydro (dams)</title></polygon>
+<polygon points="44.0,143.4 59.5,146.5 75.0,147.7 90.4,149.1 105.9,149.1 121.4,148.0 136.9,144.1 152.3,141.8 167.8,120.2 183.3,95.6 198.8,98.8 214.3,101.5 229.7,103.3 245.2,103.7 260.7,106.3 276.2,115.3 291.7,129.0 307.1,148.4 322.6,144.7 338.1,144.6 353.6,142.9 369.0,142.3 384.5,143.6 400.0,146.3 400.0,146.3 384.5,143.6 369.0,142.3 353.6,142.9 338.1,144.6 322.6,144.7 307.1,149.7 291.7,166.6 276.2,174.8 260.7,178.5 245.2,179.5 229.7,177.9 214.3,176.2 198.8,175.3 183.3,169.3 167.8,156.0 152.3,142.6 136.9,144.1 121.4,148.0 105.9,149.1 90.4,149.1 75.0,147.7 59.5,146.5 44.0,143.4" fill="var(--s4)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Solar</title></polygon>
+<polygon points="44.0,139.2 59.5,141.7 75.0,142.3 90.4,142.6 105.9,142.8 121.4,141.1 136.9,137.6 152.3,135.1 167.8,113.6 183.3,89.3 198.8,92.8 214.3,95.6 229.7,97.0 245.2,97.0 260.7,96.2 276.2,104.6 291.7,119.5 307.1,142.2 322.6,140.1 338.1,140.5 353.6,138.7 369.0,138.0 384.5,138.7 400.0,141.2 400.0,146.3 384.5,143.6 369.0,142.3 353.6,142.9 338.1,144.6 322.6,144.7 307.1,148.4 291.7,129.0 276.2,115.3 260.7,106.3 245.2,103.7 229.7,103.3 214.3,101.5 198.8,98.8 183.3,95.6 167.8,120.2 152.3,141.8 136.9,144.1 121.4,148.0 105.9,149.1 90.4,149.1 75.0,147.7 59.5,146.5 44.0,143.4" fill="var(--s5)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Wind</title></polygon>
+<polygon points="44.0,133.4 59.5,136.0 75.0,136.6 90.4,136.9 105.9,137.1 121.4,135.4 136.9,131.9 152.3,129.3 167.8,107.9 183.3,83.7 198.8,87.1 214.3,89.9 229.7,91.4 245.2,91.3 260.7,90.6 276.2,98.9 291.7,113.7 307.1,136.5 322.6,134.4 338.1,134.8 353.6,132.9 369.0,132.3 384.5,132.9 400.0,135.3 400.0,141.2 384.5,138.7 369.0,138.0 353.6,138.7 338.1,140.5 322.6,140.1 307.1,142.2 291.7,119.5 276.2,104.6 260.7,96.2 245.2,97.0 229.7,97.0 214.3,95.6 198.8,92.8 183.3,89.3 167.8,113.6 152.3,135.1 136.9,137.6 121.4,141.1 105.9,142.8 90.4,142.6 75.0,142.3 59.5,141.7 44.0,139.2" fill="var(--s6)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Geothermal and biomass</title></polygon>
+<polygon points="44.0,133.0 59.5,136.0 75.0,136.6 90.4,136.9 105.9,137.1 121.4,134.9 136.9,123.2 152.3,109.5 167.8,107.4 183.3,83.7 198.8,87.1 214.3,89.9 229.7,91.4 245.2,91.3 260.7,90.6 276.2,98.9 291.7,108.6 307.1,113.3 322.6,107.5 338.1,108.7 353.6,112.1 369.0,116.6 384.5,122.9 400.0,131.1 400.0,135.3 384.5,132.9 369.0,132.3 353.6,132.9 338.1,134.8 322.6,134.4 307.1,136.5 291.7,113.7 276.2,98.9 260.7,90.6 245.2,91.3 229.7,91.4 214.3,89.9 198.8,87.1 183.3,83.7 167.8,107.9 152.3,129.3 136.9,131.9 121.4,135.4 105.9,137.1 90.4,136.9 75.0,136.6 59.5,136.0 44.0,133.4" fill="var(--s7)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Batteries</title></polygon>
+<polygon points="44.0,220.0 59.5,220.0 75.0,220.0 90.4,220.0 105.9,220.0 121.4,220.0 136.9,220.0 152.3,220.0 167.8,220.0 183.3,220.0 198.8,220.0 214.3,220.0 229.7,220.0 245.2,220.0 260.7,220.0 276.2,220.0 291.7,220.0 307.1,220.0 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,220.0 276.2,234.1 260.7,248.8 245.2,250.3 229.7,247.9 214.3,245.8 198.8,242.9 183.3,243.2 167.8,220.0 152.3,220.0 136.9,220.0 121.4,220.0 105.9,224.4 90.4,225.7 75.0,222.8 59.5,220.3 44.0,220.0" fill="var(--s7)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Batteries</title></polygon>
+<polygon points="44.0,109.8 59.5,110.6 75.0,109.5 90.4,107.7 105.9,109.3 121.4,107.6 136.9,97.5 152.3,84.3 167.8,83.9 183.3,72.2 198.8,85.8 214.3,89.9 229.7,91.4 245.2,91.3 260.7,90.6 276.2,98.9 291.7,104.1 307.1,91.2 322.6,85.1 338.1,87.1 353.6,89.8 369.0,92.0 384.5,95.8 400.0,102.3 400.0,131.1 384.5,122.9 369.0,116.6 353.6,112.1 338.1,108.7 322.6,107.5 307.1,113.3 291.7,108.6 276.2,98.9 260.7,90.6 245.2,91.3 229.7,91.4 214.3,89.9 198.8,87.1 183.3,83.7 167.8,107.4 152.3,109.5 136.9,123.2 121.4,134.9 105.9,137.1 90.4,136.9 75.0,136.6 59.5,136.0 44.0,133.0" fill="var(--s8)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Imports from other states</title></polygon>
+<polygon points="44.0,220.0 59.5,220.3 75.0,222.8 90.4,225.7 105.9,224.4 121.4,220.0 136.9,220.0 152.3,220.0 167.8,220.0 183.3,243.2 198.8,242.9 214.3,245.8 229.7,247.9 245.2,250.3 260.7,248.8 276.2,234.1 291.7,220.0 307.1,220.0 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,220.0 276.2,235.6 260.7,250.8 245.2,253.2 229.7,251.1 214.3,246.9 198.8,242.9 183.3,243.2 167.8,220.0 152.3,220.0 136.9,220.0 121.4,220.0 105.9,224.4 90.4,225.7 75.0,222.8 59.5,220.3 44.0,220.0" fill="var(--s8)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Imports from other states</title></polygon>
+<polyline points="44.0,110.1 59.5,111.7 75.0,113.6 90.4,115.9 105.9,116.2 121.4,111.0 136.9,100.9 152.3,88.1 167.8,88.2 183.3,97.8 198.8,111.1 214.3,119.1 229.7,124.2 245.2,125.2 260.7,122.2 276.2,116.6 291.7,105.2 307.1,91.6 322.6,85.7 338.1,88.2 353.6,90.4 369.0,92.5 384.5,96.7 400.0,103.6" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="198.8" y="141.0" class="lbl dark" text-anchor="middle">Solar</text>
+<rect x="36.0" y="30" width="16" height="240" fill="transparent"><title>Winter, 12 a.m. (GW). Demand: 22.0. Nuclear: 2.3; Natural gas: 11.3; Hydro (dams): 1.7; Solar: 0.0; Wind: 0.8; Geothermal and biomass: 1.1; Batteries: 0.1; Imports from other states: 4.6</title></rect>
+<rect x="51.5" y="30" width="16" height="240" fill="transparent"><title>Winter, 1 a.m. (GW). Demand: 21.7. Nuclear: 2.3; Natural gas: 10.9; Hydro (dams): 1.6; Solar: 0.0; Wind: 1.0; Geothermal and biomass: 1.1; Batteries: -0.1; Imports from other states: 5.1</title></rect>
+<rect x="67.0" y="30" width="16" height="240" fill="transparent"><title>Winter, 2 a.m. (GW). Demand: 21.3. Nuclear: 2.3; Natural gas: 10.8; Hydro (dams): 1.4; Solar: 0.0; Wind: 1.1; Geothermal and biomass: 1.1; Batteries: -0.6; Imports from other states: 5.4</title></rect>
+<rect x="82.4" y="30" width="16" height="240" fill="transparent"><title>Winter, 3 a.m. (GW). Demand: 20.8. Nuclear: 2.3; Natural gas: 10.3; Hydro (dams): 1.6; Solar: 0.0; Wind: 1.3; Geothermal and biomass: 1.1; Batteries: -1.1; Imports from other states: 5.8</title></rect>
+<rect x="97.9" y="30" width="16" height="240" fill="transparent"><title>Winter, 4 a.m. (GW). Demand: 20.8. Nuclear: 2.3; Natural gas: 10.4; Hydro (dams): 1.5; Solar: 0.0; Wind: 1.3; Geothermal and biomass: 1.1; Batteries: -0.9; Imports from other states: 5.6</title></rect>
+<rect x="113.4" y="30" width="16" height="240" fill="transparent"><title>Winter, 5 a.m. (GW). Demand: 21.8. Nuclear: 2.3; Natural gas: 10.3; Hydro (dams): 1.9; Solar: 0.0; Wind: 1.4; Geothermal and biomass: 1.1; Batteries: 0.1; Imports from other states: 5.4</title></rect>
+<rect x="128.9" y="30" width="16" height="240" fill="transparent"><title>Winter, 6 a.m. (GW). Demand: 23.8. Nuclear: 2.3; Natural gas: 10.9; Hydro (dams): 2.0; Solar: 0.0; Wind: 1.3; Geothermal and biomass: 1.1; Batteries: 1.7; Imports from other states: 5.1</title></rect>
+<rect x="144.3" y="30" width="16" height="240" fill="transparent"><title>Winter, 7 a.m. (GW). Demand: 26.4. Nuclear: 2.3; Natural gas: 10.9; Hydro (dams): 2.4; Solar: 0.1; Wind: 1.4; Geothermal and biomass: 1.1; Batteries: 4.0; Imports from other states: 5.0</title></rect>
+<rect x="159.8" y="30" width="16" height="240" fill="transparent"><title>Winter, 8 a.m. (GW). Demand: 26.4. Nuclear: 2.3; Natural gas: 8.5; Hydro (dams): 2.1; Solar: 7.2; Wind: 1.3; Geothermal and biomass: 1.1; Batteries: 0.1; Imports from other states: 4.7</title></rect>
+<rect x="175.3" y="30" width="16" height="240" fill="transparent"><title>Winter, 9 a.m. (GW). Demand: 24.4. Nuclear: 2.3; Natural gas: 6.6; Hydro (dams): 1.2; Solar: 14.8; Wind: 1.2; Geothermal and biomass: 1.1; Batteries: -4.6; Imports from other states: 2.3</title></rect>
+<rect x="190.8" y="30" width="16" height="240" fill="transparent"><title>Winter, 10 a.m. (GW). Demand: 21.8. Nuclear: 2.3; Natural gas: 5.6; Hydro (dams): 1.0; Solar: 15.3; Wind: 1.2; Geothermal and biomass: 1.1; Batteries: -4.6; Imports from other states: 0.3</title></rect>
+<rect x="206.3" y="30" width="16" height="240" fill="transparent"><title>Winter, 11 a.m. (GW). Demand: 20.2. Nuclear: 2.3; Natural gas: 5.5; Hydro (dams): 1.0; Solar: 14.9; Wind: 1.2; Geothermal and biomass: 1.1; Batteries: -5.2; Imports from other states: -0.2</title></rect>
+<rect x="221.7" y="30" width="16" height="240" fill="transparent"><title>Winter, 12 p.m. (GW). Demand: 19.1. Nuclear: 2.3; Natural gas: 5.1; Hydro (dams): 1.0; Solar: 14.9; Wind: 1.2; Geothermal and biomass: 1.1; Batteries: -5.6; Imports from other states: -0.6</title></rect>
+<rect x="237.2" y="30" width="16" height="240" fill="transparent"><title>Winter, 1 p.m. (GW). Demand: 19.0. Nuclear: 2.3; Natural gas: 4.8; Hydro (dams): 1.0; Solar: 15.2; Wind: 1.3; Geothermal and biomass: 1.1; Batteries: -6.1; Imports from other states: -0.6</title></rect>
+<rect x="252.7" y="30" width="16" height="240" fill="transparent"><title>Winter, 2 p.m. (GW). Demand: 19.6. Nuclear: 2.3; Natural gas: 5.0; Hydro (dams): 1.0; Solar: 14.4; Wind: 2.0; Geothermal and biomass: 1.1; Batteries: -5.8; Imports from other states: -0.4</title></rect>
+<rect x="268.2" y="30" width="16" height="240" fill="transparent"><title>Winter, 3 p.m. (GW). Demand: 20.7. Nuclear: 2.3; Natural gas: 5.6; Hydro (dams): 1.2; Solar: 11.9; Wind: 2.1; Geothermal and biomass: 1.1; Batteries: -2.8; Imports from other states: -0.3</title></rect>
+<rect x="283.7" y="30" width="16" height="240" fill="transparent"><title>Winter, 4 p.m. (GW). Demand: 23.0. Nuclear: 2.3; Natural gas: 6.8; Hydro (dams): 1.6; Solar: 7.5; Wind: 1.9; Geothermal and biomass: 1.1; Batteries: 1.0; Imports from other states: 0.9</title></rect>
+<rect x="299.1" y="30" width="16" height="240" fill="transparent"><title>Winter, 5 p.m. (GW). Demand: 25.7. Nuclear: 2.3; Natural gas: 9.5; Hydro (dams): 2.3; Solar: 0.3; Wind: 1.2; Geothermal and biomass: 1.1; Batteries: 4.6; Imports from other states: 4.4</title></rect>
+<rect x="314.6" y="30" width="16" height="240" fill="transparent"><title>Winter, 6 p.m. (GW). Demand: 26.9. Nuclear: 2.3; Natural gas: 10.6; Hydro (dams): 2.2; Solar: 0.0; Wind: 0.9; Geothermal and biomass: 1.1; Batteries: 5.4; Imports from other states: 4.5</title></rect>
+<rect x="330.1" y="30" width="16" height="240" fill="transparent"><title>Winter, 7 p.m. (GW). Demand: 26.4. Nuclear: 2.3; Natural gas: 10.5; Hydro (dams): 2.3; Solar: 0.0; Wind: 0.8; Geothermal and biomass: 1.2; Batteries: 5.2; Imports from other states: 4.3</title></rect>
+<rect x="345.6" y="30" width="16" height="240" fill="transparent"><title>Winter, 8 p.m. (GW). Demand: 25.9. Nuclear: 2.3; Natural gas: 10.8; Hydro (dams): 2.4; Solar: 0.0; Wind: 0.8; Geothermal and biomass: 1.2; Batteries: 4.2; Imports from other states: 4.5</title></rect>
+<rect x="361.0" y="30" width="16" height="240" fill="transparent"><title>Winter, 9 p.m. (GW). Demand: 25.5. Nuclear: 2.3; Natural gas: 10.9; Hydro (dams): 2.3; Solar: 0.0; Wind: 0.9; Geothermal and biomass: 1.2; Batteries: 3.1; Imports from other states: 4.9</title></rect>
+<rect x="376.5" y="30" width="16" height="240" fill="transparent"><title>Winter, 10 p.m. (GW). Demand: 24.7. Nuclear: 2.3; Natural gas: 10.7; Hydro (dams): 2.3; Solar: 0.0; Wind: 1.0; Geothermal and biomass: 1.2; Batteries: 2.0; Imports from other states: 5.4</title></rect>
+<rect x="392.0" y="30" width="16" height="240" fill="transparent"><title>Winter, 11 p.m. (GW). Demand: 23.3. Nuclear: 2.3; Natural gas: 10.2; Hydro (dams): 2.2; Solar: 0.0; Wind: 1.0; Geothermal and biomass: 1.2; Batteries: 0.9; Imports from other states: 5.8</title></rect>
+</g>
+<g transform="translate(410,56)">
+<text x="44" y="16" class="ph">Spring</text><text x="128" y="16" class="ax">sample day, Apr 15, 2025</text>
+<line x1="44" x2="400" y1="270.0" y2="270.0" class="grid"/><text x="38" y="274.0" class="ax" text-anchor="end">-10</text>
+<line x1="44" x2="400" y1="220.0" y2="220.0" class="zero"/><text x="38" y="224.0" class="ax" text-anchor="end">0</text>
+<line x1="44" x2="400" y1="170.0" y2="170.0" class="grid"/><text x="38" y="174.0" class="ax" text-anchor="end">10</text>
+<line x1="44" x2="400" y1="120.0" y2="120.0" class="grid"/><text x="38" y="124.0" class="ax" text-anchor="end">20</text>
+<line x1="44" x2="400" y1="70.0" y2="70.0" class="grid"/><text x="38" y="74.0" class="ax" text-anchor="end">30</text>
+<text x="44.0" y="290" class="ax" text-anchor="middle">12 a.m.</text>
+<text x="136.9" y="290" class="ax" text-anchor="middle">6 a.m.</text>
+<text x="229.7" y="290" class="ax" text-anchor="middle">12 p.m.</text>
+<text x="322.6" y="290" class="ax" text-anchor="middle">6 p.m.</text>
+<polygon points="44.0,214.3 59.5,214.3 75.0,214.3 90.4,214.3 105.9,214.3 121.4,214.3 136.9,214.3 152.3,214.3 167.8,214.3 183.3,214.3 198.8,214.3 214.3,214.3 229.7,214.3 245.2,214.3 260.7,214.3 276.2,214.3 291.7,214.3 307.1,214.3 322.6,214.3 338.1,214.3 353.6,214.3 369.0,214.3 384.5,214.3 400.0,214.3 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,220.0 276.2,220.0 260.7,220.0 245.2,220.0 229.7,220.0 214.3,220.0 198.8,220.0 183.3,220.0 167.8,220.0 152.3,220.0 136.9,220.0 121.4,220.0 105.9,220.0 90.4,220.0 75.0,220.0 59.5,220.0 44.0,220.0" fill="var(--s1)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Nuclear</title></polygon>
+<polygon points="44.0,176.0 59.5,176.5 75.0,179.9 90.4,181.5 105.9,181.9 121.4,179.9 136.9,180.2 152.3,184.0 167.8,192.2 183.3,198.4 198.8,203.4 214.3,205.8 229.7,205.9 245.2,205.9 260.7,205.8 276.2,205.1 291.7,202.8 307.1,200.4 322.6,197.3 338.1,193.0 353.6,188.1 369.0,185.9 384.5,184.4 400.0,183.0 400.0,214.3 384.5,214.3 369.0,214.3 353.6,214.3 338.1,214.3 322.6,214.3 307.1,214.3 291.7,214.3 276.2,214.3 260.7,214.3 245.2,214.3 229.7,214.3 214.3,214.3 198.8,214.3 183.3,214.3 167.8,214.3 152.3,214.3 136.9,214.3 121.4,214.3 105.9,214.3 90.4,214.3 75.0,214.3 59.5,214.3 44.0,214.3" fill="var(--s2)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Natural gas</title></polygon>
+<polygon points="44.0,153.1 59.5,156.3 75.0,159.9 90.4,161.6 105.9,162.5 121.4,161.4 136.9,158.8 152.3,165.5 167.8,175.7 183.3,187.1 198.8,197.1 214.3,197.6 229.7,199.0 245.2,199.8 260.7,198.7 276.2,197.2 291.7,195.3 307.1,189.0 322.6,180.0 338.1,169.9 353.6,163.9 369.0,162.5 384.5,161.5 400.0,160.2 400.0,183.0 384.5,184.4 369.0,185.9 353.6,188.1 338.1,193.0 322.6,197.3 307.1,200.4 291.7,202.8 276.2,205.1 260.7,205.8 245.2,205.9 229.7,205.9 214.3,205.8 198.8,203.4 183.3,198.4 167.8,192.2 152.3,184.0 136.9,180.2 121.4,179.9 105.9,181.9 90.4,181.5 75.0,179.9 59.5,176.5 44.0,176.0" fill="var(--s3)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Hydro (dams)</title></polygon>
+<polygon points="44.0,153.1 59.5,156.3 75.0,159.9 90.4,161.6 105.9,162.5 121.4,161.4 136.9,158.8 152.3,149.4 167.8,107.6 183.3,96.0 198.8,97.7 214.3,98.5 229.7,99.7 245.2,103.2 260.7,102.6 276.2,108.9 291.7,109.6 307.1,118.2 322.6,139.4 338.1,165.4 353.6,163.9 369.0,162.5 384.5,161.5 400.0,160.2 400.0,160.2 384.5,161.5 369.0,162.5 353.6,163.9 338.1,169.9 322.6,180.0 307.1,189.0 291.7,195.3 276.2,197.2 260.7,198.7 245.2,199.8 229.7,199.0 214.3,197.6 198.8,197.1 183.3,187.1 167.8,175.7 152.3,165.5 136.9,158.8 121.4,161.4 105.9,162.5 90.4,161.6 75.0,159.9 59.5,156.3 44.0,153.1" fill="var(--s4)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Solar</title></polygon>
+<polygon points="44.0,140.1 59.5,144.0 75.0,147.0 90.4,148.4 105.9,150.6 121.4,149.9 136.9,147.9 152.3,139.7 167.8,99.0 183.3,86.8 198.8,87.8 214.3,88.4 229.7,89.4 245.2,92.1 260.7,91.5 276.2,96.6 291.7,94.7 307.1,100.3 322.6,122.1 338.1,148.9 353.6,147.1 369.0,145.4 384.5,145.6 400.0,144.7 400.0,160.2 384.5,161.5 369.0,162.5 353.6,163.9 338.1,165.4 322.6,139.4 307.1,118.2 291.7,109.6 276.2,108.9 260.7,102.6 245.2,103.2 229.7,99.7 214.3,98.5 198.8,97.7 183.3,96.0 167.8,107.6 152.3,149.4 136.9,158.8 121.4,161.4 105.9,162.5 90.4,161.6 75.0,159.9 59.5,156.3 44.0,153.1" fill="var(--s5)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Wind</title></polygon>
+<polygon points="44.0,135.1 59.5,138.9 75.0,141.9 90.4,143.4 105.9,145.5 121.4,144.9 136.9,142.9 152.3,134.6 167.8,94.0 183.3,82.1 198.8,82.9 214.3,83.5 229.7,84.6 245.2,87.2 260.7,86.0 276.2,91.1 291.7,89.2 307.1,94.9 322.6,116.8 338.1,143.6 353.6,141.7 369.0,139.8 384.5,139.8 400.0,138.9 400.0,144.7 384.5,145.6 369.0,145.4 353.6,147.1 338.1,148.9 322.6,122.1 307.1,100.3 291.7,94.7 276.2,96.6 260.7,91.5 245.2,92.1 229.7,89.4 214.3,88.4 198.8,87.8 183.3,86.8 167.8,99.0 152.3,139.7 136.9,147.9 121.4,149.9 105.9,150.6 90.4,148.4 75.0,147.0 59.5,144.0 44.0,140.1" fill="var(--s6)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Geothermal and biomass</title></polygon>
+<polygon points="44.0,134.1 59.5,137.1 75.0,141.9 90.4,143.4 105.9,145.5 121.4,142.0 136.9,134.0 152.3,123.5 167.8,94.0 183.3,82.1 198.8,82.9 214.3,83.5 229.7,84.6 245.2,87.2 260.7,86.0 276.2,91.1 291.7,89.2 307.1,94.9 322.6,103.5 338.1,109.0 353.6,109.4 369.0,114.9 384.5,120.1 400.0,128.3 400.0,138.9 384.5,139.8 369.0,139.8 353.6,141.7 338.1,143.6 322.6,116.8 307.1,94.9 291.7,89.2 276.2,91.1 260.7,86.0 245.2,87.2 229.7,84.6 214.3,83.5 198.8,82.9 183.3,82.1 167.8,94.0 152.3,134.6 136.9,142.9 121.4,144.9 105.9,145.5 90.4,143.4 75.0,141.9 59.5,138.9 44.0,135.1" fill="var(--s7)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Batteries</title></polygon>
+<polygon points="44.0,220.0 59.5,220.0 75.0,220.0 90.4,220.0 105.9,220.0 121.4,220.0 136.9,220.0 152.3,220.0 167.8,220.0 183.3,220.0 198.8,220.0 214.3,220.0 229.7,220.0 245.2,220.0 260.7,220.0 276.2,220.0 291.7,220.0 307.1,220.0 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,227.7 291.7,237.5 276.2,235.1 260.7,240.5 245.2,239.6 229.7,240.4 214.3,241.0 198.8,237.6 183.3,240.2 167.8,230.6 152.3,220.0 136.9,220.0 121.4,220.0 105.9,220.5 90.4,222.0 75.0,220.2 59.5,220.0 44.0,220.0" fill="var(--s7)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Batteries</title></polygon>
+<polygon points="44.0,108.6 59.5,110.4 75.0,112.9 90.4,115.2 105.9,117.7 121.4,115.1 136.9,108.5 152.3,102.5 167.8,89.4 183.3,78.7 198.8,82.9 214.3,83.5 229.7,84.6 245.2,87.2 260.7,86.0 276.2,91.1 291.7,89.2 307.1,94.9 322.6,94.8 338.1,87.0 353.6,84.6 369.0,88.1 384.5,93.0 400.0,102.8 400.0,128.3 384.5,120.1 369.0,114.9 353.6,109.4 338.1,109.0 322.6,103.5 307.1,94.9 291.7,89.2 276.2,91.1 260.7,86.0 245.2,87.2 229.7,84.6 214.3,83.5 198.8,82.9 183.3,82.1 167.8,94.0 152.3,123.5 136.9,134.0 121.4,142.0 105.9,145.5 90.4,143.4 75.0,141.9 59.5,137.1 44.0,134.1" fill="var(--s8)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Imports from other states</title></polygon>
+<polygon points="44.0,220.0 59.5,220.0 75.0,220.2 90.4,222.0 105.9,220.5 121.4,220.0 136.9,220.0 152.3,220.0 167.8,230.6 183.3,240.2 198.8,237.6 214.3,241.0 229.7,240.4 245.2,239.6 260.7,240.5 276.2,235.1 291.7,237.5 307.1,227.7 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,230.8 291.7,245.6 276.2,247.4 260.7,251.7 245.2,248.9 229.7,247.2 214.3,243.9 198.8,239.4 183.3,240.2 167.8,230.6 152.3,220.0 136.9,220.0 121.4,220.0 105.9,220.5 90.4,222.0 75.0,220.2 59.5,220.0 44.0,220.0" fill="var(--s8)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Imports from other states</title></polygon>
+<polyline points="44.0,109.9 59.5,112.5 75.0,115.1 90.4,118.7 105.9,119.5 121.4,115.9 136.9,108.7 152.3,102.6 167.8,101.0 183.3,101.5 198.8,105.7 214.3,110.1 229.7,115.8 245.2,119.5 260.7,120.9 276.2,123.1 291.7,118.2 307.1,111.8 322.6,98.3 338.1,89.9 353.6,87.8 369.0,90.9 384.5,94.4 400.0,104.5" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="198.8" y="151.4" class="lbl dark" text-anchor="middle">Solar</text>
+<rect x="36.0" y="30" width="16" height="240" fill="transparent"><title>Spring, 12 a.m. (GW). Demand: 22.0. Nuclear: 1.1; Natural gas: 7.7; Hydro (dams): 4.6; Solar: 0.0; Wind: 2.6; Geothermal and biomass: 1.0; Batteries: 0.2; Imports from other states: 5.1</title></rect>
+<rect x="51.5" y="30" width="16" height="240" fill="transparent"><title>Spring, 1 a.m. (GW). Demand: 21.5. Nuclear: 1.1; Natural gas: 7.6; Hydro (dams): 4.0; Solar: 0.0; Wind: 2.5; Geothermal and biomass: 1.0; Batteries: 0.4; Imports from other states: 5.3</title></rect>
+<rect x="67.0" y="30" width="16" height="240" fill="transparent"><title>Spring, 2 a.m. (GW). Demand: 21.0. Nuclear: 1.1; Natural gas: 6.9; Hydro (dams): 4.0; Solar: 0.0; Wind: 2.6; Geothermal and biomass: 1.0; Batteries: -0.0; Imports from other states: 5.8</title></rect>
+<rect x="82.4" y="30" width="16" height="240" fill="transparent"><title>Spring, 3 a.m. (GW). Demand: 20.3. Nuclear: 1.1; Natural gas: 6.6; Hydro (dams): 4.0; Solar: 0.0; Wind: 2.6; Geothermal and biomass: 1.0; Batteries: -0.4; Imports from other states: 5.6</title></rect>
+<rect x="97.9" y="30" width="16" height="240" fill="transparent"><title>Spring, 4 a.m. (GW). Demand: 20.1. Nuclear: 1.1; Natural gas: 6.5; Hydro (dams): 3.9; Solar: 0.0; Wind: 2.4; Geothermal and biomass: 1.0; Batteries: -0.1; Imports from other states: 5.6</title></rect>
+<rect x="113.4" y="30" width="16" height="240" fill="transparent"><title>Spring, 5 a.m. (GW). Demand: 20.8. Nuclear: 1.1; Natural gas: 6.9; Hydro (dams): 3.7; Solar: 0.0; Wind: 2.3; Geothermal and biomass: 1.0; Batteries: 0.6; Imports from other states: 5.4</title></rect>
+<rect x="128.9" y="30" width="16" height="240" fill="transparent"><title>Spring, 6 a.m. (GW). Demand: 22.3. Nuclear: 1.1; Natural gas: 6.8; Hydro (dams): 4.3; Solar: 0.0; Wind: 2.2; Geothermal and biomass: 1.0; Batteries: 1.8; Imports from other states: 5.1</title></rect>
+<rect x="144.3" y="30" width="16" height="240" fill="transparent"><title>Spring, 7 a.m. (GW). Demand: 23.5. Nuclear: 1.1; Natural gas: 6.1; Hydro (dams): 3.7; Solar: 3.2; Wind: 2.0; Geothermal and biomass: 1.0; Batteries: 2.2; Imports from other states: 4.2</title></rect>
+<rect x="159.8" y="30" width="16" height="240" fill="transparent"><title>Spring, 8 a.m. (GW). Demand: 23.8. Nuclear: 1.1; Natural gas: 4.4; Hydro (dams): 3.3; Solar: 13.6; Wind: 1.7; Geothermal and biomass: 1.0; Batteries: -2.1; Imports from other states: 0.9</title></rect>
+<rect x="175.3" y="30" width="16" height="240" fill="transparent"><title>Spring, 9 a.m. (GW). Demand: 23.7. Nuclear: 1.1; Natural gas: 3.2; Hydro (dams): 2.3; Solar: 18.2; Wind: 1.8; Geothermal and biomass: 0.9; Batteries: -4.0; Imports from other states: 0.7</title></rect>
+<rect x="190.8" y="30" width="16" height="240" fill="transparent"><title>Spring, 10 a.m. (GW). Demand: 22.9. Nuclear: 1.1; Natural gas: 2.2; Hydro (dams): 1.3; Solar: 19.9; Wind: 2.0; Geothermal and biomass: 1.0; Batteries: -3.5; Imports from other states: -0.4</title></rect>
+<rect x="206.3" y="30" width="16" height="240" fill="transparent"><title>Spring, 11 a.m. (GW). Demand: 22.0. Nuclear: 1.1; Natural gas: 1.7; Hydro (dams): 1.6; Solar: 19.8; Wind: 2.0; Geothermal and biomass: 1.0; Batteries: -4.2; Imports from other states: -0.6</title></rect>
+<rect x="221.7" y="30" width="16" height="240" fill="transparent"><title>Spring, 12 p.m. (GW). Demand: 20.9. Nuclear: 1.1; Natural gas: 1.7; Hydro (dams): 1.4; Solar: 19.9; Wind: 2.1; Geothermal and biomass: 1.0; Batteries: -4.1; Imports from other states: -1.4</title></rect>
+<rect x="237.2" y="30" width="16" height="240" fill="transparent"><title>Spring, 1 p.m. (GW). Demand: 20.1. Nuclear: 1.1; Natural gas: 1.7; Hydro (dams): 1.2; Solar: 19.3; Wind: 2.2; Geothermal and biomass: 1.0; Batteries: -3.9; Imports from other states: -1.9</title></rect>
+<rect x="252.7" y="30" width="16" height="240" fill="transparent"><title>Spring, 2 p.m. (GW). Demand: 19.8. Nuclear: 1.1; Natural gas: 1.7; Hydro (dams): 1.4; Solar: 19.2; Wind: 2.2; Geothermal and biomass: 1.1; Batteries: -4.1; Imports from other states: -2.2</title></rect>
+<rect x="268.2" y="30" width="16" height="240" fill="transparent"><title>Spring, 3 p.m. (GW). Demand: 19.4. Nuclear: 1.1; Natural gas: 1.9; Hydro (dams): 1.6; Solar: 17.7; Wind: 2.5; Geothermal and biomass: 1.1; Batteries: -3.0; Imports from other states: -2.5</title></rect>
+<rect x="283.7" y="30" width="16" height="240" fill="transparent"><title>Spring, 4 p.m. (GW). Demand: 20.4. Nuclear: 1.1; Natural gas: 2.3; Hydro (dams): 1.5; Solar: 17.1; Wind: 3.0; Geothermal and biomass: 1.1; Batteries: -3.5; Imports from other states: -1.6</title></rect>
+<rect x="299.1" y="30" width="16" height="240" fill="transparent"><title>Spring, 5 p.m. (GW). Demand: 21.6. Nuclear: 1.1; Natural gas: 2.8; Hydro (dams): 2.3; Solar: 14.1; Wind: 3.6; Geothermal and biomass: 1.1; Batteries: -1.5; Imports from other states: -0.6</title></rect>
+<rect x="314.6" y="30" width="16" height="240" fill="transparent"><title>Spring, 6 p.m. (GW). Demand: 24.3. Nuclear: 1.1; Natural gas: 3.4; Hydro (dams): 3.5; Solar: 8.1; Wind: 3.5; Geothermal and biomass: 1.1; Batteries: 2.7; Imports from other states: 1.7</title></rect>
+<rect x="330.1" y="30" width="16" height="240" fill="transparent"><title>Spring, 7 p.m. (GW). Demand: 26.0. Nuclear: 1.1; Natural gas: 4.3; Hydro (dams): 4.6; Solar: 0.9; Wind: 3.3; Geothermal and biomass: 1.1; Batteries: 6.9; Imports from other states: 4.4</title></rect>
+<rect x="345.6" y="30" width="16" height="240" fill="transparent"><title>Spring, 8 p.m. (GW). Demand: 26.4. Nuclear: 1.1; Natural gas: 5.2; Hydro (dams): 4.8; Solar: 0.0; Wind: 3.4; Geothermal and biomass: 1.1; Batteries: 6.5; Imports from other states: 5.0</title></rect>
+<rect x="361.0" y="30" width="16" height="240" fill="transparent"><title>Spring, 9 p.m. (GW). Demand: 25.8. Nuclear: 1.1; Natural gas: 5.7; Hydro (dams): 4.7; Solar: 0.0; Wind: 3.4; Geothermal and biomass: 1.1; Batteries: 5.0; Imports from other states: 5.4</title></rect>
+<rect x="376.5" y="30" width="16" height="240" fill="transparent"><title>Spring, 10 p.m. (GW). Demand: 25.1. Nuclear: 1.1; Natural gas: 6.0; Hydro (dams): 4.6; Solar: 0.0; Wind: 3.2; Geothermal and biomass: 1.2; Batteries: 3.9; Imports from other states: 5.4</title></rect>
+<rect x="392.0" y="30" width="16" height="240" fill="transparent"><title>Spring, 11 p.m. (GW). Demand: 23.1. Nuclear: 1.1; Natural gas: 6.3; Hydro (dams): 4.6; Solar: 0.0; Wind: 3.1; Geothermal and biomass: 1.1; Batteries: 2.1; Imports from other states: 5.1</title></rect>
+</g>
+<g transform="translate(0,356)">
+<text x="44" y="16" class="ph">Summer</text><text x="128" y="16" class="ax">sample day, Jul 15, 2025</text>
+<line x1="44" x2="400" y1="270.0" y2="270.0" class="grid"/><text x="38" y="274.0" class="ax" text-anchor="end">-10</text>
+<line x1="44" x2="400" y1="220.0" y2="220.0" class="zero"/><text x="38" y="224.0" class="ax" text-anchor="end">0</text>
+<line x1="44" x2="400" y1="170.0" y2="170.0" class="grid"/><text x="38" y="174.0" class="ax" text-anchor="end">10</text>
+<line x1="44" x2="400" y1="120.0" y2="120.0" class="grid"/><text x="38" y="124.0" class="ax" text-anchor="end">20</text>
+<line x1="44" x2="400" y1="70.0" y2="70.0" class="grid"/><text x="38" y="74.0" class="ax" text-anchor="end">30</text>
+<text x="44.0" y="290" class="ax" text-anchor="middle">12 a.m.</text>
+<text x="136.9" y="290" class="ax" text-anchor="middle">6 a.m.</text>
+<text x="229.7" y="290" class="ax" text-anchor="middle">12 p.m.</text>
+<text x="322.6" y="290" class="ax" text-anchor="middle">6 p.m.</text>
+<polygon points="44.0,208.6 59.5,208.6 75.0,208.6 90.4,208.6 105.9,208.6 121.4,208.6 136.9,208.6 152.3,208.6 167.8,208.7 183.3,208.7 198.8,208.7 214.3,208.7 229.7,208.7 245.2,208.7 260.7,208.7 276.2,208.7 291.7,208.7 307.1,208.7 322.6,208.6 338.1,208.7 353.6,208.7 369.0,208.7 384.5,208.6 400.0,208.7 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,220.0 276.2,220.0 260.7,220.0 245.2,220.0 229.7,220.0 214.3,220.0 198.8,220.0 183.3,220.0 167.8,220.0 152.3,220.0 136.9,220.0 121.4,220.0 105.9,220.0 90.4,220.0 75.0,220.0 59.5,220.0 44.0,220.0" fill="var(--s1)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Nuclear</title></polygon>
+<polygon points="44.0,151.3 59.5,156.7 75.0,161.7 90.4,166.3 105.9,165.7 121.4,167.0 136.9,166.5 152.3,173.4 167.8,180.6 183.3,180.7 198.8,180.2 214.3,180.8 229.7,180.8 245.2,179.8 260.7,179.8 276.2,179.9 291.7,178.6 307.1,176.1 322.6,169.3 338.1,160.9 353.6,159.7 369.0,160.2 384.5,159.7 400.0,160.4 400.0,208.7 384.5,208.6 369.0,208.7 353.6,208.7 338.1,208.7 322.6,208.6 307.1,208.7 291.7,208.7 276.2,208.7 260.7,208.7 245.2,208.7 229.7,208.7 214.3,208.7 198.8,208.7 183.3,208.7 167.8,208.7 152.3,208.6 136.9,208.6 121.4,208.6 105.9,208.6 90.4,208.6 75.0,208.6 59.5,208.6 44.0,208.6" fill="var(--s2)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Natural gas</title></polygon>
+<polygon points="44.0,131.3 59.5,137.5 75.0,143.3 90.4,149.5 105.9,149.3 121.4,150.6 136.9,147.4 152.3,157.3 167.8,166.9 183.3,170.2 198.8,171.4 214.3,172.0 229.7,172.4 245.2,171.1 260.7,171.5 276.2,172.5 291.7,169.1 307.1,158.9 322.6,149.9 338.1,137.1 353.6,132.5 369.0,134.9 384.5,135.0 400.0,136.6 400.0,160.4 384.5,159.7 369.0,160.2 353.6,159.7 338.1,160.9 322.6,169.3 307.1,176.1 291.7,178.6 276.2,179.9 260.7,179.8 245.2,179.8 229.7,180.8 214.3,180.8 198.8,180.2 183.3,180.7 167.8,180.6 152.3,173.4 136.9,166.5 121.4,167.0 105.9,165.7 90.4,166.3 75.0,161.7 59.5,156.7 44.0,151.3" fill="var(--s3)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Hydro (dams)</title></polygon>
+<polygon points="44.0,131.3 59.5,137.5 75.0,143.3 90.4,149.5 105.9,149.0 121.4,150.6 136.9,147.3 152.3,127.3 167.8,93.8 183.3,77.5 198.8,71.9 214.3,68.1 229.7,66.8 245.2,66.1 260.7,67.2 276.2,70.9 291.7,71.8 307.1,71.2 322.6,80.4 338.1,108.2 353.6,131.5 369.0,134.9 384.5,135.0 400.0,136.6 400.0,136.6 384.5,135.0 369.0,134.9 353.6,132.5 338.1,137.1 322.6,149.9 307.1,158.9 291.7,169.1 276.2,172.5 260.7,171.5 245.2,171.1 229.7,172.4 214.3,172.0 198.8,171.4 183.3,170.2 167.8,166.9 152.3,157.3 136.9,147.4 121.4,150.6 105.9,149.3 90.4,149.5 75.0,143.3 59.5,137.5 44.0,131.3" fill="var(--s4)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Solar</title></polygon>
+<polygon points="44.0,111.6 59.5,117.7 75.0,122.3 90.4,128.7 105.9,128.8 121.4,131.3 136.9,130.6 152.3,111.0 167.8,79.2 183.3,62.7 198.8,58.9 214.3,55.4 229.7,52.3 245.2,49.0 260.7,50.1 276.2,53.8 291.7,53.9 307.1,52.9 322.6,60.3 338.1,86.5 353.6,108.5 369.0,113.0 384.5,113.1 400.0,113.6 400.0,136.6 384.5,135.0 369.0,134.9 353.6,131.5 338.1,108.2 322.6,80.4 307.1,71.2 291.7,71.8 276.2,70.9 260.7,67.2 245.2,66.1 229.7,66.8 214.3,68.1 198.8,71.9 183.3,77.5 167.8,93.8 152.3,127.3 136.9,147.3 121.4,150.6 105.9,149.0 90.4,149.5 75.0,143.3 59.5,137.5 44.0,131.3" fill="var(--s5)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Wind</title></polygon>
+<polygon points="44.0,105.5 59.5,111.7 75.0,116.2 90.4,122.5 105.9,122.6 121.4,125.2 136.9,124.5 152.3,104.9 167.8,73.1 183.3,56.7 198.8,52.9 214.3,49.4 229.7,46.3 245.2,43.0 260.7,44.1 276.2,47.8 291.7,48.0 307.1,46.8 322.6,54.2 338.1,80.3 353.6,102.3 369.0,106.8 384.5,106.9 400.0,107.3 400.0,113.6 384.5,113.1 369.0,113.0 353.6,108.5 338.1,86.5 322.6,60.3 307.1,52.9 291.7,53.9 276.2,53.8 260.7,50.1 245.2,49.0 229.7,52.3 214.3,55.4 198.8,58.9 183.3,62.7 167.8,79.2 152.3,111.0 136.9,130.6 121.4,131.3 105.9,128.8 90.4,128.7 75.0,122.3 59.5,117.7 44.0,111.6" fill="var(--s6)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Geothermal and biomass</title></polygon>
+<polygon points="44.0,104.6 59.5,111.3 75.0,116.2 90.4,122.5 105.9,122.6 121.4,124.6 136.9,120.9 152.3,104.9 167.8,73.1 183.3,56.7 198.8,52.9 214.3,49.4 229.7,46.3 245.2,43.0 260.7,44.1 276.2,47.8 291.7,47.8 307.1,46.8 322.6,44.7 338.1,51.5 353.6,56.7 369.0,62.9 384.5,72.6 400.0,92.4 400.0,107.3 384.5,106.9 369.0,106.8 353.6,102.3 338.1,80.3 322.6,54.2 307.1,46.8 291.7,48.0 276.2,47.8 260.7,44.1 245.2,43.0 229.7,46.3 214.3,49.4 198.8,52.9 183.3,56.7 167.8,73.1 152.3,104.9 136.9,124.5 121.4,125.2 105.9,122.6 90.4,122.5 75.0,116.2 59.5,111.7 44.0,105.5" fill="var(--s7)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Batteries</title></polygon>
+<polygon points="44.0,220.0 59.5,220.0 75.0,220.0 90.4,220.0 105.9,220.0 121.4,220.0 136.9,220.0 152.3,220.0 167.8,220.0 183.3,220.0 198.8,220.0 214.3,220.0 229.7,220.0 245.2,220.0 260.7,220.0 276.2,220.0 291.7,220.0 307.1,220.0 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.2 291.7,220.0 276.2,226.7 260.7,234.4 245.2,245.5 229.7,252.6 214.3,256.6 198.8,253.2 183.3,248.8 167.8,237.8 152.3,220.7 136.9,220.0 121.4,220.0 105.9,225.0 90.4,221.8 75.0,222.5 59.5,220.0 44.0,220.0" fill="var(--s7)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Batteries</title></polygon>
+<polygon points="44.0,79.0 59.5,85.2 75.0,89.9 90.4,94.5 105.9,93.2 121.4,96.2 136.9,91.6 152.3,85.5 167.8,66.2 183.3,54.6 198.8,52.9 214.3,49.4 229.7,46.3 245.2,43.0 260.7,44.1 276.2,47.8 291.7,47.8 307.1,46.8 322.6,44.7 338.1,45.3 353.6,48.4 369.0,53.8 384.5,59.9 400.0,71.6 400.0,92.4 384.5,72.6 369.0,62.9 353.6,56.7 338.1,51.5 322.6,44.7 307.1,46.8 291.7,47.8 276.2,47.8 260.7,44.1 245.2,43.0 229.7,46.3 214.3,49.4 198.8,52.9 183.3,56.7 167.8,73.1 152.3,104.9 136.9,120.9 121.4,124.6 105.9,122.6 90.4,122.5 75.0,116.2 59.5,111.3 44.0,104.6" fill="var(--s8)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Imports from other states</title></polygon>
+<polygon points="44.0,220.0 59.5,220.0 75.0,222.5 90.4,221.8 105.9,225.0 121.4,220.0 136.9,220.0 152.3,220.7 167.8,237.8 183.3,248.8 198.8,253.2 214.3,256.6 229.7,252.6 245.2,245.5 260.7,234.4 276.2,226.7 291.7,220.0 307.1,220.2 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,224.7 307.1,230.5 291.7,237.2 276.2,245.6 260.7,257.1 245.2,265.0 229.7,265.2 214.3,262.1 198.8,255.0 183.3,248.8 167.8,237.8 152.3,220.7 136.9,220.0 121.4,220.0 105.9,225.0 90.4,221.8 75.0,222.5 59.5,220.0 44.0,220.0" fill="var(--s8)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Imports from other states</title></polygon>
+<polyline points="44.0,79.4 59.5,85.5 75.0,90.6 90.4,97.7 105.9,99.3 121.4,97.6 136.9,93.5 152.3,90.0 167.8,87.5 183.3,87.7 198.8,92.0 214.3,94.1 229.7,94.4 245.2,91.0 260.7,83.7 276.2,75.5 291.7,66.2 307.1,58.7 322.6,50.7 338.1,47.2 353.6,50.6 369.0,53.7 384.5,60.3 400.0,72.4" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="229.7" y="123.6" class="lbl dark" text-anchor="middle">Solar</text>
+<rect x="36.0" y="30" width="16" height="240" fill="transparent"><title>Summer, 12 a.m. (GW). Demand: 28.1. Nuclear: 2.3; Natural gas: 11.5; Hydro (dams): 4.0; Solar: 0.0; Wind: 3.9; Geothermal and biomass: 1.2; Batteries: 0.2; Imports from other states: 5.1</title></rect>
+<rect x="51.5" y="30" width="16" height="240" fill="transparent"><title>Summer, 1 a.m. (GW). Demand: 26.9. Nuclear: 2.3; Natural gas: 10.4; Hydro (dams): 3.8; Solar: 0.0; Wind: 4.0; Geothermal and biomass: 1.2; Batteries: 0.1; Imports from other states: 5.2</title></rect>
+<rect x="67.0" y="30" width="16" height="240" fill="transparent"><title>Summer, 2 a.m. (GW). Demand: 25.9. Nuclear: 2.3; Natural gas: 9.4; Hydro (dams): 3.7; Solar: 0.0; Wind: 4.2; Geothermal and biomass: 1.2; Batteries: -0.5; Imports from other states: 5.3</title></rect>
+<rect x="82.4" y="30" width="16" height="240" fill="transparent"><title>Summer, 3 a.m. (GW). Demand: 24.5. Nuclear: 2.3; Natural gas: 8.5; Hydro (dams): 3.4; Solar: 0.0; Wind: 4.2; Geothermal and biomass: 1.2; Batteries: -0.4; Imports from other states: 5.6</title></rect>
+<rect x="97.9" y="30" width="16" height="240" fill="transparent"><title>Summer, 4 a.m. (GW). Demand: 24.1. Nuclear: 2.3; Natural gas: 8.6; Hydro (dams): 3.3; Solar: 0.0; Wind: 4.1; Geothermal and biomass: 1.2; Batteries: -1.0; Imports from other states: 5.9</title></rect>
+<rect x="113.4" y="30" width="16" height="240" fill="transparent"><title>Summer, 5 a.m. (GW). Demand: 24.5. Nuclear: 2.3; Natural gas: 8.3; Hydro (dams): 3.3; Solar: 0.0; Wind: 3.9; Geothermal and biomass: 1.2; Batteries: 0.1; Imports from other states: 5.7</title></rect>
+<rect x="128.9" y="30" width="16" height="240" fill="transparent"><title>Summer, 6 a.m. (GW). Demand: 25.3. Nuclear: 2.3; Natural gas: 8.4; Hydro (dams): 3.8; Solar: 0.0; Wind: 3.3; Geothermal and biomass: 1.2; Batteries: 0.7; Imports from other states: 5.9</title></rect>
+<rect x="144.3" y="30" width="16" height="240" fill="transparent"><title>Summer, 7 a.m. (GW). Demand: 26.0. Nuclear: 2.3; Natural gas: 7.1; Hydro (dams): 3.2; Solar: 6.0; Wind: 3.3; Geothermal and biomass: 1.2; Batteries: -0.1; Imports from other states: 3.9</title></rect>
+<rect x="159.8" y="30" width="16" height="240" fill="transparent"><title>Summer, 8 a.m. (GW). Demand: 26.5. Nuclear: 2.3; Natural gas: 5.6; Hydro (dams): 2.7; Solar: 14.6; Wind: 2.9; Geothermal and biomass: 1.2; Batteries: -3.5; Imports from other states: 1.4</title></rect>
+<rect x="175.3" y="30" width="16" height="240" fill="transparent"><title>Summer, 9 a.m. (GW). Demand: 26.5. Nuclear: 2.3; Natural gas: 5.6; Hydro (dams): 2.1; Solar: 18.5; Wind: 3.0; Geothermal and biomass: 1.2; Batteries: -5.8; Imports from other states: 0.4</title></rect>
+<rect x="190.8" y="30" width="16" height="240" fill="transparent"><title>Summer, 10 a.m. (GW). Demand: 25.6. Nuclear: 2.3; Natural gas: 5.7; Hydro (dams): 1.8; Solar: 19.9; Wind: 2.6; Geothermal and biomass: 1.2; Batteries: -6.6; Imports from other states: -0.4</title></rect>
+<rect x="206.3" y="30" width="16" height="240" fill="transparent"><title>Summer, 11 a.m. (GW). Demand: 25.2. Nuclear: 2.3; Natural gas: 5.6; Hydro (dams): 1.8; Solar: 20.8; Wind: 2.5; Geothermal and biomass: 1.2; Batteries: -7.3; Imports from other states: -1.1</title></rect>
+<rect x="221.7" y="30" width="16" height="240" fill="transparent"><title>Summer, 12 p.m. (GW). Demand: 25.1. Nuclear: 2.3; Natural gas: 5.6; Hydro (dams): 1.7; Solar: 21.1; Wind: 2.9; Geothermal and biomass: 1.2; Batteries: -6.5; Imports from other states: -2.5</title></rect>
+<rect x="237.2" y="30" width="16" height="240" fill="transparent"><title>Summer, 1 p.m. (GW). Demand: 25.8. Nuclear: 2.3; Natural gas: 5.8; Hydro (dams): 1.8; Solar: 21.0; Wind: 3.4; Geothermal and biomass: 1.2; Batteries: -5.1; Imports from other states: -3.9</title></rect>
+<rect x="252.7" y="30" width="16" height="240" fill="transparent"><title>Summer, 2 p.m. (GW). Demand: 27.3. Nuclear: 2.3; Natural gas: 5.8; Hydro (dams): 1.7; Solar: 20.8; Wind: 3.4; Geothermal and biomass: 1.2; Batteries: -2.9; Imports from other states: -4.5</title></rect>
+<rect x="268.2" y="30" width="16" height="240" fill="transparent"><title>Summer, 3 p.m. (GW). Demand: 28.9. Nuclear: 2.3; Natural gas: 5.8; Hydro (dams): 1.5; Solar: 20.3; Wind: 3.4; Geothermal and biomass: 1.2; Batteries: -1.3; Imports from other states: -3.8</title></rect>
+<rect x="283.7" y="30" width="16" height="240" fill="transparent"><title>Summer, 4 p.m. (GW). Demand: 30.8. Nuclear: 2.3; Natural gas: 6.0; Hydro (dams): 1.9; Solar: 19.5; Wind: 3.6; Geothermal and biomass: 1.2; Batteries: 0.0; Imports from other states: -3.4</title></rect>
+<rect x="299.1" y="30" width="16" height="240" fill="transparent"><title>Summer, 5 p.m. (GW). Demand: 32.3. Nuclear: 2.3; Natural gas: 6.5; Hydro (dams): 3.4; Solar: 17.5; Wind: 3.7; Geothermal and biomass: 1.2; Batteries: -0.0; Imports from other states: -2.1</title></rect>
+<rect x="314.6" y="30" width="16" height="240" fill="transparent"><title>Summer, 6 p.m. (GW). Demand: 33.9. Nuclear: 2.3; Natural gas: 7.9; Hydro (dams): 3.9; Solar: 13.9; Wind: 4.0; Geothermal and biomass: 1.2; Batteries: 1.9; Imports from other states: -0.9</title></rect>
+<rect x="330.1" y="30" width="16" height="240" fill="transparent"><title>Summer, 7 p.m. (GW). Demand: 34.6. Nuclear: 2.3; Natural gas: 9.6; Hydro (dams): 4.8; Solar: 5.8; Wind: 4.3; Geothermal and biomass: 1.2; Batteries: 5.8; Imports from other states: 1.2</title></rect>
+<rect x="345.6" y="30" width="16" height="240" fill="transparent"><title>Summer, 8 p.m. (GW). Demand: 33.9. Nuclear: 2.3; Natural gas: 9.8; Hydro (dams): 5.4; Solar: 0.2; Wind: 4.6; Geothermal and biomass: 1.2; Batteries: 9.1; Imports from other states: 1.7</title></rect>
+<rect x="361.0" y="30" width="16" height="240" fill="transparent"><title>Summer, 9 p.m. (GW). Demand: 33.3. Nuclear: 2.3; Natural gas: 9.7; Hydro (dams): 5.1; Solar: 0.0; Wind: 4.4; Geothermal and biomass: 1.2; Batteries: 8.8; Imports from other states: 1.8</title></rect>
+<rect x="376.5" y="30" width="16" height="240" fill="transparent"><title>Summer, 10 p.m. (GW). Demand: 31.9. Nuclear: 2.3; Natural gas: 9.8; Hydro (dams): 4.9; Solar: 0.0; Wind: 4.4; Geothermal and biomass: 1.3; Batteries: 6.8; Imports from other states: 2.5</title></rect>
+<rect x="392.0" y="30" width="16" height="240" fill="transparent"><title>Summer, 11 p.m. (GW). Demand: 29.5. Nuclear: 2.3; Natural gas: 9.6; Hydro (dams): 4.8; Solar: 0.0; Wind: 4.6; Geothermal and biomass: 1.2; Batteries: 3.0; Imports from other states: 4.2</title></rect>
+</g>
+<g transform="translate(410,356)">
+<text x="44" y="16" class="ph">Fall</text><text x="128" y="16" class="ax">sample day, Oct 15, 2025</text>
+<line x1="44" x2="400" y1="270.0" y2="270.0" class="grid"/><text x="38" y="274.0" class="ax" text-anchor="end">-10</text>
+<line x1="44" x2="400" y1="220.0" y2="220.0" class="zero"/><text x="38" y="224.0" class="ax" text-anchor="end">0</text>
+<line x1="44" x2="400" y1="170.0" y2="170.0" class="grid"/><text x="38" y="174.0" class="ax" text-anchor="end">10</text>
+<line x1="44" x2="400" y1="120.0" y2="120.0" class="grid"/><text x="38" y="124.0" class="ax" text-anchor="end">20</text>
+<line x1="44" x2="400" y1="70.0" y2="70.0" class="grid"/><text x="38" y="74.0" class="ax" text-anchor="end">30</text>
+<text x="44.0" y="290" class="ax" text-anchor="middle">12 a.m.</text>
+<text x="136.9" y="290" class="ax" text-anchor="middle">6 a.m.</text>
+<text x="229.7" y="290" class="ax" text-anchor="middle">12 p.m.</text>
+<text x="322.6" y="290" class="ax" text-anchor="middle">6 p.m.</text>
+<polygon points="44.0,214.3 59.5,214.3 75.0,214.3 90.4,214.3 105.9,214.3 121.4,214.3 136.9,214.3 152.3,214.3 167.8,214.3 183.3,214.3 198.8,214.3 214.3,214.3 229.7,214.3 245.2,214.3 260.7,214.3 276.2,214.3 291.7,214.3 307.1,214.3 322.6,214.3 338.1,214.3 353.6,214.3 369.0,214.3 384.5,214.3 400.0,214.3 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,220.0 276.2,220.0 260.7,220.0 245.2,220.0 229.7,220.0 214.3,220.0 198.8,220.0 183.3,220.0 167.8,220.0 152.3,220.0 136.9,220.0 121.4,220.0 105.9,220.0 90.4,220.0 75.0,220.0 59.5,220.0 44.0,220.0" fill="var(--s1)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Nuclear</title></polygon>
+<polygon points="44.0,161.3 59.5,163.7 75.0,163.5 90.4,164.7 105.9,164.7 121.4,164.1 136.9,161.0 152.3,156.7 167.8,168.2 183.3,182.1 198.8,184.9 214.3,186.5 229.7,191.4 245.2,192.3 260.7,191.8 276.2,191.6 291.7,189.7 307.1,181.2 322.6,173.0 338.1,170.9 353.6,170.8 369.0,171.4 384.5,171.8 400.0,172.1 400.0,214.3 384.5,214.3 369.0,214.3 353.6,214.3 338.1,214.3 322.6,214.3 307.1,214.3 291.7,214.3 276.2,214.3 260.7,214.3 245.2,214.3 229.7,214.3 214.3,214.3 198.8,214.3 183.3,214.3 167.8,214.3 152.3,214.3 136.9,214.3 121.4,214.3 105.9,214.3 90.4,214.3 75.0,214.3 59.5,214.3 44.0,214.3" fill="var(--s2)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Natural gas</title></polygon>
+<polygon points="44.0,150.6 59.5,152.7 75.0,153.3 90.4,154.6 105.9,154.3 121.4,153.1 136.9,149.5 152.3,145.4 167.8,160.8 183.3,176.6 198.8,182.7 214.3,185.8 229.7,191.4 245.2,192.3 260.7,191.8 276.2,191.6 291.7,189.4 307.1,177.8 322.6,165.7 338.1,157.7 353.6,156.7 369.0,157.5 384.5,158.3 400.0,159.7 400.0,172.1 384.5,171.8 369.0,171.4 353.6,170.8 338.1,170.9 322.6,173.0 307.1,181.2 291.7,189.7 276.2,191.6 260.7,191.8 245.2,192.3 229.7,191.4 214.3,186.5 198.8,184.9 183.3,182.1 167.8,168.2 152.3,156.7 136.9,161.0 121.4,164.1 105.9,164.7 90.4,164.7 75.0,163.5 59.5,163.7 44.0,161.3" fill="var(--s3)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Hydro (dams)</title></polygon>
+<polygon points="44.0,220.0 59.5,220.0 75.0,220.0 90.4,220.0 105.9,220.0 121.4,220.0 136.9,220.0 152.3,220.0 167.8,220.0 183.3,220.0 198.8,220.0 214.3,220.0 229.7,220.0 245.2,220.0 260.7,220.0 276.2,220.0 291.7,220.0 307.1,220.0 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,220.0 276.2,221.8 260.7,222.0 245.2,221.8 229.7,221.0 214.3,220.0 198.8,220.0 183.3,220.0 167.8,220.0 152.3,220.0 136.9,220.0 121.4,220.0 105.9,220.0 90.4,220.0 75.0,220.0 59.5,220.0 44.0,220.0" fill="var(--s3)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Hydro (dams)</title></polygon>
+<polygon points="44.0,150.6 59.5,152.7 75.0,153.3 90.4,154.6 105.9,154.3 121.4,153.1 136.9,149.5 152.3,144.7 167.8,122.3 183.3,101.2 198.8,98.8 214.3,98.7 229.7,100.4 245.2,101.3 260.7,103.3 276.2,111.1 291.7,113.8 307.1,128.6 322.6,162.3 338.1,157.7 353.6,156.7 369.0,157.5 384.5,158.3 400.0,159.7 400.0,159.7 384.5,158.3 369.0,157.5 353.6,156.7 338.1,157.7 322.6,165.7 307.1,177.8 291.7,189.4 276.2,191.6 260.7,191.8 245.2,192.3 229.7,191.4 214.3,185.8 198.8,182.7 183.3,176.6 167.8,160.8 152.3,145.4 136.9,149.5 121.4,153.1 105.9,154.3 90.4,154.6 75.0,153.3 59.5,152.7 44.0,150.6" fill="var(--s4)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Solar</title></polygon>
+<polygon points="44.0,137.4 59.5,140.4 75.0,142.0 90.4,143.0 105.9,141.9 121.4,141.8 136.9,140.9 152.3,134.8 167.8,112.8 183.3,90.9 198.8,86.6 214.3,87.2 229.7,87.1 245.2,88.7 260.7,89.8 276.2,100.3 291.7,102.1 307.1,116.9 322.6,150.2 338.1,145.1 353.6,141.9 369.0,145.3 384.5,145.1 400.0,148.1 400.0,159.7 384.5,158.3 369.0,157.5 353.6,156.7 338.1,157.7 322.6,162.3 307.1,128.6 291.7,113.8 276.2,111.1 260.7,103.3 245.2,101.3 229.7,100.4 214.3,98.7 198.8,98.8 183.3,101.2 167.8,122.3 152.3,144.7 136.9,149.5 121.4,153.1 105.9,154.3 90.4,154.6 75.0,153.3 59.5,152.7 44.0,150.6" fill="var(--s5)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Wind</title></polygon>
+<polygon points="44.0,132.1 59.5,135.0 75.0,136.6 90.4,137.6 105.9,136.5 121.4,136.5 136.9,135.6 152.3,129.5 167.8,107.5 183.3,85.5 198.8,81.2 214.3,81.9 229.7,81.7 245.2,83.3 260.7,84.3 276.2,94.9 291.7,96.7 307.1,111.4 322.6,144.8 338.1,139.6 353.6,136.5 369.0,139.8 384.5,139.6 400.0,142.7 400.0,148.1 384.5,145.1 369.0,145.3 353.6,141.9 338.1,145.1 322.6,150.2 307.1,116.9 291.7,102.1 276.2,100.3 260.7,89.8 245.2,88.7 229.7,87.1 214.3,87.2 198.8,86.6 183.3,90.9 167.8,112.8 152.3,134.8 136.9,140.9 121.4,141.8 105.9,141.9 90.4,143.0 75.0,142.0 59.5,140.4 44.0,137.4" fill="var(--s6)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Geothermal and biomass</title></polygon>
+<polygon points="44.0,132.1 59.5,135.0 75.0,136.6 90.4,137.6 105.9,136.5 121.4,136.5 136.9,125.7 152.3,108.4 167.8,107.5 183.3,85.5 198.8,81.2 214.3,81.9 229.7,81.7 245.2,83.3 260.7,84.3 276.2,94.9 291.7,96.7 307.1,110.9 322.6,108.3 338.1,102.2 353.6,105.7 369.0,112.9 384.5,121.1 400.0,131.3 400.0,142.7 384.5,139.6 369.0,139.8 353.6,136.5 338.1,139.6 322.6,144.8 307.1,111.4 291.7,96.7 276.2,94.9 260.7,84.3 245.2,83.3 229.7,81.7 214.3,81.9 198.8,81.2 183.3,85.5 167.8,107.5 152.3,129.5 136.9,135.6 121.4,136.5 105.9,136.5 90.4,137.6 75.0,136.6 59.5,135.0 44.0,132.1" fill="var(--s7)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Batteries</title></polygon>
+<polygon points="44.0,220.0 59.5,220.0 75.0,220.0 90.4,220.0 105.9,220.0 121.4,220.0 136.9,220.0 152.3,220.0 167.8,220.0 183.3,220.0 198.8,220.0 214.3,220.0 229.7,221.0 245.2,221.8 260.7,222.0 276.2,221.8 291.7,220.0 307.1,220.0 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,233.8 276.2,244.4 260.7,252.2 245.2,254.1 229.7,254.7 214.3,250.7 198.8,246.2 183.3,239.4 167.8,221.1 152.3,220.0 136.9,220.0 121.4,220.5 105.9,226.0 90.4,225.4 75.0,223.7 59.5,221.1 44.0,224.1" fill="var(--s7)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Batteries</title></polygon>
+<polygon points="44.0,104.0 59.5,109.7 75.0,111.9 90.4,112.5 105.9,113.6 121.4,117.1 136.9,110.5 152.3,99.5 167.8,97.4 183.3,83.4 198.8,81.2 214.3,81.9 229.7,81.7 245.2,83.3 260.7,84.3 276.2,94.9 291.7,96.7 307.1,106.4 322.6,94.8 338.1,87.9 353.6,88.5 369.0,92.7 384.5,95.1 400.0,101.6 400.0,131.3 384.5,121.1 369.0,112.9 353.6,105.7 338.1,102.2 322.6,108.3 307.1,110.9 291.7,96.7 276.2,94.9 260.7,84.3 245.2,83.3 229.7,81.7 214.3,81.9 198.8,81.2 183.3,85.5 167.8,107.5 152.3,108.4 136.9,125.7 121.4,136.5 105.9,136.5 90.4,137.6 75.0,136.6 59.5,135.0 44.0,132.1" fill="var(--s8)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Imports from other states</title></polygon>
+<polygon points="44.0,224.1 59.5,221.1 75.0,223.7 90.4,225.4 105.9,226.0 121.4,220.5 136.9,220.0 152.3,220.0 167.8,221.1 183.3,239.4 198.8,246.2 214.3,250.7 229.7,254.7 245.2,254.1 260.7,252.2 276.2,244.4 291.7,233.8 307.1,220.0 322.6,220.0 338.1,220.0 353.6,220.0 369.0,220.0 384.5,220.0 400.0,220.0 400.0,220.0 384.5,220.0 369.0,220.0 353.6,220.0 338.1,220.0 322.6,220.0 307.1,220.0 291.7,238.2 276.2,245.0 260.7,255.6 245.2,260.3 229.7,260.1 214.3,253.4 198.8,249.2 183.3,239.4 167.8,221.1 152.3,220.0 136.9,220.0 121.4,220.5 105.9,226.0 90.4,225.4 75.0,223.7 59.5,221.1 44.0,224.1" fill="var(--s8)" stroke="var(--card)" stroke-width="1.2" stroke-linejoin="round"><title>Imports from other states</title></polygon>
+<polyline points="44.0,112.4 59.5,114.6 75.0,118.8 90.4,121.2 105.9,122.3 121.4,119.4 136.9,111.8 152.3,100.5 167.8,100.1 183.3,104.5 198.8,111.8 214.3,116.6 229.7,121.8 245.2,125.7 260.7,123.3 276.2,121.0 291.7,115.5 307.1,106.6 322.6,96.1 338.1,89.4 353.6,92.3 369.0,95.9 384.5,98.7 400.0,105.4" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
+<text x="229.7" y="149.9" class="lbl dark" text-anchor="middle">Solar</text>
+<rect x="36.0" y="30" width="16" height="240" fill="transparent"><title>Fall, 12 a.m. (GW). Demand: 21.5. Nuclear: 1.1; Natural gas: 10.6; Hydro (dams): 2.1; Solar: 0.0; Wind: 2.6; Geothermal and biomass: 1.1; Batteries: -0.8; Imports from other states: 5.6</title></rect>
+<rect x="51.5" y="30" width="16" height="240" fill="transparent"><title>Fall, 1 a.m. (GW). Demand: 21.1. Nuclear: 1.1; Natural gas: 10.1; Hydro (dams): 2.2; Solar: 0.0; Wind: 2.5; Geothermal and biomass: 1.1; Batteries: -0.2; Imports from other states: 5.1</title></rect>
+<rect x="67.0" y="30" width="16" height="240" fill="transparent"><title>Fall, 2 a.m. (GW). Demand: 20.2. Nuclear: 1.1; Natural gas: 10.2; Hydro (dams): 2.0; Solar: 0.0; Wind: 2.3; Geothermal and biomass: 1.1; Batteries: -0.7; Imports from other states: 4.9</title></rect>
+<rect x="82.4" y="30" width="16" height="240" fill="transparent"><title>Fall, 3 a.m. (GW). Demand: 19.8. Nuclear: 1.1; Natural gas: 9.9; Hydro (dams): 2.0; Solar: 0.0; Wind: 2.3; Geothermal and biomass: 1.1; Batteries: -1.1; Imports from other states: 5.0</title></rect>
+<rect x="97.9" y="30" width="16" height="240" fill="transparent"><title>Fall, 4 a.m. (GW). Demand: 19.5. Nuclear: 1.1; Natural gas: 9.9; Hydro (dams): 2.1; Solar: 0.0; Wind: 2.5; Geothermal and biomass: 1.1; Batteries: -1.2; Imports from other states: 4.6</title></rect>
+<rect x="113.4" y="30" width="16" height="240" fill="transparent"><title>Fall, 5 a.m. (GW). Demand: 20.1. Nuclear: 1.1; Natural gas: 10.0; Hydro (dams): 2.2; Solar: 0.0; Wind: 2.3; Geothermal and biomass: 1.1; Batteries: -0.1; Imports from other states: 3.9</title></rect>
+<rect x="128.9" y="30" width="16" height="240" fill="transparent"><title>Fall, 6 a.m. (GW). Demand: 21.6. Nuclear: 1.1; Natural gas: 10.7; Hydro (dams): 2.3; Solar: 0.0; Wind: 1.7; Geothermal and biomass: 1.1; Batteries: 2.0; Imports from other states: 3.0</title></rect>
+<rect x="144.3" y="30" width="16" height="240" fill="transparent"><title>Fall, 7 a.m. (GW). Demand: 23.9. Nuclear: 1.1; Natural gas: 11.5; Hydro (dams): 2.3; Solar: 0.1; Wind: 2.0; Geothermal and biomass: 1.1; Batteries: 4.2; Imports from other states: 1.8</title></rect>
+<rect x="159.8" y="30" width="16" height="240" fill="transparent"><title>Fall, 8 a.m. (GW). Demand: 24.0. Nuclear: 1.1; Natural gas: 9.2; Hydro (dams): 1.5; Solar: 7.7; Wind: 1.9; Geothermal and biomass: 1.1; Batteries: -0.2; Imports from other states: 2.0</title></rect>
+<rect x="175.3" y="30" width="16" height="240" fill="transparent"><title>Fall, 9 a.m. (GW). Demand: 23.1. Nuclear: 1.1; Natural gas: 6.4; Hydro (dams): 1.1; Solar: 15.1; Wind: 2.1; Geothermal and biomass: 1.1; Batteries: -3.9; Imports from other states: 0.4</title></rect>
+<rect x="190.8" y="30" width="16" height="240" fill="transparent"><title>Fall, 10 a.m. (GW). Demand: 21.6. Nuclear: 1.1; Natural gas: 5.9; Hydro (dams): 0.5; Solar: 16.8; Wind: 2.4; Geothermal and biomass: 1.1; Batteries: -5.2; Imports from other states: -0.6</title></rect>
+<rect x="206.3" y="30" width="16" height="240" fill="transparent"><title>Fall, 11 a.m. (GW). Demand: 20.7. Nuclear: 1.1; Natural gas: 5.6; Hydro (dams): 0.1; Solar: 17.4; Wind: 2.3; Geothermal and biomass: 1.1; Batteries: -6.1; Imports from other states: -0.6</title></rect>
+<rect x="221.7" y="30" width="16" height="240" fill="transparent"><title>Fall, 12 p.m. (GW). Demand: 19.6. Nuclear: 1.1; Natural gas: 4.6; Hydro (dams): -0.2; Solar: 18.2; Wind: 2.7; Geothermal and biomass: 1.1; Batteries: -6.7; Imports from other states: -1.1</title></rect>
+<rect x="237.2" y="30" width="16" height="240" fill="transparent"><title>Fall, 1 p.m. (GW). Demand: 18.9. Nuclear: 1.1; Natural gas: 4.4; Hydro (dams): -0.4; Solar: 18.2; Wind: 2.5; Geothermal and biomass: 1.1; Batteries: -6.5; Imports from other states: -1.2</title></rect>
+<rect x="252.7" y="30" width="16" height="240" fill="transparent"><title>Fall, 2 p.m. (GW). Demand: 19.3. Nuclear: 1.1; Natural gas: 4.5; Hydro (dams): -0.4; Solar: 17.7; Wind: 2.7; Geothermal and biomass: 1.1; Batteries: -6.0; Imports from other states: -0.7</title></rect>
+<rect x="268.2" y="30" width="16" height="240" fill="transparent"><title>Fall, 3 p.m. (GW). Demand: 19.8. Nuclear: 1.1; Natural gas: 4.6; Hydro (dams): -0.4; Solar: 16.1; Wind: 2.2; Geothermal and biomass: 1.1; Batteries: -4.5; Imports from other states: -0.1</title></rect>
+<rect x="283.7" y="30" width="16" height="240" fill="transparent"><title>Fall, 4 p.m. (GW). Demand: 20.9. Nuclear: 1.1; Natural gas: 4.9; Hydro (dams): 0.1; Solar: 15.1; Wind: 2.3; Geothermal and biomass: 1.1; Batteries: -2.8; Imports from other states: -0.9</title></rect>
+<rect x="299.1" y="30" width="16" height="240" fill="transparent"><title>Fall, 5 p.m. (GW). Demand: 22.7. Nuclear: 1.1; Natural gas: 6.6; Hydro (dams): 0.7; Solar: 9.8; Wind: 2.4; Geothermal and biomass: 1.1; Batteries: 0.1; Imports from other states: 0.9</title></rect>
+<rect x="314.6" y="30" width="16" height="240" fill="transparent"><title>Fall, 6 p.m. (GW). Demand: 24.8. Nuclear: 1.1; Natural gas: 8.3; Hydro (dams): 1.5; Solar: 0.7; Wind: 2.4; Geothermal and biomass: 1.1; Batteries: 7.3; Imports from other states: 2.7</title></rect>
+<rect x="330.1" y="30" width="16" height="240" fill="transparent"><title>Fall, 7 p.m. (GW). Demand: 26.1. Nuclear: 1.1; Natural gas: 8.7; Hydro (dams): 2.6; Solar: 0.0; Wind: 2.5; Geothermal and biomass: 1.1; Batteries: 7.5; Imports from other states: 2.9</title></rect>
+<rect x="345.6" y="30" width="16" height="240" fill="transparent"><title>Fall, 8 p.m. (GW). Demand: 25.5. Nuclear: 1.1; Natural gas: 8.7; Hydro (dams): 2.8; Solar: 0.0; Wind: 2.9; Geothermal and biomass: 1.1; Batteries: 6.2; Imports from other states: 3.4</title></rect>
+<rect x="361.0" y="30" width="16" height="240" fill="transparent"><title>Fall, 9 p.m. (GW). Demand: 24.8. Nuclear: 1.1; Natural gas: 8.6; Hydro (dams): 2.8; Solar: 0.0; Wind: 2.5; Geothermal and biomass: 1.1; Batteries: 5.4; Imports from other states: 4.0</title></rect>
+<rect x="376.5" y="30" width="16" height="240" fill="transparent"><title>Fall, 10 p.m. (GW). Demand: 24.3. Nuclear: 1.1; Natural gas: 8.5; Hydro (dams): 2.7; Solar: 0.0; Wind: 2.6; Geothermal and biomass: 1.1; Batteries: 3.7; Imports from other states: 5.2</title></rect>
+<rect x="392.0" y="30" width="16" height="240" fill="transparent"><title>Fall, 11 p.m. (GW). Demand: 22.9. Nuclear: 1.1; Natural gas: 8.4; Hydro (dams): 2.5; Solar: 0.0; Wind: 2.3; Geothermal and biomass: 1.1; Batteries: 2.3; Imports from other states: 5.9</title></rect>
+</g>
+</svg><figcaption>Layers = kinds of power, in GW. The black line = demand. Below the 0 line, batteries are filling up and power is leaving for other states. 1 sample day per season. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO public daily files</span> <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> 1 day per season</span></figcaption></figure><ul class="short">
+<li><strong>Solar</strong> fills the middle of the day. On the July sample day it made 220 GWh, 33% of that day's use. On the January day: 116 GWh, 21%.</li>
+<li><strong>Batteries</strong> fill up at noon and give back from 6 to 9 p.m.</li>
+<li><strong>Natural gas</strong> covers the evening and night.</li>
+</ul></section><section><div class="sh"><span class="num">5</span><div><h2>Why does solar need a forecast?</h2><p class="sub">The sun cannot be ordered around.</p></div></div><div class="duo">
+<div class="card"><h4>Solar is big and growing</h4><ul class="short"><li>25% of California's 2025 mix: the 2nd biggest source, after natural gas (30%).</li><li>Solar capacity grew <strong>24%</strong> from Mar 2024 to Sep 2026: 21.0 GW to 26.0 GW.</li></ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Energy Commission, 2025</span> <span class="b our"><i>&#9679;</i><strong>OUR DATA</strong> monthly plant list from the U.S. Energy Information Administration, in our data</span></p></div>
+<div class="card"><h4>But it changes fast</h4><ul class="short"><li>A gas plant takes hours to warm up, like an oven.</li><li>So planners choose the day before which plants to start.</li><li>On Apr 15, 2025 solar fell from <strong>14.1 GW at 5 p.m.</strong> to <strong>0.9 GW at 7 p.m.</strong>: 13.3 GW gone in 2 hours.</li></ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO public daily file, Apr 15, 2025</span> <span class="b calc"><i>=</i><strong>CALCULATED</strong> 14,148 MW minus 890 MW</span></p></div>
+</div><figure><svg viewBox="0 0 820 330" role="img" aria-labelledby="tss dss" class="chart"><title id="tss">Average solar output by hour, by season</title><desc id="dss">Four lines, one per season, averaged over all days in our data. Summer peaks near 17.4 GW around noon, winter near 11.9 GW and winter days are shorter.</desc>
+<line x1="58" x2="798" y1="288.0" y2="288.0" class="grid"/><text x="50" y="292.0" class="ax" text-anchor="end">0</text>
+<line x1="58" x2="798" y1="230.5" y2="230.5" class="grid"/><text x="50" y="234.5" class="ax" text-anchor="end">5</text>
+<line x1="58" x2="798" y1="173.0" y2="173.0" class="grid"/><text x="50" y="177.0" class="ax" text-anchor="end">10</text>
+<line x1="58" x2="798" y1="115.5" y2="115.5" class="grid"/><text x="50" y="119.5" class="ax" text-anchor="end">15</text>
+<line x1="58" x2="798" y1="58.0" y2="58.0" class="grid"/><text x="50" y="62.0" class="ax" text-anchor="end">20</text>
+<text x="50" y="44" class="ax" text-anchor="end">GW</text>
+<text x="58.0" y="308" class="ax" text-anchor="middle">12 a.m.</text>
+<text x="154.5" y="308" class="ax" text-anchor="middle">3 a.m.</text>
+<text x="251.0" y="308" class="ax" text-anchor="middle">6 a.m.</text>
+<text x="347.6" y="308" class="ax" text-anchor="middle">9 a.m.</text>
+<text x="444.1" y="308" class="ax" text-anchor="middle">12 p.m.</text>
+<text x="540.6" y="308" class="ax" text-anchor="middle">3 p.m.</text>
+<text x="637.1" y="308" class="ax" text-anchor="middle">6 p.m.</text>
+<text x="733.7" y="308" class="ax" text-anchor="middle">9 p.m.</text>
+<line x1="58" x2="80" y1="20" y2="20" stroke="var(--s1)" stroke-width="3" stroke-linecap="round"/><text x="86" y="24" class="lg">Winter</text><text x="86" y="40" class="ax">peak 11.9 GW</text>
+<line x1="208" x2="230" y1="20" y2="20" stroke="var(--s3)" stroke-width="3" stroke-linecap="round"/><text x="236" y="24" class="lg">Spring</text><text x="236" y="40" class="ax">peak 14.3 GW</text>
+<line x1="358" x2="380" y1="20" y2="20" stroke="var(--s2)" stroke-width="3" stroke-linecap="round"/><text x="386" y="24" class="lg">Summer</text><text x="386" y="40" class="ax">peak 17.4 GW</text>
+<line x1="508" x2="530" y1="20" y2="20" stroke="var(--s7)" stroke-width="3" stroke-linecap="round"/><text x="536" y="24" class="lg">Fall</text><text x="536" y="40" class="ax">peak 14.9 GW</text>
+<polyline points="58.0,288.0 90.2,288.0 122.3,288.0 154.5,288.0 186.7,288.0 218.9,288.0 251.0,287.8 283.2,270.7 315.4,222.2 347.6,174.9 379.7,156.3 411.9,151.8 444.1,151.4 476.3,152.4 508.4,158.7 540.6,180.5 572.8,228.3 605.0,272.6 637.1,287.4 669.3,288.0 701.5,288.0 733.7,288.0 765.8,288.0 798.0,288.0" fill="none" stroke="var(--s1)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="58.0,288.0 90.2,288.0 122.3,288.0 154.5,288.0 186.7,288.0 218.9,288.0 251.0,282.5 283.2,250.5 315.4,189.9 347.6,145.6 379.7,130.8 411.9,125.9 444.1,123.7 476.3,125.0 508.4,128.4 540.6,134.7 572.8,143.0 605.0,158.6 637.1,196.6 669.3,254.2 701.5,284.8 733.7,288.0 765.8,288.0 798.0,288.0" fill="none" stroke="var(--s3)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="58.0,288.0 90.2,288.0 122.3,288.0 154.5,288.0 186.7,288.0 218.9,288.0 251.0,278.5 283.2,233.5 315.4,162.2 347.6,117.5 379.7,99.4 411.9,90.9 444.1,87.7 476.3,87.3 508.4,90.3 540.6,96.2 572.8,104.1 605.0,118.9 637.1,156.3 669.3,224.6 701.5,277.1 733.7,288.0 765.8,288.0 798.0,288.0" fill="none" stroke="var(--s2)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="58.0,288.0 90.2,288.0 122.3,288.0 154.5,288.0 186.7,288.0 218.9,288.0 251.0,288.0 283.2,275.2 315.4,220.7 347.6,152.5 379.7,125.5 411.9,118.2 444.1,116.5 476.3,117.8 508.4,121.3 540.6,128.7 572.8,148.4 605.0,190.7 637.1,246.6 669.3,282.4 701.5,288.0 733.7,288.0 765.8,288.0 798.0,288.0" fill="none" stroke="var(--s7)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="283.2" cy="270.7" r="9" fill="transparent"><title>Winter, 7 a.m.: 1.5 GW on average</title></circle>
+<circle cx="315.4" cy="222.2" r="9" fill="transparent"><title>Winter, 8 a.m.: 5.7 GW on average</title></circle>
+<circle cx="347.6" cy="174.9" r="9" fill="transparent"><title>Winter, 9 a.m.: 9.8 GW on average</title></circle>
+<circle cx="379.7" cy="156.3" r="9" fill="transparent"><title>Winter, 10 a.m.: 11.4 GW on average</title></circle>
+<circle cx="411.9" cy="151.8" r="9" fill="transparent"><title>Winter, 11 a.m.: 11.8 GW on average</title></circle>
+<circle cx="444.1" cy="151.4" r="9" fill="transparent"><title>Winter, 12 p.m.: 11.9 GW on average</title></circle>
+<circle cx="476.3" cy="152.4" r="9" fill="transparent"><title>Winter, 1 p.m.: 11.8 GW on average</title></circle>
+<circle cx="508.4" cy="158.7" r="9" fill="transparent"><title>Winter, 2 p.m.: 11.2 GW on average</title></circle>
+<circle cx="540.6" cy="180.5" r="9" fill="transparent"><title>Winter, 3 p.m.: 9.3 GW on average</title></circle>
+<circle cx="572.8" cy="228.3" r="9" fill="transparent"><title>Winter, 4 p.m.: 5.2 GW on average</title></circle>
+<circle cx="605.0" cy="272.6" r="9" fill="transparent"><title>Winter, 5 p.m.: 1.3 GW on average</title></circle>
+<circle cx="637.1" cy="287.4" r="9" fill="transparent"><title>Winter, 6 p.m.: 0.1 GW on average</title></circle>
+<circle cx="251.0" cy="282.5" r="9" fill="transparent"><title>Spring, 6 a.m.: 0.5 GW on average</title></circle>
+<circle cx="283.2" cy="250.5" r="9" fill="transparent"><title>Spring, 7 a.m.: 3.3 GW on average</title></circle>
+<circle cx="315.4" cy="189.9" r="9" fill="transparent"><title>Spring, 8 a.m.: 8.5 GW on average</title></circle>
+<circle cx="347.6" cy="145.6" r="9" fill="transparent"><title>Spring, 9 a.m.: 12.4 GW on average</title></circle>
+<circle cx="379.7" cy="130.8" r="9" fill="transparent"><title>Spring, 10 a.m.: 13.7 GW on average</title></circle>
+<circle cx="411.9" cy="125.9" r="9" fill="transparent"><title>Spring, 11 a.m.: 14.1 GW on average</title></circle>
+<circle cx="444.1" cy="123.7" r="9" fill="transparent"><title>Spring, 12 p.m.: 14.3 GW on average</title></circle>
+<circle cx="476.3" cy="125.0" r="9" fill="transparent"><title>Spring, 1 p.m.: 14.2 GW on average</title></circle>
+<circle cx="508.4" cy="128.4" r="9" fill="transparent"><title>Spring, 2 p.m.: 13.9 GW on average</title></circle>
+<circle cx="540.6" cy="134.7" r="9" fill="transparent"><title>Spring, 3 p.m.: 13.3 GW on average</title></circle>
+<circle cx="572.8" cy="143.0" r="9" fill="transparent"><title>Spring, 4 p.m.: 12.6 GW on average</title></circle>
+<circle cx="605.0" cy="158.6" r="9" fill="transparent"><title>Spring, 5 p.m.: 11.3 GW on average</title></circle>
+<circle cx="637.1" cy="196.6" r="9" fill="transparent"><title>Spring, 6 p.m.: 7.9 GW on average</title></circle>
+<circle cx="669.3" cy="254.2" r="9" fill="transparent"><title>Spring, 7 p.m.: 2.9 GW on average</title></circle>
+<circle cx="701.5" cy="284.8" r="9" fill="transparent"><title>Spring, 8 p.m.: 0.3 GW on average</title></circle>
+<circle cx="251.0" cy="278.5" r="9" fill="transparent"><title>Summer, 6 a.m.: 0.8 GW on average</title></circle>
+<circle cx="283.2" cy="233.5" r="9" fill="transparent"><title>Summer, 7 a.m.: 4.7 GW on average</title></circle>
+<circle cx="315.4" cy="162.2" r="9" fill="transparent"><title>Summer, 8 a.m.: 10.9 GW on average</title></circle>
+<circle cx="347.6" cy="117.5" r="9" fill="transparent"><title>Summer, 9 a.m.: 14.8 GW on average</title></circle>
+<circle cx="379.7" cy="99.4" r="9" fill="transparent"><title>Summer, 10 a.m.: 16.4 GW on average</title></circle>
+<circle cx="411.9" cy="90.9" r="9" fill="transparent"><title>Summer, 11 a.m.: 17.1 GW on average</title></circle>
+<circle cx="444.1" cy="87.7" r="9" fill="transparent"><title>Summer, 12 p.m.: 17.4 GW on average</title></circle>
+<circle cx="476.3" cy="87.3" r="9" fill="transparent"><title>Summer, 1 p.m.: 17.4 GW on average</title></circle>
+<circle cx="508.4" cy="90.3" r="9" fill="transparent"><title>Summer, 2 p.m.: 17.2 GW on average</title></circle>
+<circle cx="540.6" cy="96.2" r="9" fill="transparent"><title>Summer, 3 p.m.: 16.7 GW on average</title></circle>
+<circle cx="572.8" cy="104.1" r="9" fill="transparent"><title>Summer, 4 p.m.: 16.0 GW on average</title></circle>
+<circle cx="605.0" cy="118.9" r="9" fill="transparent"><title>Summer, 5 p.m.: 14.7 GW on average</title></circle>
+<circle cx="637.1" cy="156.3" r="9" fill="transparent"><title>Summer, 6 p.m.: 11.4 GW on average</title></circle>
+<circle cx="669.3" cy="224.6" r="9" fill="transparent"><title>Summer, 7 p.m.: 5.5 GW on average</title></circle>
+<circle cx="701.5" cy="277.1" r="9" fill="transparent"><title>Summer, 8 p.m.: 0.9 GW on average</title></circle>
+<circle cx="283.2" cy="275.2" r="9" fill="transparent"><title>Fall, 7 a.m.: 1.1 GW on average</title></circle>
+<circle cx="315.4" cy="220.7" r="9" fill="transparent"><title>Fall, 8 a.m.: 5.9 GW on average</title></circle>
+<circle cx="347.6" cy="152.5" r="9" fill="transparent"><title>Fall, 9 a.m.: 11.8 GW on average</title></circle>
+<circle cx="379.7" cy="125.5" r="9" fill="transparent"><title>Fall, 10 a.m.: 14.1 GW on average</title></circle>
+<circle cx="411.9" cy="118.2" r="9" fill="transparent"><title>Fall, 11 a.m.: 14.8 GW on average</title></circle>
+<circle cx="444.1" cy="116.5" r="9" fill="transparent"><title>Fall, 12 p.m.: 14.9 GW on average</title></circle>
+<circle cx="476.3" cy="117.8" r="9" fill="transparent"><title>Fall, 1 p.m.: 14.8 GW on average</title></circle>
+<circle cx="508.4" cy="121.3" r="9" fill="transparent"><title>Fall, 2 p.m.: 14.5 GW on average</title></circle>
+<circle cx="540.6" cy="128.7" r="9" fill="transparent"><title>Fall, 3 p.m.: 13.9 GW on average</title></circle>
+<circle cx="572.8" cy="148.4" r="9" fill="transparent"><title>Fall, 4 p.m.: 12.1 GW on average</title></circle>
+<circle cx="605.0" cy="190.7" r="9" fill="transparent"><title>Fall, 5 p.m.: 8.5 GW on average</title></circle>
+<circle cx="637.1" cy="246.6" r="9" fill="transparent"><title>Fall, 6 p.m.: 3.6 GW on average</title></circle>
+<circle cx="669.3" cy="282.4" r="9" fill="transparent"><title>Fall, 7 p.m.: 0.5 GW on average</title></circle>
+</svg><figcaption>Average solar output for each hour, over all 954 days in our data (Mar 8, 2024 to Oct 17, 2026), by season. Clock times are Pacific. <span class="b our"><i>&#9679;</i><strong>OUR DATA</strong> our hourly solar table (from the U.S. Energy Information Administration)</span></figcaption></figure><ul class="short"><li>Same sun, different seasons. Summer peaks near <strong>17.4 GW</strong>. Winter peaks near <strong>11.9 GW</strong> and the sun is gone by about 4 p.m.</li>
+<li>That is why 1 forecast must learn all 4 seasons.</li></ul>
+<p><span class="b calc"><i>=</i><strong>CALCULATED</strong> average of every day in each season, from our table of 22,896 hours</span></p></section><section><div class="sh"><span class="num">6</span><div><h2>Who is who</h2><p class="sub">Everyone in the story, and their New York twins. (CAISO's own story is in section 1.)</p></div></div><p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> New York Independent System Operator, 2019 blog post</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Con Edison, Apr 2023: 55,000+ customer solar systems, 500+ MW</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO news release, May 1, 2026</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Public Utilities Commission, 2025 renewables report</span></p><figure><svg viewBox="0 0 980 350" role="img" aria-labelledby="tj1 dj1" class="chart ill"><title id="tj1">From power plant to your plug</title><desc id="dj1">Five steps: make it, sell it, plan it, carry it, use it. Below, a timeline of the day-before plan.</desc>
+<rect x="6" y="8" width="180" height="204" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<text x="18" y="32" class="lg">1. MAKE IT</text>
+<use href="#i-sun" x="18.0" y="42" width="38" height="38"/>
+<use href="#i-gas" x="55.5" y="42" width="38" height="38"/>
+<use href="#i-dam" x="93.0" y="42" width="38" height="38"/>
+<use href="#i-wind" x="130.5" y="42" width="38" height="38"/>
+<text x="18" y="104" class="lbl small">Solar farms, gas plants,</text>
+<text x="18" y="119" class="lbl small">dams, wind, nuclear</text>
+<text x="18" y="164" class="ax">WHO</text>
+<text x="18" y="182" class="lbl small">Plant owners</text>
+<path d="M190 110h12" stroke="var(--ink2)" stroke-width="3"/><path d="M206 110l-8-7v14z" fill="var(--ink2)"/>
+<rect x="203" y="8" width="180" height="204" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<text x="215" y="32" class="lg">2. SELL IT</text>
+<use href="#i-clock" x="215" y="42" width="38" height="38"/>
+<text x="215" y="104" class="lbl small">Offers go into a shared</text>
+<text x="215" y="119" class="lbl small">pool, or a long-term</text>
+<text x="215" y="134" class="lbl small">contract</text>
+<text x="215" y="164" class="ax">WHO</text>
+<text x="215" y="182" class="lbl small">Producers and buyers</text>
+<path d="M387 110h12" stroke="var(--ink2)" stroke-width="3"/><path d="M403 110l-8-7v14z" fill="var(--ink2)"/>
+<rect x="400" y="8" width="180" height="204" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<text x="412" y="32" class="lg">3. PLAN IT</text>
+<use href="#i-pylon" x="412" y="42" width="38" height="38"/>
+<text x="412" y="104" class="lbl small">CAISO matches offers</text>
+<text x="412" y="119" class="lbl small">to demand and keeps</text>
+<text x="412" y="134" class="lbl small">the balance</text>
+<text x="412" y="164" class="ax">WHO</text>
+<text x="412" y="182" class="lbl small">CAISO (the grid referee)</text>
+<path d="M584 110h12" stroke="var(--ink2)" stroke-width="3"/><path d="M600 110l-8-7v14z" fill="var(--ink2)"/>
+<rect x="597" y="8" width="180" height="204" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<text x="609" y="32" class="lg">4. CARRY IT</text>
+<use href="#i-pylon" x="609" y="42" width="38" height="38"/>
+<use href="#i-house" x="651" y="42" width="38" height="38"/>
+<text x="609" y="104" class="lbl small">Big wires, then local</text>
+<text x="609" y="119" class="lbl small">wires to your street</text>
+<text x="609" y="164" class="ax">WHO</text>
+<text x="609" y="182" class="lbl small">Wire owners and</text>
+<text x="609" y="197" class="lbl small">delivery companies</text>
+<path d="M781 110h12" stroke="var(--ink2)" stroke-width="3"/><path d="M797 110l-8-7v14z" fill="var(--ink2)"/>
+<rect x="794" y="8" width="180" height="204" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<text x="806" y="32" class="lg">5. USE IT</text>
+<use href="#i-house" x="806" y="42" width="38" height="38"/>
+<use href="#i-city" x="848" y="42" width="38" height="38"/>
+<use href="#i-bulb" x="890" y="42" width="38" height="38"/>
+<text x="806" y="104" class="lbl small">Homes, shops,</text>
+<text x="806" y="119" class="lbl small">factories, you</text>
+<text x="806" y="164" class="ax">WHO</text>
+<text x="806" y="182" class="lbl small">Customers</text>
+<text x="6" y="248" class="lg">When it happens</text>
+<line x1="16" x2="964" y1="278" y2="278" stroke="var(--line)" stroke-width="4"/>
+<circle cx="16" cy="278" r="9" fill="var(--s2)" stroke="var(--card)" stroke-width="2"/><text x="10" y="308" class="lg">7 days before</text><text x="10" y="328" class="lbl small">Offers can start</text>
+<circle cx="260" cy="278" r="9" fill="var(--s2)" stroke="var(--card)" stroke-width="2"/><text x="254" y="308" class="lg">10 a.m., the day before</text><text x="254" y="328" class="lbl small">Last chance to offer</text>
+<circle cx="504" cy="278" r="9" fill="var(--s2)" stroke="var(--card)" stroke-width="2"/><text x="498" y="308" class="lg">1 p.m., the day before</text><text x="498" y="328" class="lbl small">CAISO publishes the plan</text>
+<circle cx="748" cy="278" r="9" fill="var(--s2)" stroke="var(--card)" stroke-width="2"/><text x="742" y="308" class="lg">Tomorrow, all day</text><text x="742" y="328" class="lbl small">Gaps fixed every 15 and 5 min</text>
+</svg><figcaption>From plant to plug, with the day-before timeline.</figcaption></figure><div class="scroll"><table class="t who"><thead><tr><th>Job</th><th>California</th><th>New York</th></tr></thead><tbody>
+<tr><td><strong>Grid referee.</strong> Keeps power in balance. Runs the markets.</td><td><strong>CAISO</strong>, the California Independent System Operator. Not-for-profit.</td><td><strong>NYISO</strong>, the New York Independent System Operator. Not-for-profit.</td></tr>
+<tr><td><strong>Delivery companies.</strong> Own the local wires and bills.</td><td>Pacific Gas and Electric, Southern California Edison, San Diego Gas and Electric. City utilities like Los Angeles Department of Water and Power, Sacramento Municipal Utility District.</td><td><strong>Consolidated Edison (ConEd)</strong>: 3.5 million customers in New York City and Westchester. Public power: Long Island Power Authority, New York Power Authority.</td></tr>
+<tr><td><strong>Buying groups.</strong></td><td>Community choice aggregators: city or county groups that buy power for residents, for example Clean Power Alliance of Southern California and MCE. They served 38% of load in 2025. Electric service providers: private companies selling to businesses.</td><td>Not covered here. Our project does not need it.</td></tr>
+<tr><td><strong>Producers.</strong> Own the plants.</td><td>Examples: Pacific Gas and Electric (Diablo Canyon nuclear plant), NextEra Energy (Desert Sunlight solar farms), Delta Energy Center (gas), California Department of Water Resources (dams), CalEnergy (geothermal), City of Santa Clara (gas).</td><td>Among the biggest: Constellation (Nine Mile Point, Fitzpatrick and Ginna nuclear plants), New York Power Authority (Niagara dams), Cricket Valley Energy (gas), CPV Valley (gas), National Grid Generation (gas), Astoria Energy (gas).</td></tr>
+<tr><td><strong>Rule makers and counters.</strong></td><td>California Public Utilities Commission (rules for the big delivery companies). California Energy Commission (plans and counts). Federal Energy Regulatory Commission (oversees CAISO).</td><td>New York State Public Service Commission (oversees NYISO and power in the state). Federal Energy Regulatory Commission (oversees NYISO).</td></tr>
+<tr><td><strong>Number counters (federal).</strong></td><td colspan="2">U.S. Energy Information Administration: the federal government's energy statistics office. It counts and publishes hourly power for the whole country.</td></tr>
+</tbody></table></div>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Plant owners: gridinfo.com directory built on U.S. Energy Information Administration data (California rows are examples, not a ranking; New York rows are sorted by yearly output)</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Public Utilities Commission, 2025 report on investor-owned utilities: community choice groups served 38% of load in 2025</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> NYISO, Introduction to the NYISO: regulators and public power</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CPUC and CEC power content labels name Clean Power Alliance and MCE</span></p></section><section><div class="sh"><span class="num">7</span><div><h2>How power gets bought</h2><p class="sub">A shared pool, not a 1-to-1 store.</p></div></div><div class="callout"><strong>Is it "buy and sell"? Yes, with 3 twists.</strong>
+<ol><li><strong>It is a pool.</strong> Producers put power into a shared pool. Buyers take from it. Nobody learns whose power they got.</li>
+<li><strong>The buyers are delivery companies and buying groups.</strong> Their job is to supply the homes on their wires.</li>
+<li><strong>Most of the buying is done long before the day-ahead market.</strong> The market fills the gaps.</li></ol></div>
+<h4 class="mt">Who buys, 2024 (share of power sold to customers)</h4><div class="seg"><span style="width:47%;background:var(--s1)" title="Pacific Gas and Electric, Southern California Edison, San Diego Gas and Electric: 47%"><em>47%</em></span><span style="width:36%;background:var(--s3)" title="Community choice aggregators (city and county buying groups): 36%"><em>36%</em></span><span style="width:16%;background:var(--s2)" title="Electric service providers (private sellers to businesses): 16%"><em>16%</em></span><span style="width:1%;background:var(--muted)" title="Others: 1%"><em></em></span></div><ul class="leg"><li><i style="background:var(--s1)"></i>Pacific Gas and Electric, Southern California Edison, San Diego Gas and Electric: <strong>47%</strong></li><li><i style="background:var(--s3)"></i>Community choice aggregators (city and county buying groups): <strong>36%</strong></li><li><i style="background:var(--s2)"></i>Electric service providers (private sellers to businesses): <strong>16%</strong></li><li><i style="background:var(--muted)"></i>Others: <strong>1%</strong></li></ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Public Utilities Commission, 2025 renewables report, p. 14</span></p>
+<h4 class="mt">4 ways a delivery company gets power</h4>
+<div class="quad">
+<div class="card"><h4>A. Plants it owns</h4><p>Dams and a nuclear plant owned by Pacific Gas and Electric are examples.</p><p class="big2">about 30%</p></div>
+<div class="card"><h4>B. Long-term contracts</h4><p>A producer promises <strong>ALL the power</strong> of 1 plant to 1 buyer, at a fixed price per MWh, for years. Some deals cover only a part, and the producer sells the rest.</p><p class="big2">about 57%</p></div>
+<div class="card"><h4>C. Day-ahead market</h4><p>Buy what is still missing, for tomorrow. Offers close at 10 a.m. the day before.</p><p class="big2">about 10%</p></div>
+<div class="card"><h4>D. Real-time market</h4><p>Buy or sell the small gap between the plan and what really happens tomorrow.</p><p class="big2">about 3%</p></div>
+</div>
+<h4 class="mt">California, our rough estimate</h4><div class="seg"><span style="width:30%;background:var(--s1)" title="A. Plants the delivery company owns: about 30%"><em>30%</em></span><span style="width:57%;background:var(--s3)" title="B. Long-term contracts: about 57%"><em>57%</em></span><span style="width:10%;background:var(--s4)" title="C. Day-ahead market: about 10%"><em>10%</em></span><span style="width:3%;background:var(--s2)" title="D. Real-time market: about 3%"><em></em></span></div><ul class="leg"><li><i style="background:var(--s1)"></i>A. Plants the delivery company owns: <strong>about 30%</strong></li><li><i style="background:var(--s3)"></i>B. Long-term contracts: <strong>about 57%</strong></li><li><i style="background:var(--s4)"></i>C. Day-ahead market: <strong>about 10%</strong></li><li><i style="background:var(--s2)"></i>D. Real-time market: <strong>about 3%</strong></li></ul>
+<p><span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> our estimate, not a published number. Weakest guess: C (could be 5% to 20%)</span></p>
+<ul class="short">
+<li><strong>A (about 30%).</strong> Utility-owned plants made 75.9 TWh in California in 2024. Total supply, including imports, was 278.3 TWh. 75.9 &divide; 278.3 = 27%, rounded to about 30%. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> EIA state electricity page, 2024</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Energy Commission, 2024 total system generation</span> <span class="b calc"><i>=</i><strong>CALCULATED</strong> 75.9 &divide; 278.3 = 27%</span></li>
+<li><strong>B (about 57%).</strong> What is left after A, C and D: 100% minus 30% minus 10% minus 3%.</li>
+<li><strong>C (about 10%).</strong> Power bought with no named plant behind it ("unspecified") was at least 4,051 GWh in 2024, which is 1.5% of supply. The day-ahead share is higher than that floor, because producers without a long-term deal sell there. Our guess is about 10%. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> California Energy Commission, 2024</span> <span class="b calc"><i>=</i><strong>CALCULATED</strong> 4,051 &divide; 278,338 = 1.5%</span> <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> 10% is our judgment</span></li>
+<li><strong>D (about 3%).</strong> The real-time share is the size of the day-ahead plan's miss: CAISO's plan was off by 2.3% to 3.4% on 4 sample days. <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> average 3.0%, 4 sample days</span></li>
+</ul>
+<h4 class="mt">New York, for comparison</h4><div class="seg"><span style="width:45%;background:var(--s3)" title="Bilateral contracts: deals made outside the market, including long-term contracts: about 45%"><em>45%</em></span><span style="width:51%;background:var(--s4)" title="Day-ahead market: about 51%"><em>51%</em></span><span style="width:4%;background:var(--s2)" title="Real-time market (under 5%): about 4%"><em></em></span></div><ul class="leg"><li><i style="background:var(--s3)"></i>Bilateral contracts: deals made outside the market, including long-term contracts: <strong>about 45%</strong></li><li><i style="background:var(--s4)"></i>Day-ahead market: <strong>about 51%</strong></li><li><i style="background:var(--s2)"></i>Real-time market (under 5%): <strong>about 4%</strong></li></ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Independent Power Producers of New York, energy pricing paper (older, date not shown)</span> <span class="b chk"><i>?</i><strong>NOT CONFIRMED</strong> we found no newer figure, so treat the New York split as old</span></p>
+<p class="note">How to read this. About 87% of tomorrow's power is settled long before the market opens, by own plants and long-term contracts. But every solar farm still makes whatever the sun gives, however it was bought. So someone must guess solar for the whole grid. That guess is the guess we test against CAISO's own day-ahead solar forecast.</p>
+<h4 class="mt">The clock: a rolling week</h4><figure><svg viewBox="0 0 820 330" role="img" aria-labelledby="trw drw" class="chart ill"><title id="trw">The rolling week of bidding</title><desc id="drw">Four bars, one for each of 4 delivery days. Each bar starts 7 days before its delivery day and ends at 10 a.m. the day before. Each day, a new bar opens.</desc>
+<line x1="150" x2="150" y1="34" y2="226" class="grid"/><text x="179.0" y="26" class="ax" text-anchor="middle">Thu</text>
+<line x1="208" x2="208" y1="34" y2="226" class="grid"/><text x="237.0" y="26" class="ax" text-anchor="middle">Fri</text>
+<line x1="266" x2="266" y1="34" y2="226" class="grid"/><text x="295.0" y="26" class="ax" text-anchor="middle">Sat</text>
+<line x1="324" x2="324" y1="34" y2="226" class="grid"/><text x="353.0" y="26" class="ax" text-anchor="middle">Sun</text>
+<line x1="382" x2="382" y1="34" y2="226" class="grid"/><text x="411.0" y="26" class="ax" text-anchor="middle">Mon</text>
+<line x1="440" x2="440" y1="34" y2="226" class="grid"/><text x="469.0" y="26" class="ax" text-anchor="middle">Tue</text>
+<line x1="498" x2="498" y1="34" y2="226" class="grid"/><text x="527.0" y="26" class="ax" text-anchor="middle">Wed</text>
+<line x1="556" x2="556" y1="34" y2="226" class="grid"/><text x="585.0" y="26" class="ax" text-anchor="middle">Thu</text>
+<line x1="614" x2="614" y1="34" y2="226" class="grid"/><text x="643.0" y="26" class="ax" text-anchor="middle">Fri</text>
+<line x1="672" x2="672" y1="34" y2="226" class="grid"/><text x="701.0" y="26" class="ax" text-anchor="middle">Sat</text>
+<line x1="730" x2="730" y1="34" y2="226" class="grid"/><text x="759.0" y="26" class="ax" text-anchor="middle">Sun</text>
+<line x1="788" x2="788" y1="34" y2="226" class="grid"/>
+<text x="140" y="66" class="lg" text-anchor="end">Thursday's power</text>
+<rect x="154" y="50" width="368.2" height="24" rx="6" fill="var(--s1)"><title>Thursday's power: offers open for 7 days, close at 10 a.m. the day before</title></rect>
+<path d="M529.4 52l8 10l-8 10l-8 -10z" fill="var(--s4)" stroke="var(--card)" stroke-width="2"><title>1 p.m. the day before: CAISO publishes the plan</title></path>
+<rect x="558" y="50" width="54" height="24" rx="6" fill="var(--s2)"><title>Thursday's power: the day the power is used</title></rect>
+<text x="140" y="112" class="lg" text-anchor="end">Friday's power</text>
+<rect x="212" y="96" width="368.2" height="24" rx="6" fill="var(--s1)"><title>Friday's power: offers open for 7 days, close at 10 a.m. the day before</title></rect>
+<path d="M587.4 98l8 10l-8 10l-8 -10z" fill="var(--s4)" stroke="var(--card)" stroke-width="2"><title>1 p.m. the day before: CAISO publishes the plan</title></path>
+<rect x="616" y="96" width="54" height="24" rx="6" fill="var(--s2)"><title>Friday's power: the day the power is used</title></rect>
+<text x="140" y="158" class="lg" text-anchor="end">Saturday's power</text>
+<rect x="270" y="142" width="368.2" height="24" rx="6" fill="var(--s1)"><title>Saturday's power: offers open for 7 days, close at 10 a.m. the day before</title></rect>
+<path d="M645.4 144l8 10l-8 10l-8 -10z" fill="var(--s4)" stroke="var(--card)" stroke-width="2"><title>1 p.m. the day before: CAISO publishes the plan</title></path>
+<rect x="674" y="142" width="54" height="24" rx="6" fill="var(--s2)"><title>Saturday's power: the day the power is used</title></rect>
+<text x="140" y="204" class="lg" text-anchor="end">Sunday's power</text>
+<rect x="328" y="188" width="368.2" height="24" rx="6" fill="var(--s1)"><title>Sunday's power: offers open for 7 days, close at 10 a.m. the day before</title></rect>
+<path d="M703.4 190l8 10l-8 10l-8 -10z" fill="var(--s4)" stroke="var(--card)" stroke-width="2"><title>1 p.m. the day before: CAISO publishes the plan</title></path>
+<rect x="732" y="188" width="54" height="24" rx="6" fill="var(--s2)"><title>Sunday's power: the day the power is used</title></rect>
+<text x="150" y="252" class="ax">Each day a new "tomorrow" opens, so the window rolls forward 1 day at a time.</text>
+<rect x="150" y="272" width="22" height="14" rx="4" fill="var(--s1)"/><text x="180" y="284" class="lbl small">Offers can be sent (7 days)</text>
+<path d="M400 271l8 10l-8 10l-8 -10z" fill="var(--s4)"/><text x="416" y="284" class="lbl small">1 p.m.: plan published</text>
+<rect x="590" y="272" width="22" height="14" rx="4" fill="var(--s2)"/><text x="618" y="284" class="lbl small">The day the power is used</text>
+<text x="150" y="314" class="ax">Offers close at 10 a.m. the day before. Results come out at 1 p.m.</text>
+</svg><figcaption>Each delivery day has its own window. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO market rules, sections 30.1.1 and 30.5.1, and the CAISO Business Practice Manual for Market Instruments: offers up to 7 days ahead, close 10 a.m. the day before</span></figcaption></figure><ul class="short">
+<li><strong>How far ahead?</strong> Up to <strong>7 days</strong>. A seller can send an offer for next Thursday's power starting last Thursday.</li>
+<li><strong>Rolling.</strong> Every day, 1 window closes and a new window opens. So at any moment, 7 delivery days are open for offers.</li>
+<li><strong>Close: 10 a.m. the day before</strong> (Pacific clock). Between 10 a.m. and 1 p.m. no new offers are taken.</li>
+<li><strong>1 p.m.:</strong> CAISO publishes the plan for every hour of tomorrow. This is the <strong>day-ahead market</strong>. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO market processes</span></li>
+<li><strong>Can offers change as the forecast changes?</strong> Yes, until the 10 a.m. close a seller can send a new offer. After the plan is published, that day-ahead deal is set. <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> educated guess: the CAISO rules we read do not say if a seller may edit an offer before the close</span></li>
+<li><strong>If an offer is not picked,</strong> it is no longer binding. The seller can offer again in the real-time market, at a different price. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO market rules, section 30.5.1</span></li>
+<li><strong>Can a buyer give some back?</strong> Not by cancelling. If a buyer ends up using less than its plan, the extra is sold back in the real-time market at the real-time price, which can be higher or lower. If it uses more, it buys the rest the same way. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO real-time load settlement paper</span></li>
+</ul>
+<h4 class="mt">Who wins the match: the lowest price</h4><figure><svg viewBox="0 0 820 360" role="img" aria-labelledby="tmo dmo" class="chart ill"><title id="tmo">Cheapest offers are picked first</title><desc id="dmo">Offers sorted from cheapest to most expensive. Offers are picked until demand is met. Everyone picked is paid the price of the last offer picked, 40 dollars per MWh. Numbers are made up.</desc>
+<line x1="70" x2="800" y1="270.0" y2="270.0" class="grid"/><text x="62" y="274.0" class="ax" text-anchor="end">$0</text>
+<line x1="70" x2="800" y1="204.3" y2="204.3" class="grid"/><text x="62" y="208.3" class="ax" text-anchor="end">$20</text>
+<line x1="70" x2="800" y1="138.6" y2="138.6" class="grid"/><text x="62" y="142.6" class="ax" text-anchor="end">$40</text>
+<line x1="70" x2="800" y1="72.9" y2="72.9" class="grid"/><text x="62" y="76.9" class="ax" text-anchor="end">$60</text>
+<text x="62" y="26" class="ax" text-anchor="end">per MWh</text>
+<rect x="72" y="265.0" width="200" height="5.0" rx="4" fill="var(--s4)" opacity="1"><title>Solar: offers 6 GW at $0 per MWh</title></rect>
+<text x="172.0" y="288" class="lbl small" text-anchor="middle">Solar</text>
+<text x="172.0" y="304" class="ax" text-anchor="middle">asks $0</text>
+<rect x="276" y="253.6" width="98" height="16.4" rx="4" fill="var(--s5)" opacity="1"><title>Wind: offers 3 GW at $5 per MWh</title></rect>
+<text x="325.0" y="288" class="lbl small" text-anchor="middle">Wind</text>
+<text x="325.0" y="304" class="ax" text-anchor="middle">asks $5</text>
+<rect x="378" y="237.1" width="64" height="32.9" rx="4" fill="var(--s1)" opacity="1"><title>Nuclear: offers 2 GW at $10 per MWh</title></rect>
+<text x="410.0" y="288" class="lbl small" text-anchor="middle">Nuclear</text>
+<text x="410.0" y="304" class="ax" text-anchor="middle">asks $10</text>
+<rect x="446" y="204.3" width="98" height="65.7" rx="4" fill="var(--s3)" opacity="1"><title>Dams: offers 3 GW at $20 per MWh</title></rect>
+<text x="495.0" y="288" class="lbl small" text-anchor="middle">Dams</text>
+<text x="495.0" y="304" class="ax" text-anchor="middle">asks $20</text>
+<rect x="548" y="138.6" width="132" height="131.4" rx="4" fill="var(--s2)" opacity="1"><title>Gas plant A: offers 4 GW at $40 per MWh</title></rect>
+<text x="614.0" y="288" class="lbl small" text-anchor="middle">Gas plant A</text>
+<text x="614.0" y="304" class="ax" text-anchor="middle">asks $40</text>
+<rect x="684" y="72.9" width="98" height="197.1" rx="4" fill="var(--s2)" opacity="0.28"><title>Gas plant B: offers 3 GW at $60 per MWh</title></rect>
+<text x="733.0" y="288" class="lbl small" text-anchor="middle">Gas plant B</text>
+<text x="733.0" y="304" class="ax" text-anchor="middle">asks $60</text>
+<line x1="614" x2="614" y1="32" y2="270" stroke="var(--s8)" stroke-width="3" stroke-dasharray="6 5"/>
+<text x="606" y="42" class="lbl" text-anchor="end">Demand: 16 GW</text>
+<line x1="70" x2="614" y1="138.6" y2="138.6" stroke="var(--ink)" stroke-width="2.5"/>
+<text x="78" y="130.6" class="lbl">Everyone picked is paid $40 per MWh</text>
+<text x="78" y="338" class="ax">Picked: solid bars. Not needed today: faded bars. All numbers here are made up to show the idea.</text>
+</svg><figcaption>How offers are picked. All numbers are made up. <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> made-up prices</span></figcaption></figure><ul class="short">
+<li>CAISO lines up all offers from cheapest to most expensive. It picks the cheapest first, until there is enough power for everyone.</li>
+<li>Everyone picked is paid <strong>the same price</strong>: the price of the last offer that was needed.</li>
+<li>Solar and wind ask close to $0 per MWh because the sun and wind are free. So they go first and pull the price down. That is why a sunny afternoon often has cheap power.</li>
+<li>In 2024, CAISO's day-ahead price averaged <strong>$41 per MWh</strong>. CAISO prices also change by place; we ignore that here.</li>
+</ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> ISO New England, "How resources are selected and prices are set" (another grid operator, same idea)</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO 2024 market report: $41 per MWh</span></p>
+<h4 class="mt">Tomorrow: the real-time market and the "plant reset"</h4>
+<ul class="short">
+<li>Real use never matches the plan exactly. Example (made-up numbers): the plan said 26,000 MW at 7 p.m. Real use was 26,800 MW. The 800 MW gap (3%) is bought in the real-time market.</li>
+<li><strong>What the reset is.</strong> Every 15 minutes and every 5 minutes, CAISO's computer checks real use and sends each plant a new target: "make a bit more" or "make a bit less". It is like a gas pedal that holds a steady speed.</li>
+<li><strong>Why.</strong> To keep supply equal to use every second, at the lowest cost. Plants that can move fast do the work: batteries, dams, some gas plants. Big gas plants cannot start fast. That is why the plan is made the day before. Solar can be turned down fast. That is curtailment (section 8).</li>
+</ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO market processes: real-time market dispatches every 15 and 5 minutes</span></p><figure><svg viewBox="0 0 820 330" role="img" aria-labelledby="t3 d3" class="chart"><title id="t3">The plan made the day before versus what happened</title><desc id="d3">Two nearly overlapping lines for a July day: CAISO day-ahead demand forecast and actual demand. The average gap is 2.3%.</desc>
+<line x1="58" x2="798" y1="286.0" y2="286.0" class="grid"/><text x="50" y="290.0" class="ax" text-anchor="end">22</text>
+<line x1="58" x2="798" y1="218.6" y2="218.6" class="grid"/><text x="50" y="222.6" class="ax" text-anchor="end">26</text>
+<line x1="58" x2="798" y1="151.1" y2="151.1" class="grid"/><text x="50" y="155.1" class="ax" text-anchor="end">30</text>
+<line x1="58" x2="798" y1="83.7" y2="83.7" class="grid"/><text x="50" y="87.7" class="ax" text-anchor="end">34</text>
+<text x="50" y="38" class="ax" text-anchor="end">GW</text>
+<text x="58.0" y="306" class="ax" text-anchor="middle">12 a.m.</text>
+<text x="154.5" y="306" class="ax" text-anchor="middle">3 a.m.</text>
+<text x="251.0" y="306" class="ax" text-anchor="middle">6 a.m.</text>
+<text x="347.6" y="306" class="ax" text-anchor="middle">9 a.m.</text>
+<text x="444.1" y="306" class="ax" text-anchor="middle">12 p.m.</text>
+<text x="540.6" y="306" class="ax" text-anchor="middle">3 p.m.</text>
+<text x="637.1" y="306" class="ax" text-anchor="middle">6 p.m.</text>
+<text x="733.7" y="306" class="ax" text-anchor="middle">9 p.m.</text>
+<line x1="58" x2="80" y1="20" y2="20" stroke="var(--s1)" stroke-width="3" stroke-dasharray="6 5"/><text x="86" y="24" class="lg">The plan (published 1 p.m. the day before)</text>
+<line x1="388" x2="410" y1="20" y2="20" stroke="var(--s2)" stroke-width="3"/><text x="416" y="24" class="lg">What really happened</text>
+<polyline points="58.0,160.1 90.2,199.1 122.3,225.0 154.5,244.7 186.7,254.9 218.9,254.6 251.0,241.4 283.2,227.3 315.4,216.3 347.6,218.4 379.7,231.7 411.9,243.9 444.1,245.2 476.3,237.5 508.4,217.3 540.6,190.8 572.8,157.2 605.0,132.8 637.1,104.1 669.3,85.1 701.5,83.9 733.7,93.7 765.8,109.8 798.0,145.7" fill="none" stroke="var(--s1)" stroke-width="2.4" stroke-dasharray="6 5"/>
+<polyline points="58.0,182.9 90.2,203.3 122.3,220.7 154.5,244.6 186.7,250.0 218.9,244.1 251.0,230.3 283.2,218.5 315.4,210.0 347.6,210.9 379.7,225.2 411.9,232.3 444.1,233.3 476.3,221.8 508.4,197.3 540.6,169.6 572.8,138.2 605.0,113.0 637.1,85.9 669.3,74.3 701.5,85.6 733.7,96.3 765.8,118.6 798.0,159.3" fill="none" stroke="var(--s2)" stroke-width="2.4"/>
+<text x="508.4" y="66.85714285714286" class="lbl">Average gap on this day: 2.3%</text>
+<circle cx="58.0" cy="182.9" r="9" fill="transparent"><title>12 a.m.: plan 29.5 GW, actual 28.1 GW</title></circle>
+<circle cx="90.2" cy="203.3" r="9" fill="transparent"><title>1 a.m.: plan 27.2 GW, actual 26.9 GW</title></circle>
+<circle cx="122.3" cy="220.7" r="9" fill="transparent"><title>2 a.m.: plan 25.6 GW, actual 25.9 GW</title></circle>
+<circle cx="154.5" cy="244.6" r="9" fill="transparent"><title>3 a.m.: plan 24.4 GW, actual 24.5 GW</title></circle>
+<circle cx="186.7" cy="250.0" r="9" fill="transparent"><title>4 a.m.: plan 23.8 GW, actual 24.1 GW</title></circle>
+<circle cx="218.9" cy="244.1" r="9" fill="transparent"><title>5 a.m.: plan 23.9 GW, actual 24.5 GW</title></circle>
+<circle cx="251.0" cy="230.3" r="9" fill="transparent"><title>6 a.m.: plan 24.6 GW, actual 25.3 GW</title></circle>
+<circle cx="283.2" cy="218.5" r="9" fill="transparent"><title>7 a.m.: plan 25.5 GW, actual 26.0 GW</title></circle>
+<circle cx="315.4" cy="210.0" r="9" fill="transparent"><title>8 a.m.: plan 26.1 GW, actual 26.5 GW</title></circle>
+<circle cx="347.6" cy="210.9" r="9" fill="transparent"><title>9 a.m.: plan 26.0 GW, actual 26.5 GW</title></circle>
+<circle cx="379.7" cy="225.2" r="9" fill="transparent"><title>10 a.m.: plan 25.2 GW, actual 25.6 GW</title></circle>
+<circle cx="411.9" cy="232.3" r="9" fill="transparent"><title>11 a.m.: plan 24.5 GW, actual 25.2 GW</title></circle>
+<circle cx="444.1" cy="233.3" r="9" fill="transparent"><title>12 p.m.: plan 24.4 GW, actual 25.1 GW</title></circle>
+<circle cx="476.3" cy="221.8" r="9" fill="transparent"><title>1 p.m.: plan 24.9 GW, actual 25.8 GW</title></circle>
+<circle cx="508.4" cy="197.3" r="9" fill="transparent"><title>2 p.m.: plan 26.1 GW, actual 27.3 GW</title></circle>
+<circle cx="540.6" cy="169.6" r="9" fill="transparent"><title>3 p.m.: plan 27.6 GW, actual 28.9 GW</title></circle>
+<circle cx="572.8" cy="138.2" r="9" fill="transparent"><title>4 p.m.: plan 29.6 GW, actual 30.8 GW</title></circle>
+<circle cx="605.0" cy="113.0" r="9" fill="transparent"><title>5 p.m.: plan 31.1 GW, actual 32.3 GW</title></circle>
+<circle cx="637.1" cy="85.9" r="9" fill="transparent"><title>6 p.m.: plan 32.8 GW, actual 33.9 GW</title></circle>
+<circle cx="669.3" cy="74.3" r="9" fill="transparent"><title>7 p.m.: plan 33.9 GW, actual 34.6 GW</title></circle>
+<circle cx="701.5" cy="85.6" r="9" fill="transparent"><title>8 p.m.: plan 34.0 GW, actual 33.9 GW</title></circle>
+<circle cx="733.7" cy="96.3" r="9" fill="transparent"><title>9 p.m.: plan 33.4 GW, actual 33.3 GW</title></circle>
+<circle cx="765.8" cy="118.6" r="9" fill="transparent"><title>10 p.m.: plan 32.5 GW, actual 31.9 GW</title></circle>
+<circle cx="798.0" cy="159.3" r="9" fill="transparent"><title>11 p.m.: plan 30.3 GW, actual 29.5 GW</title></circle>
+</svg><figcaption>The plan (dashed) and what happened (solid), July 15, 2025, CAISO's area. <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO public daily file</span></figcaption></figure><div class="split"><div class="s1" style="width:97%"><strong>about 97%</strong></div><div class="s2" style="width:3%"></div></div>
+<div class="splitcap"><span><strong>about 97%</strong> planned the day before</span><span><strong>about 3%</strong> fixed during the day</span></div>
+<p><span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> CAISO’s day-ahead demand plan was off by 2.3% to 3.4% on 4 sample days (average 3.0%)</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> CAISO paper on real-time load settlement: 0.8% in 1 worked example</span></p></section><section><div class="sh"><span class="num">8</span><div><h2>When the guess is wrong</h2><p class="sub">Too high costs money. Too low wastes power.</p></div></div><figure><svg viewBox="0 0 960 330" role="img" aria-labelledby="tp1 dp1" class="chart ill"><title id="tp1">What goes wrong when the forecast misses</title>
+<desc id="dp1">Two rows of pizza icons. Guess too high: 70 slices arrive but 100 were planned, so 30 must be bought at the last minute. Guess too low: 100 arrive but 70 were planned, so 30 are wasted.</desc>
+<text x="20" y="28" class="lg">Each pizza = 10 slices. Think of slices as units of solar power.</text>
+<text x="20" y="62" class="lbl">Guess too HIGH: we planned 100 slices (10 pizzas)</text>
+<g opacity="1"><use href="#i-pizza" x="20" y="76" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="66" y="76" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="112" y="76" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="158" y="76" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="204" y="76" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="250" y="76" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="296" y="76" width="40" height="40"/></g><g opacity=".25"><use href="#i-pizza" x="342" y="76" width="40" height="40"/></g><g opacity=".25"><use href="#i-pizza" x="388" y="76" width="40" height="40"/></g><g opacity=".25"><use href="#i-pizza" x="434" y="76" width="40" height="40"/></g><rect x="342" y="76" width="40" height="40" rx="20" fill="none" stroke="var(--s8)" stroke-width="2.5" stroke-dasharray="5 4"/><rect x="388" y="76" width="40" height="40" rx="20" fill="none" stroke="var(--s8)" stroke-width="2.5" stroke-dasharray="5 4"/><rect x="434" y="76" width="40" height="40" rx="20" fill="none" stroke="var(--s8)" stroke-width="2.5" stroke-dasharray="5 4"/><text x="520" y="92" class="lg">Only 70 slices show up.</text><text x="520" y="112" class="lbl small">Buy the 30 missing slices at the last minute. Costs more, often dirtier.</text>
+<text x="20" y="168" class="lbl">Guess too LOW: we planned 70 slices (7 pizzas)</text>
+<g opacity="1"><use href="#i-pizza" x="20" y="182" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="66" y="182" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="112" y="182" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="158" y="182" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="204" y="182" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="250" y="182" width="40" height="40"/></g><g opacity="1"><use href="#i-pizza" x="296" y="182" width="40" height="40"/></g><g opacity=".25"><use href="#i-pizza" x="342" y="182" width="40" height="40"/></g><g opacity=".25"><use href="#i-pizza" x="388" y="182" width="40" height="40"/></g><g opacity=".25"><use href="#i-pizza" x="434" y="182" width="40" height="40"/></g><text x="520" y="198" class="lg"></text><text x="520" y="218" class="lbl small"></text>
+<g transform="translate(0,0)"><g><use href="#i-pizza" x="342" y="182" width="40" height="40"/></g><g><use href="#i-pizza" x="388" y="182" width="40" height="40"/></g><g><use href="#i-pizza" x="434" y="182" width="40" height="40"/></g><path d="M342 188l40 28M382 188l-40 28" stroke="var(--s8)" stroke-width="3.5" stroke-linecap="round"/><path d="M388 188l40 28M428 188l-40 28" stroke="var(--s8)" stroke-width="3.5" stroke-linecap="round"/><path d="M434 188l40 28M474 188l-40 28" stroke="var(--s8)" stroke-width="3.5" stroke-linecap="round"/></g>
+<text x="520" y="198" class="lg">100 slices show up.</text><text x="520" y="218" class="lbl small">30 are not needed. They get wasted (or solar is turned down).</text>
+<text x="20" y="290" class="lbl">Either way, a better guess means fewer last-minute buys and less waste.</text>
+</svg><figcaption>A missed solar guess in pizza terms.</figcaption></figure><h4 class="mt">Curtailment: solar turned down on purpose</h4><figure><svg viewBox="0 0 820 230" role="img" aria-labelledby="to1 do1" class="chart ill"><title id="to1">Curtailment, shown as a full bathtub</title>
+<desc id="do1">A tap pouring into a full bathtub gets turned down so it does not overflow.</desc>
+<use href="#i-sun" x="20" y="12" width="50" height="50"/><path d="M80 38h56" stroke="var(--s1)" stroke-width="7" stroke-linecap="round" opacity=".6"/>
+<circle cx="168" cy="38" r="17" fill="var(--card)" stroke="var(--s8)" stroke-width="4"/><path d="M158 38h20" stroke="var(--s8)" stroke-width="4" stroke-linecap="round"/>
+<path d="M185 38h24v66" stroke="var(--s1)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".35" stroke-dasharray="1 9" fill="none"/>
+<text x="240" y="34" class="lg">Valve turned down on purpose</text><text x="240" y="54" class="ax">That is curtailment.</text>
+<path d="M40 110h300l-22 80q-4 14-18 14H80q-14 0-18-14z" fill="var(--card)" stroke="var(--ink2)" stroke-width="4" stroke-linejoin="round"/>
+<path d="M48 112h284l-20 72q-3 10-14 10H82q-11 0-14-10z" fill="var(--s1)" opacity=".45"/>
+<text x="370" y="138" class="lbl">The tub is already full:</text>
+<text x="370" y="162" class="ax">1. People are not using much power right now</text>
+<text x="370" y="182" class="ax">2. Wires are full</text>
+<text x="370" y="202" class="ax">3. Some gas plants must stay on for the evening</text>
+</svg><figcaption>When the tub is already full, CAISO asks solar farms to produce less.</figcaption></figure><ul class="short"><li>In our period, <strong>7.6%</strong> of the solar that could have been made was turned down. In April 2026: <strong>24%</strong>.</li>
+<li>Most happens in spring: lots of sun, little demand.</li>
+<li>In 2024, 3.4 TWh of wind and solar was turned down in CAISO's area. 93% of it was solar.</li></ul>
+<p><span class="b our"><i>&#9679;</i><strong>OUR DATA</strong> CAISO curtailment reports and our hourly table</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> U.S. Energy Information Administration, Today in Energy, 2025</span></p><figure><svg viewBox="0 0 820 270" role="img" aria-labelledby="t4 d4" class="chart"><title id="t4">Share of possible solar that was turned down, by month</title><desc id="d4">Bars by month from March 2024 to October 2026. Spring months are highest, reaching 24% in April 2026.</desc>
+<line x1="50" x2="800" y1="220.0" y2="220.0" class="grid"/><text x="42" y="224.0" class="ax" text-anchor="end">0%</text>
+<line x1="50" x2="800" y1="141.6" y2="141.6" class="grid"/><text x="42" y="145.6" class="ax" text-anchor="end">10%</text>
+<line x1="50" x2="800" y1="63.2" y2="63.2" class="grid"/><text x="42" y="67.2" class="ax" text-anchor="end">20%</text>
+<rect x="52.0" y="82.1" width="19.4" height="137.9" rx="3" fill="var(--s4)"><title>Mar 2024: 17.6% turned down</title></rect>
+<text x="61.7" y="238" class="ax" text-anchor="middle">Mar 2024</text>
+<rect x="75.4" y="88.6" width="19.4" height="131.4" rx="3" fill="var(--s4)"><title>Apr 2024: 16.8% turned down</title></rect>
+<rect x="98.9" y="129.4" width="19.4" height="90.6" rx="3" fill="var(--s4)"><title>May 2024: 11.6% turned down</title></rect>
+<rect x="122.3" y="188.2" width="19.4" height="31.8" rx="3" fill="var(--s4)"><title>Jun 2024: 4.1% turned down</title></rect>
+<rect x="145.8" y="210.4" width="19.4" height="9.6" rx="3" fill="var(--s4)"><title>Jul 2024: 1.2% turned down</title></rect>
+<text x="155.5" y="238" class="ax" text-anchor="middle">Jul 2024</text>
+<rect x="169.2" y="209.0" width="19.4" height="11.0" rx="3" fill="var(--s4)"><title>Aug 2024: 1.4% turned down</title></rect>
+<rect x="192.6" y="199.6" width="19.4" height="20.4" rx="3" fill="var(--s4)"><title>Sep 2024: 2.6% turned down</title></rect>
+<rect x="216.1" y="191.0" width="19.4" height="29.0" rx="3" fill="var(--s4)"><title>Oct 2024: 3.7% turned down</title></rect>
+<rect x="239.5" y="180.4" width="19.4" height="39.6" rx="3" fill="var(--s4)"><title>Nov 2024: 5.1% turned down</title></rect>
+<text x="249.2" y="238" class="ax" text-anchor="middle">Nov 2024</text>
+<rect x="262.9" y="214.6" width="19.4" height="5.4" rx="3" fill="var(--s4)"><title>Dec 2024: 0.7% turned down</title></rect>
+<rect x="286.4" y="190.4" width="19.4" height="29.6" rx="3" fill="var(--s4)"><title>Jan 2025: 3.8% turned down</title></rect>
+<rect x="309.8" y="105.2" width="19.4" height="114.8" rx="3" fill="var(--s4)"><title>Feb 2025: 14.6% turned down</title></rect>
+<rect x="333.2" y="62.8" width="19.4" height="157.2" rx="3" fill="var(--s4)"><title>Mar 2025: 20.1% turned down</title></rect>
+<text x="343.0" y="238" class="ax" text-anchor="middle">Mar 2025</text>
+<rect x="356.7" y="116.2" width="19.4" height="103.8" rx="3" fill="var(--s4)"><title>Apr 2025: 13.2% turned down</title></rect>
+<rect x="380.1" y="168.3" width="19.4" height="51.7" rx="3" fill="var(--s4)"><title>May 2025: 6.6% turned down</title></rect>
+<rect x="403.6" y="187.2" width="19.4" height="32.8" rx="3" fill="var(--s4)"><title>Jun 2025: 4.2% turned down</title></rect>
+<rect x="427.0" y="202.1" width="19.4" height="17.9" rx="3" fill="var(--s4)"><title>Jul 2025: 2.3% turned down</title></rect>
+<text x="436.7" y="238" class="ax" text-anchor="middle">Jul 2025</text>
+<rect x="450.4" y="202.3" width="19.4" height="17.7" rx="3" fill="var(--s4)"><title>Aug 2025: 2.3% turned down</title></rect>
+<rect x="473.9" y="192.1" width="19.4" height="27.9" rx="3" fill="var(--s4)"><title>Sep 2025: 3.6% turned down</title></rect>
+<rect x="497.3" y="177.4" width="19.4" height="42.6" rx="3" fill="var(--s4)"><title>Oct 2025: 5.4% turned down</title></rect>
+<rect x="520.8" y="213.3" width="19.4" height="6.7" rx="3" fill="var(--s4)"><title>Nov 2025: 0.9% turned down</title></rect>
+<text x="530.5" y="238" class="ax" text-anchor="middle">Nov 2025</text>
+<rect x="544.2" y="212.0" width="19.4" height="8.0" rx="3" fill="var(--s4)"><title>Dec 2025: 1.0% turned down</title></rect>
+<rect x="567.6" y="214.1" width="19.4" height="5.9" rx="3" fill="var(--s4)"><title>Jan 2026: 0.8% turned down</title></rect>
+<rect x="591.1" y="166.4" width="19.4" height="53.6" rx="3" fill="var(--s4)"><title>Feb 2026: 6.8% turned down</title></rect>
+<rect x="614.5" y="109.8" width="19.4" height="110.2" rx="3" fill="var(--s4)"><title>Mar 2026: 14.1% turned down</title></rect>
+<text x="624.2" y="238" class="ax" text-anchor="middle">Mar 2026</text>
+<rect x="637.9" y="32.2" width="19.4" height="187.8" rx="3" fill="var(--s4)"><title>Apr 2026: 24.0% turned down</title></rect>
+<rect x="661.4" y="57.8" width="19.4" height="162.2" rx="3" fill="var(--s4)"><title>May 2026: 20.7% turned down</title></rect>
+<rect x="684.8" y="153.7" width="19.4" height="66.3" rx="3" fill="var(--s4)"><title>Jun 2026: 8.5% turned down</title></rect>
+<rect x="708.2" y="191.8" width="19.4" height="28.2" rx="3" fill="var(--s4)"><title>Jul 2026: 3.6% turned down</title></rect>
+<text x="718.0" y="238" class="ax" text-anchor="middle">Jul 2026</text>
+<rect x="731.7" y="200.8" width="19.4" height="19.2" rx="3" fill="var(--s4)"><title>Aug 2026: 2.5% turned down</title></rect>
+<rect x="755.1" y="195.6" width="19.4" height="24.4" rx="3" fill="var(--s4)"><title>Sep 2026: 3.1% turned down</title></rect>
+<rect x="778.6" y="186.7" width="19.4" height="33.3" rx="3" fill="var(--s4)"><title>Oct 2026: 4.2% turned down</title></rect>
+<text x="647.7" y="23.8" class="lbl" text-anchor="middle">24%</text>
+</svg><figcaption>Share of possible solar that was turned down, by month. Mar 2024 to Oct 2026.</figcaption></figure></section><section><div class="sh"><span class="num">9</span><div><h2>Big solar farms vs rooftop solar</h2><p class="sub">Same sun. Very different counting.</p></div></div><figure><svg viewBox="0 0 960 300" role="img" aria-labelledby="tr1 dr1" class="chart ill"><title id="tr1">Big solar farms compared with rooftop solar</title>
+<desc id="dr1">Left, a solar farm that feeds the grid and is counted every hour. Right, rooftop solar that powers the home first and is not counted separately.</desc>
+<rect x="8" y="8" width="460" height="284" rx="14" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<text x="24" y="38" class="lg">BIG SOLAR FARMS</text>
+<use href="#i-panels" x="24" y="50" width="64" height="64"/><use href="#i-panels" x="88" y="50" width="64" height="64"/><use href="#i-panels" x="152" y="50" width="64" height="64"/><use href="#i-pylon" x="230" y="50" width="64" height="64"/><use href="#i-city" x="300" y="50" width="64" height="64"/>
+<text x="24" y="150" class="lbl small">Fields of panels. Power goes onto the wires.</text>
+<text x="24" y="172" class="lbl small">CAISO can see and count them every hour.</text>
+<text x="24" y="194" class="lbl small">Our "answer key" counts only these.</text>
+<text x="24" y="224" class="ax">Makes about 25% of its full-sun maximum over a year (our data).</text>
+<text x="24" y="244" class="ax">In full sun, 1 MW makes 1 MWh every hour.</text>
+<rect x="492" y="8" width="460" height="284" rx="14" fill="var(--card)" stroke="var(--line)" stroke-width="2"/>
+<text x="508" y="38" class="lg">ROOFTOP SOLAR</text>
+<use href="#i-house" x="508" y="50" width="72" height="72"/><use href="#i-house" x="584" y="50" width="72" height="72"/><use href="#i-house" x="660" y="50" width="72" height="72"/>
+<text x="508" y="156" class="lbl small">Panels on homes and shops (each under 1 MW).</text>
+<text x="508" y="178" class="lbl small">The home uses it first. Extra goes to the grid.</text>
+<text x="508" y="200" class="lbl small">Nobody counts it on its own. The grid just sees less demand.</text>
+<text x="508" y="230" class="ax">Makes about 17% of its full-sun maximum over a year (article estimate).</text>
+<text x="508" y="250" class="ax">In full sun, a 7.7 kW home system makes about 7.7 kWh every hour.</text>
+</svg><figcaption>Our forecast covers the big farms. Rooftop solar shows up as lower demand.</figcaption></figure><figure><svg viewBox="0 0 820 250" role="img" aria-labelledby="tme dme" class="chart ill"><title id="tme">Why the grid does not see rooftop solar</title><desc id="dme">A home uses 5 kW at noon. Its rooftop panels make 4 kW. The meter shows only 1 kW taken from the grid.</desc>
+<use href="#i-panels" x="60" y="20" width="70" height="70"/><use href="#i-house" x="150" y="60" width="90" height="90"/>
+<text x="40" y="118" class="lg">Rooftop panels</text><text x="40" y="136" class="ax">make 4 kW at noon</text>
+<path d="M130 70h30" stroke="var(--s4)" stroke-width="6" stroke-linecap="round"/>
+<text x="195" y="175" class="lg" text-anchor="middle">Home uses 5 kW</text>
+<path d="M250 110h120" stroke="var(--s1)" stroke-width="6" stroke-linecap="round"/><path d="M380 110l-14 -9v18z" fill="var(--s1)"/>
+<text x="310" y="100" class="lbl small" text-anchor="middle">1 kW from the grid</text>
+<circle cx="430" cy="110" r="34" fill="var(--card)" stroke="var(--ink2)" stroke-width="4"/><text x="430" y="105" class="lg" text-anchor="middle">Meter</text><text x="430" y="125" class="big" text-anchor="middle">1 kW</text>
+<use href="#i-pylon" x="520" y="70" width="70" height="70"/>
+<text x="600" y="86" class="lg">The utility only sees 1 kW.</text><text x="600" y="108" class="lbl small">The 4 kW from the roof</text><text x="600" y="126" class="lbl small">never passes the meter.</text>
+<text x="40" y="214" class="ax">Made-up numbers. 5 kW used minus 4 kW from the roof = 1 kW from the grid. Rooftop looks like lower demand.</text>
+</svg><figcaption>How rooftop solar hides inside the meter.</figcaption></figure><ul class="short">
+<li><strong>Rooftop = under 1 MW per system.</strong> California had about <strong>20 GW</strong> of it in 2025. It made about <strong>34 TWh</strong>, 37% of all U.S. rooftop solar.</li>
+<li>About 2 million systems. About 1 in 6 California homes. Averaged over all systems (homes and businesses), about 9 kW each. A typical U.S. home system is smaller: 7.7 kW.</li>
+<li>Since April 2023 the credit for sending extra power out is lower, so more homes add batteries.</li>
+<li><strong>Why the grid cannot see it.</strong> The utility's meter sits at the home's front door. It counts only what the home takes from the grid. So rooftop power looks like the home used less.</li>
+<li><strong>Why the official count leaves it out.</strong> The U.S. Energy Information Administration counts plants of 1 MW or more in its main power numbers. Rooftop systems are under 1 MW, so they are estimated separately and usually left out of the main count.</li></ul>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> U.S. Energy Information Administration: 20 GW, 34,411 GWh, 37%, under 1 MW</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Wind-Works article: 18,000 MW, nearly 2 million systems, 1 in 6 homes, 17% capacity factor</span> <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> 9 kW = 18,000 MW &divide; about 2 million systems</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Lawrence Berkeley National Laboratory, Tracking the Sun: U.S. median home system 7.7 kW, 2025</span> <span class="b chk"><i>?</i><strong>NOT CONFIRMED</strong> &ldquo;1 in 6 homes&rdquo; and &ldquo;2 million systems&rdquo; come from 1 article, not state data</span></p></section><section><div class="sh"><span class="num">10</span><div><h2>Our project</h2><p class="sub">A careful guess for each hour of tomorrow, and a fair scorecard.</p></div></div><figure><svg viewBox="0 0 960 250" role="img" aria-labelledby="tf1 df1" class="chart ill"><title id="tf1">What our forecast does</title>
+<desc id="df1">Three inputs feed our model, which produces a guess for each hour of tomorrow that is scored against what happened, CAISO, and copying yesterday.</desc>
+<rect x="8" y="10" width="290" height="62" rx="10" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><use href="#i-cloud" x="18" y="20" width="40" height="40"/><text x="68" y="38" class="lg">Weather forecast</text><text x="68" y="58" class="ax">clouds and sun, made 2 days before</text>
+<rect x="8" y="94" width="290" height="62" rx="10" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><use href="#i-sun" x="18" y="104" width="40" height="40"/><text x="68" y="122" class="lg">Time of day and season</text><text x="68" y="142" class="ax">where the sun is in the sky</text>
+<rect x="8" y="178" width="290" height="62" rx="10" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><use href="#i-panels" x="18" y="188" width="40" height="40"/><text x="68" y="206" class="lg">How many panels exist</text><text x="68" y="226" class="ax">solar capacity that month</text>
+<path d="M302 41l34 50M302 125h34M302 209l34-60" stroke="var(--ink2)" stroke-width="3" fill="none"/>
+<rect x="340" y="82" width="170" height="86" rx="12" fill="var(--s1)"/><text x="425" y="118" class="lg" text-anchor="middle" style="fill:#fff">Our model</text><text x="425" y="140" class="ax" text-anchor="middle" style="fill:#fff">a careful guess</text>
+<path d="M514 125h30" stroke="var(--ink2)" stroke-width="3"/><path d="M552 125l-9-7v14z" fill="var(--ink2)"/>
+<rect x="556" y="82" width="190" height="86" rx="12" fill="var(--card)" stroke="var(--s4)" stroke-width="3"/><text x="651" y="114" class="lg" text-anchor="middle">Solar power for</text><text x="651" y="134" class="lg" text-anchor="middle">each hour of</text><text x="651" y="154" class="lg" text-anchor="middle">tomorrow</text>
+<path d="M750 125h26" stroke="var(--ink2)" stroke-width="3"/><path d="M784 125l-9-7v14z" fill="var(--ink2)"/>
+<rect x="790" y="30" width="164" height="190" rx="12" fill="var(--card)" stroke="var(--line)" stroke-width="2"/><text x="872" y="58" class="lg" text-anchor="middle">Scored against</text>
+<text x="872" y="90" class="lbl small" text-anchor="middle">1. What really</text><text x="872" y="108" class="lbl small" text-anchor="middle">happened</text>
+<text x="872" y="138" class="lbl small" text-anchor="middle">2. CAISO's own guess</text><text x="872" y="168" class="lbl small" text-anchor="middle">3. "Same as</text><text x="872" y="186" class="lbl small" text-anchor="middle">yesterday"</text>
+</svg><figcaption>What our forecast does.</figcaption></figure><div class="trio">
+<div class="card"><h4>Why it matters</h4><ul class="short"><li>Fewer last-minute power buys.</li><li>Less power wasted.</li><li>Fewer backup gas plants running.</li></ul></div>
+<div class="card"><h4>Who it helps</h4><ul class="short"><li>Grid planners.</li><li>Companies that buy power.</li><li>Anyone who pays an electric bill.</li></ul></div>
+<div class="card"><h4>How it is different</h4><ul class="short"><li>Only free public data.</li><li>A fair scorecard against CAISO and simple guesses.</li><li>Every step shown, so anyone can check it.</li></ul></div>
+</div>
+<h4 class="mt">Who else forecasts solar?</h4><div class="scroll"><table class="t"><thead><tr><th>Who</th><th>What it is</th><th>How we differ</th></tr></thead><tbody>
+<tr><td><strong>Solcast</strong></td><td>A paid service. Solar forecasts from 5 minutes to 14 days ahead. Energy traders use it to place day-ahead bids.</td><td>We use only free public data and publish every step.</td></tr>
+<tr><td><strong>Open Climate Fix (Open Quartz)</strong></td><td>A nonprofit with an open-source solar forecast. Global, 48 hours ahead. Trained on UK data and checked only in the UK.</td><td>Ours is built for the CAISO area and scored against CAISO's own day-ahead forecast.</td></tr>
+<tr><td><strong>CAISO's own forecast</strong></td><td>The forecast CAISO publishes for tomorrow's solar.</td><td>This is the score we try to match.</td></tr>
+</tbody></table></div>
+<p><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Solcast website</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Linux Foundation Energy article on Open Climate Fix</span> <span class="b chk"><i>?</i><strong>NOT CONFIRMED</strong> vendor claims from their public pages. We did not test anyone’s accuracy</span></p>
+<h4 class="mt">The scorecard: 4 guesses, 1 ruler</h4>
+<p>Each bar is 1 way to guess tomorrow's solar for each daylight hour. The bar shows how far off that guess was, on average. <strong>Shorter is better.</strong></p><figure><svg viewBox="0 0 820 354" role="img" aria-labelledby="t6 d6" class="chart"><title id="t6">Average miss of 4 simple guesses and CAISO</title><desc id="d6">Bars show average miss as a share of solar capacity: 4.9%, 6.1%, 5.7%, 3.7%. Our target band runs from 4.6% to 7.1%. Shorter is better.</desc>
+<rect x="571.5" y="38" width="131.2" height="270" fill="var(--s4)" opacity=".22"/>
+<text x="637.1" y="28" class="lbl" text-anchor="middle">Our goal: land here (4.6% to 7.1%)</text>
+<text x="330" y="28" class="ax">Shorter bar = better guess</text>
+<line x1="330.0" x2="330.0" y1="38" y2="308" class="grid"/><text x="330.0" y="326" class="ax" text-anchor="middle">0%</text>
+<line x1="435.0" x2="435.0" y1="38" y2="308" class="grid"/><text x="435.0" y="326" class="ax" text-anchor="middle">2%</text>
+<line x1="540.0" x2="540.0" y1="38" y2="308" class="grid"/><text x="540.0" y="326" class="ax" text-anchor="middle">4%</text>
+<line x1="645.0" x2="645.0" y1="38" y2="308" class="grid"/><text x="645.0" y="326" class="ax" text-anchor="middle">6%</text>
+<line x1="750.0" x2="750.0" y1="38" y2="308" class="grid"/><text x="750.0" y="326" class="ax" text-anchor="middle">8%</text>
+<text x="0" y="72" class="lg">1. Copy yesterday</text>
+<text x="0" y="90" class="ax">Guess = what solar did yesterday, same</text>
+<text x="0" y="106" class="ax">hour.</text>
+<rect x="330" y="58" width="257.2" height="32" rx="5" fill="var(--ink2)"><title>1. Copy yesterday: 4.9%</title></rect><text x="595.2" y="80" class="lbl">4.9%</text>
+<text x="0" y="138" class="lg">2. Copy 2 days ago</text>
+<text x="0" y="156" class="ax">Same trick with older news: the newest full</text>
+<text x="0" y="172" class="ax">day we know by 10 a.m.</text>
+<rect x="330" y="124" width="320.2" height="32" rx="5" fill="var(--ink2)"><title>2. Copy 2 days ago: 6.1%</title></rect><text x="658.2" y="146" class="lbl">6.1%</text>
+<text x="0" y="204" class="lg">3. CAISO, as published</text>
+<text x="0" y="222" class="ax">CAISO's own guess for tomorrow, checked</text>
+<text x="0" y="238" class="ax">against what happened.</text>
+<rect x="330" y="190" width="299.2" height="32" rx="5" fill="var(--s1)"><title>3. CAISO, as published: 5.7%</title></rect><text x="637.2" y="212" class="lbl">5.7%</text>
+<text x="0" y="270" class="lg">4. CAISO, fair version</text>
+<text x="0" y="288" class="ax">Same guess. Solar turned down on purpose is</text>
+<text x="0" y="304" class="ax">counted as if it was made.</text>
+<rect x="330" y="256" width="194.2" height="32" rx="5" fill="var(--s1)"><title>4. CAISO, fair version: 3.7%</title></rect><text x="532.2" y="278" class="lbl">3.7%</text>
+</svg><figcaption>Average miss, in % of all solar plant capacity. Daylight hours, Mar 2024 to Apr 9, 2026 (9,133 hours over 758 days). <span class="b our"><i>&#9679;</i><strong>OUR DATA</strong> our reference scores</span></figcaption></figure><ul class="short">
+<li><strong>What "miss" means.</strong> The average gap between the guess and what happened, divided by all solar plant capacity. Example with made-up capacity: if plants can make 25,000 MW at most, a 5% miss is 1,250 MW off in an average daylight hour. <span class="b calc"><i>=</i><strong>CALCULATED</strong> 5% x 25,000 MW = 1,250 MW</span></li>
+<li><strong>Bars 1 and 2</strong> are free tricks anyone can do. Bar 2 exists because "yesterday" is not fully known at 10 a.m., so the fair copy is 2 days ago.</li>
+<li><strong>Bars 3 and 4</strong> are the experts at CAISO. 2 versions, because solar is sometimes turned down on purpose (section 8). The meter then shows less than the sun could make. Bar 3 counts the meter as it is. Bar 4 adds the turned-down solar back, so CAISO looks better.</li>
+<li><strong>Our goal:</strong> at most 1.25 times CAISO's miss. That is <strong>4.6%</strong> (1.25 x 3.7%) to <strong>7.1%</strong> (1.25 x 5.7%): the orange band. <span class="b calc"><i>=</i><strong>CALCULATED</strong> 1.25 x 3.7 = 4.6; 1.25 x 5.7 = 7.1</span></li>
+</ul>
+<h4 class="mt">Our time range, and why</h4><figure><svg viewBox="0 0 820 330" role="img" aria-labelledby="t5 d5" class="chart"><title id="t5">Our time range</title><desc id="d5">Timeline from January 2024 to October 2026 showing when each data file starts, the practice period, and the locked final exam period.</desc>
+<line x1="20.0" x2="20.0" y1="34" y2="300" class="grid"/><text x="23.0" y="26" class="ax">Jan 2024</text>
+<line x1="153.6" x2="153.6" y1="34" y2="300" class="grid"/><text x="156.6" y="26" class="ax">Jul 2024</text>
+<line x1="288.7" x2="288.7" y1="34" y2="300" class="grid"/><text x="291.7" y="26" class="ax">Jan 2025</text>
+<line x1="421.5" x2="421.5" y1="34" y2="300" class="grid"/><text x="424.5" y="26" class="ax">Jul 2025</text>
+<line x1="556.6" x2="556.6" y1="34" y2="300" class="grid"/><text x="559.6" y="26" class="ax">Jan 2026</text>
+<line x1="689.4" x2="689.4" y1="34" y2="300" class="grid"/><text x="692.4" y="26" class="ax">Jul 2026</text>
+<text x="20" y="56" class="lg">Solar output and CAISO forecast files</text>
+<rect x="20.0" y="64" width="748.7" height="22" rx="5" fill="var(--muted)"><title>Solar output and CAISO forecast files: Jan 1, 2024 to Oct 17, 2026</title></rect>
+<text x="28.0" y="80" class="barlbl">Jan 1, 2024 to Oct 17, 2026</text>
+<text x="20" y="118" class="lg">Weather forecast files</text>
+<rect x="69.2" y="126" width="699.5" height="22" rx="5" fill="var(--s1)"><title>Weather forecast files: Start: Mar 8, 2024</title></rect>
+<text x="77.2" y="142" class="barlbl">Start: Mar 8, 2024</text>
+<text x="20" y="180" class="lg">Practice period: training and practice tests</text>
+<rect x="69.2" y="188" width="559.3" height="22" rx="5" fill="var(--s3)"><title>Practice period: training and practice tests: Mar 8, 2024 to Apr 9, 2026 = 763 days</title></rect>
+<text x="77.2" y="204" class="barlbl">Mar 8, 2024 to Apr 9, 2026 = 763 days</text>
+<text x="20" y="242" class="lg">Final exam (locked until the end)</text>
+<rect x="629.2" y="250" width="139.5" height="22" rx="5" fill="var(--s2)"><title>Final exam (locked until the end): Apr 10 to Oct 17, 2026 = 191 days</title></rect>
+<text x="621.2" y="266" class="lbl small" text-anchor="end">Apr 10 to Oct 17, 2026 = 191 days</text>
+<text x="20" y="322" class="ax">Our window: 954 days. The final exam is the latest 20% of them (954 x 20% = 191).</text>
+</svg><figcaption>Each bar shows when a kind of data is available.</figcaption></figure><ul class="short">
+<li><strong>Why start Mar 8, 2024?</strong> The weather forecast archive is complete from that day. We need weather and solar data for the same hours.</li>
+<li><strong>Why end Oct 17, 2026?</strong> Our data plan names Oct 17 as "the last full day we use" but does not say why. Our best explanation: it is a cushion of about 10 days before the Oct 27 to 28 data pulls. The U.S. Energy Information Administration can revise its numbers after the fact, mostly the newest days, so a cushion keeps us on settled numbers.  <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> our data plan and data FAQ, Q6.5: values can be revised</span> <span class="b est"><i>&#8776;</i><strong>ROUGH ESTIMATE</strong> the reason is our judgment, not a recorded decision</span></li>
+<li><strong>Why is the final exam the latest 191 days?</strong> In real life we only know the past. So the test is always the newest days, and we never train on them. 20% of 954 days = 191.</li>
+<li><strong>Why no winter in the exam?</strong> The newest 191 days are April to October. Moving the exam to include winter would mean testing on old days and training on newer ones, which is not how a real forecast works.</li>
+<li><strong>What we do about it.</strong> All 180 winter days (Dec to Feb) in our data sit in the 763 practice days, so winter is learned and tested there. If the 4 practice tests are the last 4 three-month blocks, 2 of them include winter: Oct 10, 2025 to Jan 8, 2026 (39 of 91 days) and Jan 9 to Apr 9, 2026 (51 of 91 days). We will say clearly in our results that winter was tested only in practice. <span class="b calc"><i>=</i><strong>CALCULATED</strong> Dec, Jan, Feb days in the practice period = 180</span> <span class="b chk"><i>?</i><strong>NOT CONFIRMED</strong> practice-test dates are not written down yet, so this is our assumption</span></li></ul>
+<p><span class="b our"><i>&#9679;</i><strong>OUR DATA</strong> Our data FAQ, section 4</span></p></section><section><div class="sh"><span class="num">11</span><div><h2>Our data</h2><p class="sub">5 sources. Each source has a job.</p></div></div><div class="scroll"><table class="t data"><thead><tr><th></th><th>What it is</th><th>Where it comes from</th><th>What it is for</th><th>What else we could have used, and why not</th></tr></thead><tbody><tr><td class="ic"><svg viewBox="0 0 48 48" width="40" height="40"><use href="#i-sun" x="0" y="0" width="48" height="48"/></svg></td><td><strong>1. The answer key</strong><br>How much solar power was really made, each hour.</td><td>U.S. Energy Information Administration: the federal government's energy statistics office. Its hourly grid data. (Files say "CISO", which means CAISO.)</td><td>The number we forecast. Every guess is scored against it.</td><td><strong>Skipped:</strong> CAISO's own count of actual solar. We keep it as a backup. It covers only 3 areas and shows peaks about 12% to 13% higher. The federal source has fixed definitions and public rules. <span class="b our"><i>&#9679;</i><strong>OUR DATA</strong> Our data FAQ, Q3.2: we did not record whether the team compared the two</span></td></tr><tr><td class="ic"><svg viewBox="0 0 48 48" width="40" height="40"><use href="#i-pylon" x="0" y="0" width="48" height="48"/></svg></td><td><strong>2. The scoreboard</strong><br>CAISO's own guess for tomorrow's solar, made the day before.</td><td>CAISO, through its public data portal (OASIS).</td><td>The score to match. Never used to train our model.</td><td><strong>Skipped:</strong> other forecasts. The business question is about beating CAISO's.</td></tr><tr><td class="ic"><svg viewBox="0 0 48 48" width="40" height="40"><use href="#i-cloud" x="0" y="0" width="48" height="48"/></svg></td><td><strong>3. Weather forecasts</strong><br>Cloud cover and sunshine strength as forecast 1 and 2 days ahead, at 51 spots in California.</td><td>Open-Meteo (free service), using the European weather model ECMWF.</td><td>The clues for our guess. We use the forecast made 2 days ahead, which is ready before the 10 a.m. deadline.</td><td><strong>Skipped:</strong> measured sunshine from the National Renewable Energy Laboratory database. It records what happened, not what was forecast, so it would be too good to be true. Also skipped: other weather models (1 mixes models, 1 has no day-2 forecast, 1 returned no data).</td></tr><tr><td class="ic"><svg viewBox="0 0 48 48" width="40" height="40"><use href="#i-panels" x="0" y="0" width="48" height="48"/></svg></td><td><strong>4. How many panels exist</strong><br>A monthly list of every power plant and its capacity.</td><td>The same U.S. Energy Information Administration that provides the answer key. Its monthly plant survey (form 860M).</td><td>Divides errors by capacity so months compare fairly. Places the weather spots near plants.</td><td><strong>Skipped:</strong> CAISO's own capacity numbers (1 number a month in a PDF, no plant list). Used only to cross-check. The yearly version of the same survey is too slow: yearly, not monthly.</td></tr><tr><td class="ic"><svg viewBox="0 0 48 48" width="40" height="40"><use href="#i-bulb" x="0" y="0" width="48" height="48"/></svg></td><td><strong>5. Turned-down solar</strong><br>When solar was turned down on purpose, and by how much.</td><td>CAISO's curtailment workbooks (2024 to 2025) and daily renewable reports (June 2025 on).</td><td>Flags hours when output was lower than the sun allowed. We report results with and without them.</td><td><strong>Skipped:</strong> CAISO's daily curtailment PDF. It returned no data for 2026.</td></tr></tbody></table></div>
+<p><span class="b our"><i>&#9679;</i><strong>OUR DATA</strong> Our data FAQ, sections 1 to 3</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Open-Meteo: free for non-commercial use, credit required (CC BY 4.0)</span></p></section><section><div class="sh"><span class="num">12</span><div><h2>What could go wrong, in plain words</h2><p class="sub">7 things that could trip us up, and what we do about each.</p></div></div><div class="rgrid"><div class="card rk"><h4>1. The weather forecast is wrong</h4><p><span class="tag">WHY</span> We rely on a free forecast made by someone else. A bad forecast means a bad solar guess.</p><p><span class="tag do">WHAT WE DO</span> We use the forecast made 2 days ahead, test the 1-day forecast as a comparison, and report errors by weather type. Forecast sunshine already tracks real output well: 0.87 on a scale where 1.0 is perfect.</p></div><div class="card rk"><h4>2. We have little history</h4><p><span class="tag">WHY</span> The weather archive starts Mar 8, 2024. That is 954 days. Each season shows up only 2 to 3 times.</p><p><span class="tag do">WHAT WE DO</span> Keep the model simple. Test only in time order, never shuffled.</p></div><div class="card rk"><h4>3. No winter in the final exam</h4><p><span class="tag">WHY</span> The exam is the newest 191 days, Apr 10 to Oct 17, 2026. A real forecast only knows the past, so the test must be the newest days. That leaves out winter, when solar is lowest and days are shortest.</p><p><span class="tag do">WHAT WE DO</span> All 180 winter days sit in the practice period, so winter is learned and tested there (in 2 of the 4 practice tests, if they are the last 4 three-month blocks). We report winter results separately and say clearly they come from practice, not the final exam.</p></div><div class="card rk"><h4>4. Turned-down solar hides the truth</h4><p><span class="tag">WHY</span> The meter counts what was delivered, not what the sun allowed. Up to 24% in a spring month.</p><p><span class="tag do">WHAT WE DO</span> Flag those hours. Report results with and without them.</p></div><div class="card rk"><h4>5. Clocks do not match</h4><p><span class="tag">WHY</span> Our main solar count runs 1 hour behind the sun and the other sources. A 1-hour slip ruins results.</p><p><span class="tag do">WHAT WE DO</span> We tested it: the files line up best when shifted by 1 hour (0.93 match, versus 0.86 and 0.92 for the nearest shifts). All sources move to 1 clock (UTC). The team confirms the rule.</p></div><div class="card rk"><h4>6. Missing data</h4><p><span class="tag">WHY</span> 226 of 22,896 hours (0.99%) have a gap: 129 weather hours, 72 CAISO plan hours and 25 solar count hours. The 129 weather hours are in April 2026, inside the exam period.</p><p><span class="tag do">WHAT WE DO</span> We do not invent values. Short gaps are filled, long gaps are dropped, and every choice is written down.</p></div><div class="card rk"><h4>7. Rooftop solar is invisible, and solar keeps growing</h4><p><span class="tag">WHY</span> Rooftop solar shows up as lower demand. Big-farm capacity grew 24% in 2.5 years.</p><p><span class="tag do">WHAT WE DO</span> Divide errors by capacity so months compare fairly. State clearly that rooftop is not in our numbers.</p></div></div></section><section><div class="sh"><span class="num">13</span><div><h2>Quick answers</h2><p class="sub">7 questions people ask.</p></div></div><div class="faq"><details open><summary>Why not just look at the sky?</summary><p>1 sky covers a few miles. Solar farms are spread across a huge state. And the plan is made the day before, so we need to know today what tomorrow's sky will do. Weather forecast models do that.</p></details><details open><summary>Why not use last year's weather?</summary><p>The sun's path repeats every year. Clouds do not. A sunny Aug 3 last year says nothing about tomorrow. What repeats is the time of day and the season, and our model already knows those.</p></details><details open><summary>Why not copy yesterday?</summary><p>It works decently: an average miss of 4.9%. But it fails when the weather changes. It is the minimum score we must beat.</p></details><details open><summary>Why not just use CAISO's forecast?</summary><p>That is the score we compare ourselves against. Our job is to see whether free public data can get close.</p></details><details open><summary>Why only solar, not total demand?</summary><p>CAISO already forecasts total demand very well: within about 3% on our 4 sample days. Solar is the hard part.</p></details><details open><summary>Why California and not New York?</summary><p>Short answer: California has the most solar, and its grid gives away the data we need for free. A bigger solar business means a better guess is worth more.<ul class='short'><li><strong>California is about 6 times bigger in solar.</strong> California: more than <strong>49,000 MW</strong> of solar, rank 1 in the U.S. New York: <strong>7,922 MW</strong>, rank 7. 49,000 &divide; 7,922 = about 6.</li><li><strong>Solar matters more there.</strong> Solar makes more than <strong>31%</strong> of California's electricity. In New York it is <strong>7.56%</strong>. A miss in the solar guess hurts more where solar is bigger.</li><li><strong>California is the bigger power market.</strong> In 2024 California made <strong>214.2 TWh</strong> of electricity and New York made <strong>129.0 TWh</strong> (all sources).</li><li><strong>Free data and a score to beat.</strong> CAISO and the U.S. Energy Information Administration publish hourly numbers for free. CAISO also publishes its own day-ahead solar forecast. That is the score we try to match.</li></ul><span class="b src"><i>&#10003;</i><strong>SOURCE</strong> Solar Energy Industries Association, California (data through Q4 2024) and New York (data through Mar 2026) state pages</span> <span class="b src"><i>&#10003;</i><strong>SOURCE</strong> U.S. Energy Information Administration: 2024 net generation</span> <span class="b calc"><i>=</i><strong>CALCULATED</strong> 49,000 &divide; 7,922 = about 6</span> <span class="b chk"><i>?</i><strong>NOT CONFIRMED</strong> The team’s original reason is not written in our project documents, so this is our best explanation. The two solar figures are from different dates. We did not check what free solar data New York’s grid operator offers</span></p></details><details open><summary>Why 10 a.m.?</summary><p>Offers for tomorrow close at 10 a.m. Pacific the day before. Anything we use has to be known by then, or our results would look better than real life. CAISO publishes the plan at 1 p.m.</p></details></div></section><section class='srcs'><h3>Sources</h3><ol><li><a href="https://www.energy.ca.gov/data-reports/energy-almanac/california-electricity-data/2025-total-system-electric-generation">California Energy Commission, 2025 Total System Electric Generation</a></li><li><a href="https://www.eia.gov/todayinenergy/detail.php?id=68324">U.S. Energy Information Administration, small-scale solar (Oct 2026)</a></li><li><a href="https://www.eia.gov/todayinenergy/detail.php?id=65364">U.S. Energy Information Administration, curtailment in California</a></li><li><a href="https://www.eia.gov/electricity/930-content/about.html">U.S. Energy Information Administration, hourly grid data guide</a></li><li><a href="https://www.caiso.com/documents/2024-annual-report-on-market-issues-and-performance-aug-07-2025.pdf">CAISO 2024 market report</a></li><li><a href="https://www.caiso.com/market/Pages/MarketProcesses.aspx">CAISO market processes</a></li><li><a href="https://www.caiso.com/documents/real-time-load-settlements-and-revenue-imbalances-aug-30-2023.pdf">CAISO real-time load settlement paper</a></li><li><a href="https://www.caiso.com/outlook/history/20250715/fuelsource.csv">CAISO daily public files (sample days)</a></li><li><a href="https://www.caiso.com/about/news/news-releases/edam-is-live-pacificorp-and-caiso-successfully-launch-new-market-may-1">CAISO news release, May 1, 2026</a></li><li><a href="https://www.cpuc.ca.gov/-/media/cpuc-website/industries-and-topics/documents/energy/rps/2025/2025-california-renewables-portfolio-standard-rps-annual-report.pdf">California Public Utilities Commission, 2025 renewables report</a></li><li><a href="https://www.stoel.com/legal-insights/special-reports/the-law-of-solar/chapters/power-purchase-agreements-utility-scale-projects">Stoel Rives, solar power purchase agreements</a></li><li><a href="https://www.seia.org/initiatives/whats-megawatt">Solar Energy Industries Association, What's a Megawatt</a></li><li><a href="https://en.wikipedia.org/wiki/California_Independent_System_Operator">Wikipedia, California Independent System Operator</a></li><li><a href="https://wind-works.org/2024-california-rooftop-solar-now-10-of-state-consumption/">Wind-Works, California rooftop solar</a></li><li><a href="https://www.nyiso.com/-/the-power-of-markets-how-the-new-york-iso-s-independent-markets-support-the-electric-grid">New York Independent System Operator</a></li><li><a href="https://www.coned.com/en/about-us/media-center/news/2023/04-18/clean-energy-milestone-nyc-surpasses-500mw-solar-capacity">Con Edison, NYC solar milestone</a></li><li><a href="https://www.caiso.com/documents/section30-bid-and-self-schedulesubmission-in-californiaisomarkets-asof-jan1-2022.pdf">CAISO market rules, section 30: bid and self-schedule submission (Jan 1, 2022 version; later versions may differ)</a></li><li><a href="https://www.iso-ne.com/about/what-we-do/how-resources-are-selected-and-prices-are-set">ISO New England, how resources are selected and prices are set</a></li><li><a href="https://www.ippny.org/vs-uploads/PDF/1301328531_Energy_Pricing.pdf">Independent Power Producers of New York, energy pricing</a></li><li><a href="https://www.nyiso.com/documents/20142/1392242/Introduction_to_the_NYISO.pdf/d027e637-20bf-2c9f-b3b6-43ce348a7595">NYISO, Introduction to the NYISO</a></li><li><a href="https://www.eia.gov/electricity/State/california">U.S. Energy Information Administration, California state electricity page (net generation by ownership, 2024)</a></li><li><a href="https://www.energy.ca.gov/data-reports/energy-almanac/california-electricity-data/2024-total-system-electric-generation">California Energy Commission, 2024 Total System Electric Generation</a></li><li><a href="https://www.cpuc.ca.gov/-/media/cpuc-website/divisions/office-of-governmental-affairs-division/reports/2025/2025-sb-695-report_093025.pdf">California Public Utilities Commission, 2025 SB 695 report</a></li><li><a href="https://www.gridinfo.com/california/plants?page=5">gridinfo.com, directory of power plants in California</a></li><li><a href="https://www.gridinfo.com/new-york/plants?d=desc&o=generation">gridinfo.com, directory of power plants in New York</a></li><li><a href="https://seia.org/state-solar-policy/california-solar/">Solar Energy Industries Association, California solar</a></li><li><a href="https://seia.org/state-solar-policy/new-york-solar/">Solar Energy Industries Association, New York solar</a></li><li><a href="https://bpmcm.caiso.com/">CAISO Business Practice Manual for Market Instruments (BPM Document Library)</a></li><li><a href="https://emp.lbl.gov/tracking-the-sun">Lawrence Berkeley National Laboratory, Tracking the Sun</a></li><li><a href="https://solcast.com/api/index.html">Solcast</a></li><li><a href="https://lfenergy.org/creating-an-open-source-global-solar-forecast-and-dashboard/">Linux Foundation Energy, Open Climate Fix global solar forecast</a></li><li>Our project's data FAQ (docs/DATA_FAQ.md) and data pulls, Oct 2026</li></ol><p class='ax'>Weather data by Open-Meteo.com (CC BY 4.0).</p></section></main></body></html>

@@ -24,7 +24,7 @@ Every claim carries a tag so you can tell a fact from an opinion.
 | 3 | How we know these are the right sources, and what we passed over |
 | 4 | Time frames and why |
 | 5 | Data dictionary (summary; full version in `DATA_DICTIONARY.md`) |
-| 6 | Issues, risks, limits and the decision log (D1 to D27) |
+| 6 | Issues, risks, limits and the decision log (D1 to D30) |
 | 7 | Recommendations: nulls, encoding, data types, merging |
 
 ---
@@ -153,7 +153,7 @@ The end date was set by when we pulled the data (2026-10-27 and 2026-10-28), and
 
 The plan holds out the latest 20% of days. 20% of 954 days is 190.8, rounded to 191, which starts on 2026-04-10 and ends on 2026-10-17. The earlier 763 days are used for training and four rolling validation folds of about three months each, with at least a one-day gap. **[Our call]** (README, Task 1)
 
-The fold dates are fixed in Decision D24: 4 blocks of 91 days, 2025-04-11 to 2025-07-10, 2025-07-11 to 2025-10-09, 2025-10-10 to 2026-01-08 and 2026-01-09 to 2026-04-09. Training for each block uses all earlier days and stops at least 1 day before the block starts. **[Our call]** (derived from the rule, not yet reviewed day by day)
+The fold dates are fixed in Decision D29, which replaces the dates in D24: validation blocks 2025-03-29 to 2025-06-27, 2025-06-28 to 2025-09-26, 2025-09-27 to 2025-12-26 (91 days each) and 2025-12-27 to 2026-04-09 (104 days), so the whole latest winter sits in one fold. Training for each block uses all days from 2024-03-08 and stops 1 whole day before the block starts. **[Our call]** The table is in `reports/folds.csv`.
 
 Two consequences: the test period has **no winter**, and it contains the 129-hour weather gap in April 2026 (Q6.12). Winter accuracy is judged only in validation.
 
@@ -192,7 +192,7 @@ The weather files together are 29.3 MB gzip (164.9 MB uncompressed). **[Checked]
 
 ## 6. Issues, risks, limits and the decision log
 
-Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D27).
+Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D30).
 
 ### Target: EIA hourly solar
 
@@ -272,7 +272,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 ### Decision log
 
-D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). Every entry has the same 5 headings.
+D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. Every entry has the same 5 headings.
 
 | ID | Decision | Date | Link |
 |---|---|---|---|
@@ -299,10 +299,13 @@ D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are w
 | D21 | `AVA_` left out of the CAISO total | 2026-11-07 | [D21](#d21-the-ava_-hub-in-the-caiso-day-ahead-file) |
 | D22 | 5 clock-change days left out of the hourly curtailment flags | 2026-11-07 | [D22](#d22-23-hour-and-25-hour-clock-change-days) |
 | D23 | One processed hourly table on a full UTC calendar | 2026-11-07 | [D23](#d23-one-processed-hourly-table) |
-| D24 | Validation folds: the last 4 blocks of 91 days before the test set | 2026-11-07 | [D24](#d24-validation-fold-dates) |
+| D24 | Validation folds: the last 4 blocks of 91 days before the test set (dates replaced by D29) | 2026-11-07 | [D24](#d24-validation-fold-dates) |
 | D25 | Window end date stays 2026-10-17 | 2026-11-07 | [D25](#d25-the-window-end-date) |
 | D26 | Curtailment: workbook to 2025-12-31 (except 2025-06-16), daily report for the rest | 2026-11-07 | [D26](#d26-which-curtailment-file-for-which-dates) |
 | D27 | Scoring: normalized MAE, 4 reference forecasts, one common set of hours | 2026-11-07 | [D27](#d27-scoring-definitions) |
+| D28 | Model features and the 10 a.m. rule: day-2 weather, EIA lags of 48 h or more | 2026-11-07 | [D28](#d28-model-features-and-the-10-am-rule) |
+| D29 | Validation folds: 4 blocks, the last one Dec 27 to Apr 9 so winter is one fold | 2026-11-07 | [D29](#d29-validation-folds) |
+| D30 | Model families: gradient-boosted trees carried forward, ridge dropped | 2026-11-07 | [D30](#d30-model-families-kept-and-dropped) |
 
 #### D1 Compressed file names
 
@@ -763,7 +766,7 @@ Without fixed dates each teammate cuts differently, scores are not comparable, a
 - Option C: fewer, longer folds. Pros: more validation days per fold. Cons: fewer comparisons.
 
 **Which course of action will we use?**
-Option A. Validation blocks of 91 days each: 2025-04-11 to 2025-07-10, 2025-07-11 to 2025-10-09, 2025-10-10 to 2026-01-08, and 2026-01-09 to 2026-04-09. Training uses all earlier days and stops at least 1 day before each block starts. Winter days (December to February): 39 of 91 in block 3, 51 of 91 in block 4. **[Our call]** (the exact boundaries are derived from the rule and not yet reviewed day by day)
+Option A. Validation blocks of 91 days each: 2025-04-11 to 2025-07-10, 2025-07-11 to 2025-10-09, 2025-10-10 to 2026-01-08, and 2026-01-09 to 2026-04-09. Training uses all earlier days and stops at least 1 day before each block starts. Winter days (December to February): 39 of 91 in block 3, 51 of 91 in block 4. **[Our call]** (the exact boundaries are derived from the rule and not yet reviewed day by day) **The dates are replaced by Decision D29** (2026-11-07), because winter was split between 2 blocks.
 
 #### D25 The window end date
 
@@ -826,6 +829,91 @@ The project goal is a score relative to CAISO (1.25 times CAISO's error), so eve
 - Hours: `daylight` (D20), with EIA, CAISO day-ahead and both persistence values present, outside `wx_gap` (D17) and with `curt_mwh` not null (D22). This common set is the headline, the same hours for all 4 references and for every model. The per-reference set (Option B) is kept only as a comparison with the earlier scratch numbers.
 - Periods: training and validation are Pacific dates (of the hour start) before 2026-04-10. The test period is scored for reference forecasts only, behind the `--with-test` flag, into a separate file. Models are never scored on it before the final evaluation.
 
+#### D28 Model features and the 10 a.m. rule
+
+**What issue did we identify?**
+A day-ahead bid for every hour of Pacific day D closes at 10:00 a.m. Pacific on day D-1. A model that uses anything known only after that time would score better in validation than it could in a real bid.
+
+**How did we identify it?**
+The README business problem, Q6.10 and D27 (persistence D-2), then the modeling brief (`briefs/03_modeling_brief.md`). The CAISO day-ahead results come out at about 1:00 p.m. on D-1 (README, business problem), after the bid close.
+
+**Why is it an issue?**
+EIA output at t minus 24 h falls after the bid close for afternoon and evening hours. Day-1 weather forecasts are issued about 24 hours ahead, also too late. CAISO's own day-ahead forecast is published after the close and is our benchmark.
+
+**What are our options?**
+- Option A: day-2 weather, calendar and sun geometry for hour t, `capacity_mw`, and EIA only at t minus 48 h or earlier (or daily values that end with Pacific day D-2). Pros: respects the rule. Cons: weaker inputs.
+- Option B: add day-1 weather and EIA at t minus 24 h. Pros: more accurate. Cons: breaks the rule.
+- Option C: add CAISO's day-ahead forecast as an input. Pros: a strong input. Cons: published after the close, and it is the benchmark we are scored against.
+
+**Which course of action will we use?**
+Option A (Raúl, 2026-11-07). **[Our call]** `src/modeling/features.py` builds 20 features from `hourly_table.parquet` after dropping test rows:
+- Day-2 weather (9): cloud cover, shortwave (GHI), direct, diffuse, direct normal, temperature, humidity, wind, precipitation; plus `csi_previous_day2` = day-2 GHI / clear-sky GHI (blank when clear-sky GHI is under 20 W/m2).
+- Calendar and sun (7): Pacific hour of the hour start, hour as sine and cosine, day of year as sine and cosine, `sun_elev` (D20), and pvlib Ineichen clear-sky GHI at the same centre point and mid-hour.
+- Capacity (1): `capacity_mw` (EIA 860M monthly nameplate, all CISO).
+- EIA (2): `cf_lag48`, EIA at hour ending t minus 48 h divided by `capacity_mw` of hour t (times capacity it equals persistence D-2 exactly, **[Checked]**); `cf_d2_daily`, the mean EIA capacity factor over all hours of Pacific day D-2 (at least 20 hours present).
+
+Lag rule: hourly EIA lags are 48 h or more; daily EIA features end with Pacific day D-2 (for the first hour of D that is 24 h after the last hour used, which the rule allows because D-2 ends before the bid close). `assert_no_leak` fails on a shorter lag, on a column not in the feature list, or on a `*_previous_day1` column outside the labeled comparison. Left out: EIA at t minus 24 h, `caiso_dam_mw`, lags of `curt_mwh` and of OASIS ACTUAL (publication time unknown).
+
+Target: capacity factor `eia_mw / capacity_mw` (D15), predictions clipped to 0 to 1 and multiplied back by `capacity_mw`. Fit rows: daylight, EIA present, `wx_gap` False, `eia_deep_night_flag` False (D16, D17): 9,190 hours. Ridge fills blanks with the median of the training rows of each fold; the trees take blanks as they are.
+
+Day-1 comparison (labeled, never the main model): day-2 cloud cover, GHI and `csi` swapped for their day-1 versions. It moves the gradient-boosted trees from 4.02% to 3.87% pooled validation nMAE (D30), so the 10 a.m. rule costs about 0.15 points. **[Checked]** (2026-11-07, `src/modeling/score_models.py`)
+
+Two assumptions are not verified **[Unverified]**: (1) the day-2 weather forecast for every hour of D is issued before 10 a.m. Pacific on D-1; for late-evening hours of D the run behind the day-2 value may be published later, and Open-Meteo's run times were not checked. (2) EIA has published the D-2 hourly values by 10 a.m. Pacific on D-1 (as in D27).
+
+#### D29 Validation folds
+
+**What issue did we identify?**
+The fold dates in D24 split the latest winter between 2 blocks (39 winter days in block 3, 51 in block 4), and the modeling brief asks for one fold that covers Dec 27 to Mar 27, so winter is checked in one piece (risk register item 13). The test set has no winter.
+
+**How did we identify it?**
+Comparing D24 with the brief, then building the fold tables with `src/modeling/folds.py` (2026-11-07).
+
+**Why is it an issue?**
+A winter error split across 2 folds is harder to read, and the test set cannot show it.
+
+**What are our options?**
+All options: training from 2024-03-08, 1 whole gap day, then the validation block; expanding window.
+- Option A (`d24`): the D24 blocks. Pros: already recorded, 4 x 91 days. Cons: winter split.
+- Option B (`winter91`): 4 blocks of 91 days ending 2026-03-27. Pros: Dec 27 to Mar 27 is one fold. Cons: 2026-03-28 to 2026-04-09 (13 days) never validated.
+- Option C (`winter104`): as B, but the last block runs to 2026-04-09 (104 days). Pros: winter in one fold, and every recent day validated. Cons: one block longer than about 91 days.
+
+**Which course of action will we use?**
+Option C (Raúl, 2026-11-07). **[Our call]** It replaces the D24 dates. Inner split for tuning: the last 10% of each training window after its own 1-day gap (ridge alpha, tree settings and early stopping). The validation block is never used to tune. `folds.py` asserts that training never overlaps its own validation days, that each gap is a whole day, and that no fold reaches 2026-04-10.
+
+| Fold | Training | Gap day | Validation | Days | Dec to Feb days | Inner split from |
+|---|---|---|---|---|---|---|
+| 1 | 2024-03-08 to 2025-03-27 (385 d) | 2025-03-28 | 2025-03-29 to 2025-06-27 | 91 | 0 | 2025-02-18 (38 d) |
+| 2 | 2024-03-08 to 2025-06-26 (476 d) | 2025-06-27 | 2025-06-28 to 2025-09-26 | 91 | 0 | 2025-05-10 (48 d) |
+| 3 | 2024-03-08 to 2025-09-25 (567 d) | 2025-09-26 | 2025-09-27 to 2025-12-26 | 91 | 26 | 2025-07-31 (57 d) |
+| 4 | 2024-03-08 to 2025-12-25 (658 d) | 2025-12-26 | 2025-12-27 to 2026-04-09 | 104 | 64 | 2025-10-21 (66 d) |
+
+Pacific dates of the hour start. Written to `reports/folds.csv`. Scored hours (D27 common set): 1,231, 1,212, 951 and 1,114; 4,508 in all on 374 days.
+
+#### D30 Model families kept and dropped
+
+**What issue did we identify?**
+The README leaves model types open until the data is explored (Approach, step 3). Candidates must be compared on the same folds and hours, and the reason for keeping or dropping each must be written down.
+
+**How did we identify it?**
+The modeling brief and `src/modeling/score_models.py` on the D29 folds, D27 common hours, training and validation days only (2026-11-07). **[Checked]**
+
+**Why is it an issue?**
+Choosing a model on the test set, or on hours that differ between models, would make the final score look better than it is.
+
+**What are our options?**
+Pooled validation, 4,508 hours. nMAE targets on these hours: 1.25 x CAISO adjusted = 3.44%, 1.25 x CAISO as published = 5.63%. Skill is 1 minus RMSE / RMSE of persistence D-2.
+- Climatology (mean capacity factor by month and hour): nMAE 6.58%, skill 0.069, P95 overshoot +15.5% against persistence D-2. Pros: no weather needed. Cons: no better than persistence D-2 (6.60%).
+- Ridge (standardized, alpha on the inner split): nMAE 4.70%, skill 0.391, P95 overshoot -36.7%. Pros: simple, fast. Cons: worse than the trees in all 4 folds (5.07, 3.96, 4.50, 5.29% against 4.60, 3.12, 3.91, 4.47%); the chosen alpha jumps from 0.01 to 100 between folds.
+- Gradient-boosted trees (`HistGradientBoostingRegressor`, depth 3 or 5, squared or absolute loss, iterations by early stopping on the inner split): nMAE 4.02%, skill 0.473, P95 overshoot -51.2% and undershoot -45.8% against persistence D-2, bias -186 MW. Pros: best of the candidates in every fold. Cons: misses 1.25 x CAISO adjusted.
+- References: persistence D-2 6.60%, CAISO as published 4.51%, CAISO adjusted 2.75%; persistence D-1 5.44% (comparison only).
+
+**Which course of action will we use?**
+Carry the gradient-boosted trees forward (Raúl, 2026-11-07). **[Our call]** Drop ridge as a candidate but keep it in the result tables. Keep climatology as a floor. Against the 4 README targets the trees pass 3: nMAE within 1.25 x CAISO as published (all 4 folds), skill at least 0.30, P95 overshoot at least 20% below persistence D-2. They fail nMAE within 1.25 x CAISO adjusted (pooled 4.02% against 3.44%; within it only in fold 2). Part of CAISO adjusted's lead is by construction, since CAISO measures curtailment against its own forecast (D27).
+
+How to read the result **[Checked]**: the lead over CAISO as published comes from spring and curtailed hours. By season, CAISO as published against the trees: spring 7.46% and 4.95%, summer 2.89% and 3.04%, fall 3.63% and 3.82%, winter 3.50% and 4.30%. In hours without curtailment (`curt_mwh` at most 1% of `capacity_mw`, 2,344 hours) CAISO scores 2.97% and the trees 3.58%; in curtailed hours (2,164) CAISO 6.17% and the trees 4.51%, against EIA. CAISO forecasts output before curtailment and EIA measures it after, so the trees partly learn curtailment rather than better weather. The 1% threshold is used because `curt_mwh` is above 0 in 94% of scored hours (open item).
+
+`reports/model_results_validation.csv` holds every score by model, fold, month, season, Pacific hour, day-2 cloud cover and curtailment. Per-hour predictions are in `data/processed/oof_predictions.parquet` (not committed). The test set has not been scored by any model.
+
 ### Open items
 
 | Item | Status | Needed from |
@@ -841,7 +929,10 @@ The project goal is a score relative to CAISO (1.25 times CAISO's error), so eve
 | What `AVA_` is (Q6.6) | Treatment decided (D21); meaning open | Raúl, CAISO documentation |
 | How CAISO maps 24 report positions on 23 and 25 hour days | Treatment decided (D22); mapping open | Raúl |
 | Definition of daylight | Decided: D20 | |
-| Validation fold dates | Decided: D24; boundaries not yet reviewed day by day | Team |
+| Validation fold dates | Decided: D29 (replaces the D24 dates); table in `reports/folds.csv` | |
+| Are day-2 weather forecasts issued before 10 a.m. Pacific on D-1 for every hour of D? | Assumed in D28; Open-Meteo run times not checked | Team |
+| Are EIA's D-2 hourly values published by 10 a.m. Pacific on D-1? | Assumed in D27 and D28; not checked | Team |
+| Is `curt_mwh` above 0 in nearly every daylight hour real? (94% of scored validation hours; every scored hour from 2026-01, when the source switches to the daily report) | Breakdowns use a 1% of capacity threshold (D30); cause open | Team |
 
 ---
 

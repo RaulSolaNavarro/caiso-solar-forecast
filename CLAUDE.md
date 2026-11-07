@@ -34,4 +34,8 @@ BUS 9430 team project: forecast hourly utility-scale solar output (MW) in the CA
   - `python -m src.processing.capstone2_numbers` recomputes every Capstone 2 deck number, old method against new rules, into `reports/capstone2_numbers_corrected.md`.
   - `python -m src.processing.deck_chart_data` writes `reports/deck_chart_data.csv`, the chart data for the deck (season profiles, monthly curtailment share, cloud buckets).
   - `python -m src.processing.deck_figures` draws the 2 charts for the 6-minute deck from `reports/deck_chart_data.csv` into `deck/capstone2/figures/`.
+- Modeling (validation only, test locked; FAQ Decisions D28 to D30; run after `build_hourly_table`):
+  - `python -m src.modeling.features` builds the 20-feature table under the 10 a.m. rule, prints each feature with its reason and runs `assert_no_leak`.
+  - `python -m src.modeling.folds` prints the fold layouts and writes the chosen one (`winter104`) to `reports/folds.csv`.
+  - `python -m src.modeling.score_models` fits every candidate on the 4 folds, saves `data/processed/oof_predictions.parquet`, writes `reports/model_results_validation.csv` and prints the pooled table with the 4 targets.
 - Plan and owners: the project plan lives in the team's Google Sheet. Ask before changing task scope.

@@ -80,6 +80,25 @@ The data is split in time order, in whole days, so models never see the answers 
 
 Targets are starting points and get rechecked once the baseline exists. See `docs/` for the full memo.
 
+## Results so far (validation only)
+
+The locked test set has not been scored by any model. These are pooled scores over the 4 validation folds (FAQ Decision D29: 2025-03-29 to 2026-04-09, 374 days, 4,508 daylight hours, the D27 common hours). Error is divided by EIA 860M monthly nameplate, all CISO. Persistence uses EIA 48 hours earlier (D-2), the fair version for the 10 a.m. bid close. On these hours the nMAE targets are 3.44% (1.25 times CAISO adjusted) and 5.63% (1.25 times CAISO as published).
+
+| Forecast | nMAE | Skill vs persistence D-2 | P95 overshoot (vs D-2) | P95 undershoot (vs D-2) | MAPE | Bias | Targets met (adj / pub / skill / P95) |
+|---|---|---|---|---|---|---|---|
+| Persistence D-2 (reference) | 6.60% | 0.000 | 4,169 MW | 4,158 MW | 19.3% | -23 MW | no / no / no / no |
+| CAISO as published (reference) | 4.51% | 0.333 | 3,585 MW (-14.0%) | 1,007 MW (-75.8%) | 11.5% | +761 MW | no / yes / yes / no |
+| CAISO adjusted for curtailment (reference) | 2.75% | 0.623 | 1,621 MW (-61.1%) | 1,486 MW (-64.3%) | 8.0% | +25 MW | yes / yes / yes / yes |
+| Climatology (floor) | 6.58% | 0.069 | 4,816 MW (+15.5%) | 3,040 MW (-26.9%) | 20.9% | +95 MW | no / no / no / no |
+| Ridge (dropped) | 4.70% | 0.391 | 2,638 MW (-36.7%) | 2,306 MW (-44.5%) | 13.8% | -68 MW | no / yes / yes / yes |
+| **Gradient-boosted trees (carried forward)** | **4.02%** | **0.473** | **2,033 MW (-51.2%)** | **2,253 MW (-45.8%)** | **10.0%** | **-186 MW** | **no / yes / yes / yes** |
+| Trees with day-1 weather (comparison only, breaks the 10 a.m. rule) | 3.87% | 0.496 | 1,935 MW (-53.6%) | 2,216 MW (-46.7%) | 9.4% | -232 MW | no / yes / yes / yes |
+
+- The trees meet 3 of the 4 targets. They miss 1.25 times CAISO adjusted (4.02% against 3.44%), and part of that gap is by construction, because CAISO measures curtailment against its own forecast.
+- Their lead over CAISO as published comes from spring and curtailed hours: CAISO forecasts output before curtailment, EIA measures it after. In hours without curtailment CAISO scores 2.97% and the trees 3.58%.
+- Respecting the 10 a.m. rule costs about 0.15 points (4.02% against 3.87% with day-1 weather).
+- Details, per fold and by season, hour, cloud cover and curtailment: `reports/model_results_validation.csv`, FAQ Decisions D28 to D30. Re-run: `python -m src.modeling.score_models`.
+
 ## Repo layout
 
 ```

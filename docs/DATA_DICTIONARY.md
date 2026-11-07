@@ -1,6 +1,6 @@
 # Data dictionary
 
-One section per file in `data/raw/`. For each file: what one row is (the grain), the key, size, period, time zone and units, then every column. Last reviewed: 2026-10-29. Questions about why we use a file or what is wrong with it are in `docs/DATA_FAQ.md`.
+One section per file in `data/raw/`, plus section 10 for the processed hourly table in `data/processed/`. For each file: what one row is (the grain), the key, size, period, time zone and units, then every column. Last reviewed: 2026-11-07. Questions about why we use a file or what is wrong with it are in `docs/DATA_FAQ.md`.
 
 ## How to read this
 
@@ -14,6 +14,7 @@ One section per file in `data/raw/`. For each file: what one row is (the grain),
 | **Pull** | Observed in the data pull or its checks (`data/raw/PULL_LOG.md`). |
 | **Profile** | Measured on the committed file on 2026-10-29 while writing this dictionary. |
 | **Inferred** | Our reading from the column name and values. Treat as a working assumption. |
+| **Built** | Computed by `src/processing/build_hourly_table.py` from the raw files; ranges measured on the table built on 2026-11-07 (section 10 only). |
 
 Counts of nulls are for the file as committed. A count of 0 does not mean the file is complete: in most files, gaps are absent rows (see the FAQ, section 6).
 
@@ -339,6 +340,56 @@ Overlap check with the workbooks (2025-06-01 to 2025-12-31, 214 days): hourly so
 ## 9. California boundary
 
 `reference/california_boundary_ne10m.geojson`. One GeoJSON feature: the California polygon (`iso_3166_2` = US-CA) from Natural Earth 1:10m Admin 1 states and provinces, v5.1.2 (https://github.com/nvkelso/natural-earth-vector). Used to select grid points. Not a model input.
+
+---
+
+## 10. Processed hourly table
+
+`data/processed/hourly_table.parquet`. Not committed: each teammate builds it with `python -m src.processing.build_hourly_table`, which also writes `data/processed/build_report.txt`. Decisions refer to `docs/DATA_FAQ.md`, section 6.
+
+| Item | Value |
+|---|---|
+| Built by | `src/processing/build_hourly_table.py`, from `data/raw/` only (D23) |
+| Grain | One row per UTC hour. |
+| Key | Index `hour_end_utc`: the end of the hour, UTC (a row stamped 17:00 covers 16:00 to 17:00 UTC). |
+| Rows | 22,896 (954 days x 24), asserted after every join. No duplicates. |
+| Period | Hour ending 2024-03-08 00:00 to 2026-10-17 23:00 UTC (same calendar as `DATA_HOWTO.md` section 3.4). |
+| Columns | 25 plus the index. Read with `pd.read_parquet` (needs `pyarrow`). |
+| Locked test set | Rows with `local_start` on or after 2026-04-10 Pacific. Do not tune on them. |
+
+| Column | Type | Meaning | Unit | Values and range | Nulls | Source file | Decision | Basis |
+|---|---|---|---|---|---|---|---|---|
+| `hour_end_utc` (index) | timestamp, UTC | End of the hour. | | 2024-03-08 00:00 to 2026-10-17 23:00 | 0 | calendar | D23 | Built |
+| `local_start` | timestamp, America/Los_Angeles | Pacific time at the start of the hour (`hour_end_utc` minus 1 hour). Use it for hour of day, Pacific date, month, season and the test split. | | 2024-03-07 15:00 PST to 2026-10-17 15:00 PDT | 0 | calendar | D23 | Built |
+| `eia_mw_raw` | decimal | EIA hourly CISO solar as published, moved to its hour ending. | MW (average over the hour, equal to MWh for the hour) | -74 to 20,852 | 25 (24 missing hours + the switch hour, hour ending 2025-12-02 21:00 UTC) | `eia_ciso_solar_hourly_...csv` | D14 | Built |
+| `eia_mw` | decimal | Modeling copy of `eia_mw_raw` with negative values set to 0. The target. | MW | 0 to 20,852 | 25 | as above | D14, D15 | Built |
+| `eia_deep_night_flag` | true/false | True where `eia_mw_raw` is above 100 MW and `sun_elev` is below -12 degrees. Flag only; drop these hours from training in model code. | | 351 True (65 UTC dates) | 0 | as above | D16 | Built |
+| `caiso_dam_mw` | decimal | CAISO day-ahead solar forecast, NP15 + SP15 + ZP26, null unless all 3 hubs are present. `AVA_` and wind left out. | MW | 0 to 20,591.1 | 72 (3 Pacific days before each spring clock change) | `caiso_dam_solar_forecast_...csv.gz` | D21 | Built |
+| `oasis_actual_mw` | decimal | CAISO OASIS ACTUAL solar, NP15 + SP15 + ZP26, same rule. Backup target and timing check. | MW | -352.2 to 19,738.5 | 1 (hour ending 2024-08-31 19:00 UTC; FAQ Q6.7 lists its start, 18:00) | `caiso_actual_solar_...csv.gz` | D21 | Built |
+| `cloud_cover_previous_day2` | decimal | Day-2 forecast total cloud cover, capacity-share-weighted mean over the 39 points with share above 0 (see note). | % | 0 to 100 | 129 (the weather gap) | `openmeteo/*.csv.gz`, `weather_locations.csv` | D6, D8, D9, D17 | Built |
+| `shortwave_radiation_previous_day2` | decimal | Day-2 forecast global horizontal radiation, mean of the preceding hour, weighted mean. | W/m2 | 0 to 1,049.5 | 0 | as above | D6, D8, D9 | Built |
+| `direct_radiation_previous_day2` | decimal | Day-2 forecast direct radiation on the horizontal plane, weighted mean. | W/m2 | 0 to 817.8 | 0 | as above | D6, D8, D9 | Built |
+| `diffuse_radiation_previous_day2` | decimal | Day-2 forecast diffuse radiation, weighted mean. | W/m2 | 0 to 353.7 | 0 | as above | D6, D8, D9 | Built |
+| `direct_normal_irradiance_previous_day2` | decimal | Day-2 forecast direct normal irradiance, weighted mean. | W/m2 | 0 to 862.0 | 0 | as above | D6, D8, D9 | Built |
+| `temperature_2m_previous_day2` | decimal | Day-2 forecast air temperature at 2 m, weighted mean. | degrees C | 0.7 to 44.7 | 0 | as above | D6, D8, D9 | Built |
+| `relative_humidity_2m_previous_day2` | decimal | Day-2 forecast relative humidity at 2 m, weighted mean. | % | 5.6 to 96.8 | 0 | as above | D6, D8, D9 | Built |
+| `wind_speed_10m_previous_day2` | decimal | Day-2 forecast wind speed at 10 m, weighted mean of the point speeds. | km/h | 2.0 to 30.8 | 0 | as above | D6, D8, D9 | Built |
+| `precipitation_previous_day2` | decimal | Day-2 forecast precipitation, sum of the preceding hour, weighted mean. | mm | 0 to 2.1 | 0 | as above | D6, D8, D9 | Built |
+| `cloud_cover_previous_day1` | decimal | Day-1 forecast cloud cover, weighted mean. Comparison only: day 1 is issued after the 10 a.m. bid close. | % | 0 to 100 | 0 | as above | D6, D8, D9 | Built |
+| `shortwave_radiation_previous_day1` | decimal | Day-1 forecast global horizontal radiation, weighted mean. Comparison only. | W/m2 | 0 to 1,047.5 | 0 | as above | D6, D8, D9 | Built |
+| `wx_gap` | true/false | True where `cloud_cover_previous_day2` is null (2026-04-17 15:00 to 2026-04-22 23:00 UTC). Dropped for every model and the benchmark. | | 129 True (74 of them daylight) | 0 | `openmeteo/*.csv.gz` | D17 | Built |
+| `sun_elev` | decimal | Sun elevation from `pvlib` at the middle of the hour (`hour_end_utc` minus 30 minutes), at the capacity-weighted centre of the points with share above 0 (34.79, -117.46). | degrees | -78.1 to 77.7 | 0 | `weather_locations.csv` | D20 | Built |
+| `daylight` | true/false | `sun_elev` above 0. | | 11,733 True | 0 | as above | D20 | Built |
+| `capacity_mw` | decimal | EIA 860M solar nameplate, all CISO (includes Arizona and Nevada plants), for the Pacific month of `local_start`; 2026-10 uses the 2026-09 file. Divisor of the error scores. | MW | 20,975.8 to 26,034.5 | 0 | `eia860m_solar_ciso_capacity_by_month.csv` | D18, D19 | Built |
+| `capacity_ca_mw` | decimal | Same, `Plant State` = CA only. For the one California-only check. | MW | 18,976.4 to 23,256.1 | 0 | as above | D18 | Built |
+| `curt_mwh` | decimal | CAISO solar curtailment in the hour. Workbook to 2025-12-31 except 2025-06-16, daily report otherwise. 0 where no row. Null on the 5 clock-change days. `Hour` in both files is read as Pacific hour ending (Inferred, Q6.18). | MWh | 0 to 11,029.4 | 119 (5 clock-change days) | `caiso_curtailment_*.csv.gz` (2 files) | D3, D22, D26 | Built; Inferred (hour mapping) |
+| `curt_excluded` | true/false | True on the 5 Pacific clock-change days (2024-03-10, 2024-11-03, 2025-03-09, 2025-11-02, 2026-03-08). | | 119 True | 0 | calendar | D22 | Built |
+| `scorable` | true/false | `daylight` and `eia_mw` not null and `caiso_dam_mw` not null and not `wx_gap`. The reference scores also need both persistence values and `curt_mwh` not null (D27), so they use fewer hours. | | 11,611 True (9,154 before the test set) | 0 | built from the columns above | D17, D20, D23, D27 | Built |
+
+Notes:
+- Weather weighting: each point's static capacity share from `weather_locations.csv`, renormalized in each hour over the points that have a value, so an hour is null only when every point is null.
+- Averaging cloud cover, humidity, wind speed and temperature across points gives a fleet-wide index, not a value at any one place. That this index is useful for the model is our assumption (Inferred).
+- Timing of the weather columns follows the raw files: radiation and precipitation describe the preceding hour, the other variables the value at the end of the hour (section 5).
 
 ---
 

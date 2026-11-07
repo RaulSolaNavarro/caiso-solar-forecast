@@ -24,7 +24,7 @@ Every claim carries a tag so you can tell a fact from an opinion.
 | 3 | How we know these are the right sources, and what we passed over |
 | 4 | Time frames and why |
 | 5 | Data dictionary (summary; full version in `DATA_DICTIONARY.md`) |
-| 6 | Issues, risks, limits and the decision log (D1 to D25) |
+| 6 | Issues, risks, limits and the decision log (D1 to D27) |
 | 7 | Recommendations: nulls, encoding, data types, merging |
 
 ---
@@ -192,7 +192,7 @@ The weather files together are 29.3 MB gzip (164.9 MB uncompressed). **[Checked]
 
 ## 6. Issues, risks, limits and the decision log
 
-Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D25).
+Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D27).
 
 ### Target: EIA hourly solar
 
@@ -202,7 +202,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 **Q6.3 Why are some values negative?** 9,461 of 24,480 rows (38.6%) are negative, all at night or near it, from -74 up to zero. The size grows over time. A likely cause is station use at the plants netted out of generation, **[Unverified]** and EIA says it publishes balancing authority data as reported without imputation. **[Doc]** Kept in the raw file. In processing they are set to 0 in the modeling copy, with the original kept in its own column (Decision D15).
 
-**Q6.4 Why are some deep-night values positive?** 255 hours on 60 dates show more than 100 MW, up to 413 MW, when the sun is more than 12 degrees below the horizon at Westlands. They fall mostly in February to July 2024 (114 in May 2024) and stay roughly flat through the night, so they do not look like solar output. Cause unknown. "Deep night" was defined with the labels as given. Rechecked after the timing rule (Decision D14) on 2026-11-07: they remain, 373 hours on 72 dates with the sun below -12 degrees at the middle of the hour at the capacity-weighted centre, still mostly February to July 2024 (167 in May 2024). **[Checked]** They are flagged and dropped from training (Decision D16).
+**Q6.4 Why are some deep-night values positive?** 255 hours on 60 dates show more than 100 MW, up to 413 MW, when the sun is more than 12 degrees below the horizon at Westlands. They fall mostly in February to July 2024 (114 in May 2024) and stay roughly flat through the night, so they do not look like solar output. Cause unknown. "Deep night" was defined with the labels as given. Rechecked after the timing rule (Decision D14) on 2026-11-07: they remain, 351 hours on 65 UTC dates inside the modeling window with the sun below -12 degrees at the middle of the hour at the capacity-weighted centre, still mostly March to July 2024 (167 in May 2024). An earlier count of 373 included 22 hours before the window. **[Checked]** They are flagged and dropped from training (Decision D16).
 
 **Q6.5 Can EIA values change after we pulled them?** Yes. EIA says values can be revised after metering or telemetry issues. **[Doc]** The file is a 2026-10-27 snapshot. A later re-pull may differ, especially for the most recent days.
 
@@ -272,7 +272,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 ### Decision log
 
-D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). Every entry has the same 5 headings.
+D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). Every entry has the same 5 headings.
 
 | ID | Decision | Date | Link |
 |---|---|---|---|
@@ -301,6 +301,8 @@ D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are w
 | D23 | One processed hourly table on a full UTC calendar | 2026-11-07 | [D23](#d23-one-processed-hourly-table) |
 | D24 | Validation folds: the last 4 blocks of 91 days before the test set | 2026-11-07 | [D24](#d24-validation-fold-dates) |
 | D25 | Window end date stays 2026-10-17 | 2026-11-07 | [D25](#d25-the-window-end-date) |
+| D26 | Curtailment: workbook to 2025-12-31 (except 2025-06-16), daily report for the rest | 2026-11-07 | [D26](#d26-which-curtailment-file-for-which-dates) |
+| D27 | Scoring: normalized MAE, 4 reference forecasts, one common set of hours | 2026-11-07 | [D27](#d27-scoring-definitions) |
 
 #### D1 Compressed file names
 
@@ -547,7 +549,11 @@ We compared EIA with CAISO actual solar (NP15 + SP15 + ZP26, whose times match t
 EIA's page says labels are hour ending. **[Doc]** We found no EIA note about the change. The earlier rule came from sample months in 2025, which all sit before the break.
 
 **Why is it an issue?**
-The model learns "weather at hour X gives solar at hour X". Output falls steeply at sunset: in June to August 2026 the median day's largest 2-hour fall was 13,012 MW **[Checked]** (2026-11-07, D14 rule), so a 1-hour slip distorts the ramps and every error. On training and validation days, CAISO's as-published miss is 5.7% under the old rule and 4.7% under the corrected one; CAISO's adjusted miss is 3.7% and 2.7%. On the test period, CAISO's miss is 13.3% under the old rule and 6.0% corrected. (Recomputed on 2026-11-07 with the Capstone 2 scoring method. The scoring script is not in the repo yet and will be added when the deck numbers are rebuilt.) A blanket shift would be wrong for about 320 days, including the whole test period.
+The model learns "weather at hour X gives solar at hour X". Output falls steeply at sunset: in June to August 2026 the median day's largest 2-hour fall was 13,012 MW **[Checked]** (2026-11-07, D14 rule), so a 1-hour slip distorts the ramps and every error. Normalized MAE (Decision D27), in the order persistence D-1, persistence D-2, CAISO as published, CAISO adjusted:
+- Training and validation, common hours: 4.9%, 6.1%, 4.7% and 2.7% under D14 (9,083 hours); 4.9%, 6.1%, 5.7% and 3.7% under the old rule (9,086 hours).
+- Test period, reference forecasts only, after dropping the 74 weather-gap daylight hours (D17): 5.5%, 7.3%, 5.9% and 3.5% under D14 (2,457 hours); 5.4%, 7.1%, 13.1% and 10.4% under the old rule (2,456 hours).
+
+**[Checked]** (2026-11-07, `src/processing/score_references.py`; `reports/reference_scores.csv` and `reports/reference_scores_test.csv`) An earlier version of these figures kept the 74 weather-gap hours in the test period (13.3% and 6.0% for CAISO as published) and 9,130 hours in training and validation. A blanket shift would be wrong for about 320 days, including the whole test period.
 
 **What are our options?**
 - Option A: shift all labels back 1 hour. Pros: simple, right for 2024-03-08 to 2025-12-02. Cons: wrong from 2025-12-03 on, including the whole test set. Correlation with CAISO falls from 0.9978 (2024-03-08 to 2025-11-25) to 0.8071 (2025-12-06 to 2026-10-17). **[Checked]**
@@ -591,8 +597,9 @@ At pull time, 255 hours on 60 dates showed 100 to 413 MW while the sun was more 
 **How did we identify it?**
 The pull checks and Q6.4. They were found with the labels as given, so they were rechecked after D14 (2026-11-07, `src/checks/eia_timing_check.py`). **[Checked]**
 - Pull-time definition (Westlands, sun below -12 degrees at the label and at the label minus 2 hours, labels as given): 255 hours on 60 dates, reproduced.
-- After D14, EIA above 100 MW with the sun below -12 degrees at the middle of the hour at the capacity-weighted centre (34.79, -117.46): **373 hours on 72 dates**, up to 455 MW. 351 of them are in February to July 2024 (167 in May 2024), 14 in October and November 2024, and 8 spread over 2025 and 2026.
-- Stricter variant, the whole hour (start and end) below -12 degrees at the same centre: 313 hours on 66 dates, up to 413 MW.
+- After D14, inside the modeling window (hour ending 2024-03-08 00:00 to 2026-10-17 23:00 UTC), EIA above 100 MW with the sun below -12 degrees at the middle of the hour at the capacity-weighted centre (34.79, -117.46): **351 hours on 65 UTC dates**, up to 455 MW. 329 of them are in March to July 2024 (167 in May 2024), 14 in October and November 2024, and 8 spread over 2025 and 2026. Counted by Pacific date it is 76 dates, because one Pacific night crosses Pacific midnight and so spans 2 Pacific dates but 1 UTC date. **[Checked]** (2026-11-07, `src/processing/build_hourly_table.py`)
+- An earlier count, 373 hours on 72 UTC dates, covered the whole EIA file and included 22 hours in February 2024, before the window.
+- Stricter variant, the whole hour (start and end) below -12 degrees at the same centre: 296 hours on 60 UTC dates in the window, up to 413 MW (313 hours on 66 UTC dates over the whole file).
 
 The count rises rather than falls after D14 because the new definition tests one hour, where the pull-time one required the sun to be down over a 2-hour span.
 
@@ -605,7 +612,7 @@ They do not look like solar output, so they could teach the model false patterns
 - Option C: set them to 0. Pros: simple. Cons: hides a possible data problem.
 
 **Which course of action will we use?**
-Option A first, then the rule set in advance: if they remain after D14, drop them from training and say so in the report. They remain (373 hours), so they are flagged and dropped from training. **[Our call]**
+Option A first, then the rule set in advance: if they remain after D14, drop them from training and say so in the report. They remain (351 hours in the window), so they are flagged and dropped from training. **[Our call]** In processing, `src/processing/build_hourly_table.py` sets the column `eia_deep_night_flag` and drops nothing; the model code drops the flagged hours from training. They are never daylight hours, so they never enter the scores.
 
 #### D17 The 129-hour weather gap
 
@@ -624,7 +631,7 @@ Some models cannot take blanks, and if models are scored on different hours the 
 - Option C: fill with the day-1 forecast. Pros: keeps the hours. Cons: day 1 is issued after the 10 a.m. bid close, so it leaks future information.
 
 **Which course of action will we use?**
-Option A. Add a `wx_gap` flag column and report the number of scored hours. **[Our call]**
+Option A. Add a `wx_gap` flag column and report the number of scored hours. **[Our call]** In processing, `src/processing/build_hourly_table.py` sets `wx_gap` (129 hours, 74 of them daylight) and leaves those hours out of `scorable`; `src/processing/score_references.py` reports the hours scored.
 
 #### D18 Capacity scope
 
@@ -681,7 +688,7 @@ Different cutoffs give different scores for the same model. Night hours are easy
 - Option C: hours where actual solar exceeds some MW. Pros: easy. Cons: uses the answer to pick the hours, which biases the test.
 
 **Which course of action will we use?**
-Option B. Daylight means sun elevation above 0 degrees at the middle of the hour (hour ending minus 30 minutes), at the capacity-weighted centre of the weather points with a positive capacity share in `weather_locations.csv` (34.79, -117.46). The same hours score the benchmark and every model. **[Our call]**
+Option B. Daylight means sun elevation above 0 degrees at the middle of the hour (hour ending minus 30 minutes), at the capacity-weighted centre of the weather points with a positive capacity share in `weather_locations.csv` (34.79, -117.46). The same hours score the benchmark and every model. **[Our call]** In processing, `src/processing/build_hourly_table.py` writes the columns `sun_elev` and `daylight` (11,733 daylight hours in the window).
 
 #### D21 The AVA_ hub in the CAISO day-ahead file
 
@@ -737,7 +744,7 @@ A join that silently drops or duplicates rows, or shifts an hour, gives wrong re
 - Option C: each teammate builds their own. Pros: independence. Cons: different tables, different results.
 
 **Which course of action will we use?**
-Option A, as one re-runnable script. Check the row count (22,896) after every join and report blanks per source. Expected: 24 EIA hours (Q6.2), plus 1 at the D14 switch (hour ending 2025-12-02 21:00 UTC); 72 DAM hours (Q6.7); 129 weather hours (Q6.12). Save to `data/processed/` as Parquet (not committed). **[Our call]**
+Option A, as one re-runnable script. Check the row count (22,896) after every join and report blanks per source. Expected: 24 EIA hours (Q6.2), plus 1 at the D14 switch (hour ending 2025-12-02 21:00 UTC); 72 DAM hours (Q6.7); 129 weather hours (Q6.12). Save to `data/processed/` as Parquet (not committed). **[Our call]** In processing, `src/processing/build_hourly_table.py` asserts 22,896 rows after the calendar and after every join, stops with an error if a join changes the count, and writes blanks per column to `data/processed/build_report.txt`. On 2026-11-07 every count matched: 25 EIA, 72 day-ahead, 129 weather, 226 hours with any gap. **[Checked]**
 
 #### D24 Validation fold dates
 
@@ -776,6 +783,48 @@ A reviewer will ask. EIA can also revise its newest values (Q6.5), so the last d
 
 **Which course of action will we use?**
 Option A. Q4.4 gives the reason. **[Our call]**
+
+#### D26 Which curtailment file for which dates
+
+**What issue did we identify?**
+Hourly curtailment comes from 2 files that overlap from 2025-06-01 to 2025-12-31: the workbooks (5-minute MW, only curtailed intervals listed, 2024-01-01 to 2025-12-31) and the daily report (hourly MWh in 6 categories, 2025-06-01 to 2026-10-17). Each has a missing day: the workbook has no rows for 2025-06-16, and the daily report page for 2025-11-05 does not exist. **[Checked]** (`PULL_LOG.md`, source 5; Q6.18)
+
+**How did we identify it?**
+Decision D3 and Q6.18, then building the hourly table (2026-11-07).
+
+**Why is it an issue?**
+Adding both files would double count the overlap, and either file alone leaves months uncovered. The 2 files also differ in grain, so the hourly series must say which file each date comes from.
+
+**What are our options?**
+- Option A: workbook only. Pros: 5-minute detail, one format. Cons: ends on 2025-12-31, so the whole of 2026 (including the test period) has no curtailment; lacks 2025-06-16.
+- Option B: daily report only. Pros: one format. Cons: starts on 2025-06-01, so 2024-01-01 to 2025-05-31 has no curtailment; lacks 2025-11-05.
+- Option C: split by date. The workbook for 2024-01-01 to 2025-12-31 except 2025-06-16; the daily report for 2025-06-16 and from 2026-01-01. Pros: every date covered. The 2 files agree hour by hour over the 214 overlap days (solar correlation 0.998). **[Checked]** (`PULL_LOG.md`, source 5) Cons: the source changes on 2026-01-01, inside the validation period.
+
+**Which course of action will we use?**
+Option C (Raúl, 2026-11-07). **[Our call]** Workbook: sum `Solar Curtailment` MW over the 5-minute intervals and both reasons per Pacific date and `Hour`, then divide by 12 to get MWh. Daily report: `fuel` = solar, sum of the 6 `*_mwh` columns. `Hour` is read as Pacific hour ending (Q6.18, **[Unverified]**) and converted to the UTC hour ending. Hours with no row are 0, because the workbook lists only curtailed intervals. On the 5 clock-change days the value is null and `curt_excluded` is True (D22). In processing: columns `curt_mwh` and `curt_excluded` in `src/processing/build_hourly_table.py`.
+
+#### D27 Scoring definitions
+
+**What issue did we identify?**
+The reference scores in the Capstone 2 deck and in later scratch code used slightly different hours. Scores that use different hours, divisors or targets cannot be compared.
+
+**How did we identify it?**
+Rebuilding the Capstone 2 scores in `src/processing/score_references.py` (2026-11-07). On training and validation days under D14, CAISO as published scores 4.69% on the common hours (9,083) and 4.73% when only CAISO adjusted drops the clock-change hours (9,130). On the test period, keeping or dropping the 74 weather-gap daylight hours moves CAISO as published from 6.04% to 5.85%. **[Checked]** (`reports/reference_scores.csv`, `reports/reference_scores_test.csv`)
+
+**Why is it an issue?**
+The project goal is a score relative to CAISO (1.25 times CAISO's error), so every model and every reference must use the same metric on the same hours.
+
+**What are our options?**
+- Which hours. Option A: one common set of hours for all 4 references. Pros: a fair comparison. Cons: loses about 47 daylight hours on the clock-change days, where curtailment is null (D22). Option B: each reference keeps every hour it can be scored on (only CAISO adjusted drops the clock-change hours). Pros: matches the earlier scratch numbers. Cons: the 4 scores use different hours.
+- Which persistence. Option D-1: EIA at the same hour 24 hours earlier. Pros: usually more accurate. Cons: the bid closes at 10 a.m. Pacific on the day before delivery, so the afternoon hours of that day are not yet known; D-1 uses information a bidder does not have. Option D-2: EIA at the same hour 48 hours earlier. Pros: every hour of that day is over before the bid closes, so it respects the 10 a.m. rule. Cons: less accurate. Whether EIA has already published those values by 10 a.m. was not checked. **[Unverified]**
+
+**Which course of action will we use?**
+**[Our call]** (Raúl, 2026-11-07)
+- Metric: normalized MAE, the mean over the scored hours of |forecast - actual| divided by `capacity_mw` of that hour (EIA 860M monthly nameplate, all CISO, D18 and D19), in %. Bias (forecast minus actual, MW) is reported alongside. The California-only divisor is reported once as a check (D18).
+- Actual: `eia_mw`, with negatives set to 0 (D15). Scores with EIA as published are reported as a variant; they move by 0.01 points or less.
+- The 4 reference forecasts: persistence D-1, persistence D-2, CAISO day-ahead as published (NP15 + SP15 + ZP26) against EIA, and CAISO day-ahead against EIA plus `curt_mwh` (adjusted). Persistence uses the same clipped EIA series. D-2 is the fair persistence for the 10 a.m. rule; D-1 is shown for comparison.
+- Hours: `daylight` (D20), with EIA, CAISO day-ahead and both persistence values present, outside `wx_gap` (D17) and with `curt_mwh` not null (D22). This common set is the headline, the same hours for all 4 references and for every model. The per-reference set (Option B) is kept only as a comparison with the earlier scratch numbers.
+- Periods: training and validation are Pacific dates (of the hour start) before 2026-04-10. The test period is scored for reference forecasts only, behind the `--with-test` flag, into a separate file. Models are never scored on it before the final evaluation.
 
 ### Open items
 

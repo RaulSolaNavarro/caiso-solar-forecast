@@ -1,6 +1,6 @@
 # Data FAQ
 
-Questions and answers about the project's data: where it comes from, why we use it, what is wrong with it, and how to prepare it. Written for teammates who open the raw files in their own tools. Last reviewed: 2026-10-29.
+Questions and answers about the project's data: where it comes from, why we use it, what is wrong with it, and how to prepare it. Written for teammates who open the raw files in their own tools. Last reviewed: 2026-11-07.
 
 This file grows. New questions go in the section where they belong (see "How to add a question" at the end). Column-by-column detail is in `docs/DATA_DICTIONARY.md`, code to load the files is in `docs/DATA_HOWTO.md`, and the pull-by-pull record of checks is in `data/raw/PULL_LOG.md`.
 
@@ -24,7 +24,7 @@ Every claim carries a tag so you can tell a fact from an opinion.
 | 3 | How we know these are the right sources, and what we passed over |
 | 4 | Time frames and why |
 | 5 | Data dictionary (summary; full version in `DATA_DICTIONARY.md`) |
-| 6 | Issues, risks, limits and the decisions made while pulling |
+| 6 | Issues, risks, limits and the decision log (D1 to D25) |
 | 7 | Recommendations: nulls, encoding, data types, merging |
 
 ---
@@ -68,7 +68,7 @@ Open-Meteo data is CC BY 4.0 and the free tier is for non-commercial use. Any re
 |---|---|---|
 | EIA hourly solar | **Y**, the known outcome | The number we forecast and the number every model is scored against. Also the base for the persistence baseline (same hour yesterday). |
 | OASIS DAM solar | **Benchmark** | Scored against Y, never used for training. The success target "nMAE at most 1.25 times CAISO's" needs it. |
-| OASIS ACTUAL solar | **Backup target and timing check** | Used to find the one-hour offset in EIA timestamps. Falls back as the target if EIA turns out unusable (Task 2, "If something slips"). |
+| OASIS ACTUAL solar | **Backup target and timing check** | Used to find the offset in EIA timestamps (1 hour until 2025-12-02, none after; Decision D14). Falls back as the target if EIA turns out unusable (Task 2, "If something slips"). |
 | Open-Meteo weather | **X**, the inputs | Forecasts of cloud, radiation, temperature, humidity, wind and rain as they stood one and two days before each hour. The main model uses day 2, which is published before the 10:00 a.m. Pacific bid close. Day 1 is a labeled comparison only (plan Task 6 sets the offset). |
 | `weather_locations.csv` | Weather point list | Which 51 points we pulled, and each point's share of CISO solar capacity, so the list can be narrowed or weighted. |
 | EIA 860M | **Scaling and placement** | Divides errors by installed capacity (the nMAE definition), shows how much capacity grew over the window, and gives plant coordinates that decided where weather points go. |
@@ -90,7 +90,7 @@ EIA generation is measured after curtailment, so on a curtailed day it sits belo
 
 | Source | Evidence |
 |---|---|
-| EIA hourly | The API returns respondent name "California Independent System Operator" and fuel "Solar". **[Checked]** Hourly values track CAISO's own actual series very closely once the one-hour offset is applied (correlation 0.9981 to 0.9999 in January, March and July 2025; mean absolute difference 200 to 272 MW). **[Checked]** EIA describes the series as metered net generation reported by each balancing authority, and says rooftop solar is typically not included. **[Doc]** (https://www.eia.gov/electricity/930-content/about.html) |
+| EIA hourly | The API returns respondent name "California Independent System Operator" and fuel "Solar". **[Checked]** Hourly values track CAISO's own actual series very closely once aligned with Decision D14 (correlation 0.9981 to 0.9999 in January, March and July 2025, all before the 2025-12-02 break, mean absolute difference 200 to 272 MW; 0.9978 for 2024-03-08 to 2025-11-25 and 0.9977 for 2025-12-06 to 2026-10-17, checked 2026-11-07). **[Checked]** EIA describes the series as metered net generation reported by each balancing authority, and says rooftop solar is typically not included. **[Doc]** (https://www.eia.gov/electricity/930-content/about.html) |
 | OASIS DAM and ACTUAL | OASIS is CAISO's public data portal. The report `SLD_REN_FCST` and the hubs NP15, SP15 and ZP26 are listed in the OASIS Interface Specification v5.1.2. **[Doc]** DAM solar is exactly zero at night, and ACTUAL follows EIA closely. **[Checked]** |
 | Open-Meteo | `_previous_dayN` is documented as the value predicted N x 24 hours before the valid time. **[Doc]** Radiation is zero when the sun is more than 10 degrees below the horizon, and shortwave radiation matches clear-sky timing from `pvlib` (correlation 0.975 to 0.999). **[Checked]** Ranges are plausible (shortwave radiation up to 1,108 W/m2; temperature -21.0 to 50.8 degrees C). **[Checked]** |
 | EIA 860M | EIA's official monthly generator inventory. We keep rows with Balancing Authority Code `CISO` and Energy Source Code `SUN`. All 33 months were found, with no duplicate generators and no blank coordinates or nameplate. **[Checked]** It does not agree with CAISO's own capacity and peak figures (see Q6.9). |
@@ -119,7 +119,7 @@ The README, Task 1 and Task 2 name EIA's hourly solar series as the target. What
 ### Q3.4 What do we still not know about source quality?
 
 - Which of EIA, OASIS ACTUAL, or CAISO's own published peaks is "right" for solar output. They differ by thousands of MW in August 2026 (Q6.9).
-- Why EIA's timestamps run one hour late against the sun (Q6.1).
+- Why EIA's timestamps ran 1 hour late against the sun until 2025-12-02 and match hour ending after it, and the exact hour of the change (Q6.1, Decision D14).
 - What the `AVA_` hub in the day-ahead file represents (Q6.6).
 
 ---
@@ -147,11 +147,13 @@ Task 1 set January 2024 as the start date, and the extra months are useful outsi
 
 ### Q4.4 Why end on 2026-10-17?
 
-The pull brief fixed it as the last full day used. No further reason is recorded. **[Our call]** (Raúl to add one if there is one.)
+The end date was set by when we pulled the data (2026-10-27 and 2026-10-28), and the pull brief fixed 2026-10-17 as the last full day used. From there we looked back as far as the sources allowed; the most constrained source, the weather forecast archive, starts on 2024-03-08 (Q4.2). **[Our call]** (Raúl, 2026-11-07) We keep it: moving it would move the locked test set and every file and score before the Nov 16 deadline. EIA can revise its newest values (Q6.5), so the last days may shift slightly in a later pull. See Decision D25.
 
 ### Q4.5 Why is the test set the latest 191 days?
 
 The plan holds out the latest 20% of days. 20% of 954 days is 190.8, rounded to 191, which starts on 2026-04-10 and ends on 2026-10-17. The earlier 763 days are used for training and four rolling validation folds of about three months each, with at least a one-day gap. **[Our call]** (README, Task 1)
+
+The fold dates are fixed in Decision D24: 4 blocks of 91 days, 2025-04-11 to 2025-07-10, 2025-07-11 to 2025-10-09, 2025-10-10 to 2026-01-08 and 2026-01-09 to 2026-04-09. Training for each block uses all earlier days and stops at least 1 day before the block starts. **[Our call]** (derived from the rule, not yet reviewed day by day)
 
 Two consequences: the test period has **no winter**, and it contains the 129-hour weather gap in April 2026 (Q6.12). Winter accuracy is judged only in validation.
 
@@ -188,25 +190,25 @@ The weather files together are 29.3 MB gzip (164.9 MB uncompressed). **[Checked]
 
 ---
 
-## 6. Issues, risks, limits and decisions made while pulling
+## 6. Issues, risks, limits and the decision log
 
-Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted.
+Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D25).
 
 ### Target: EIA hourly solar
 
-**Q6.1 Are EIA's timestamps wrong?** *Open, with a recommended rule.* EIA's page says hourly values use an hour-ending convention. **[Doc]** The data say otherwise: EIA label L matches the hour CAISO reports as ending at L minus 1 hour, in winter, summer, and on both sides of the March clock change. CAISO OASIS and Open-Meteo times line up with the sun; EIA's read about an hour late. **[Checked]** We did not find EIA documentation that explains this. The same shift in PST and PDT rules out a daylight saving error. Recommended rule: align EIA label L to the hour ending at L minus 1 hour in UTC, in processing only. **[Our call]** The team still has to confirm it.
+**Q6.1 Are EIA's timestamps wrong?** *Decided: Decision D14.* EIA's page says hourly values use an hour-ending convention. **[Doc]** The data agree only from 2025-12-02 on. Before that, EIA label L holds the hour CAISO reports as ending at L minus 1 hour, in winter, summer and on both sides of the March clock change; the same shift in PST and PDT rules out a daylight saving error. From about 22:00 UTC on 2025-12-02, label L is the hour ending at L, as documented. CAISO OASIS and Open-Meteo times line up with the sun throughout. **[Checked]** (2026-11-07, `src/checks/eia_timing_check.py`) We found no EIA note about either the offset or the change. The earlier "L minus 1 hour for everything" rule came from sample months in 2025, all before the change, and is replaced. Rule: for a label before 2025-12-02 22:00 UTC the hour ending is L minus 1 hour; from that label on it is L. The hour ending 2025-12-02 21:00 UTC then has no EIA value and stays missing. Apply it in processing only. **[Our call]** Still open: why EIA changed, and the exact hour of the change.
 
 **Q6.2 Are there missing hours?** Yes, 24 (0.10%): the whole Pacific day 2024-11-02 (2024-11-02 08:00 to 2024-11-03 07:00 UTC). A second request returned the same gap, so EIA does not have them. Not filled.
 
-**Q6.3 Why are some values negative?** 9,461 of 24,480 rows (38.6%) are negative, all at night or near it, from -74 up to zero. The size grows over time. A likely cause is station use at the plants netted out of generation, **[Unverified]** and EIA says it publishes balancing authority data as reported without imputation. **[Doc]** Kept in the raw file.
+**Q6.3 Why are some values negative?** 9,461 of 24,480 rows (38.6%) are negative, all at night or near it, from -74 up to zero. The size grows over time. A likely cause is station use at the plants netted out of generation, **[Unverified]** and EIA says it publishes balancing authority data as reported without imputation. **[Doc]** Kept in the raw file. In processing they are set to 0 in the modeling copy, with the original kept in its own column (Decision D15).
 
-**Q6.4 Why are some deep-night values positive?** 255 hours on 60 dates show more than 100 MW, up to 413 MW, when the sun is more than 12 degrees below the horizon at Westlands. They fall mostly in February to July 2024 (114 in May 2024) and stay roughly flat through the night, so they do not look like solar output. Cause unknown. "Deep night" was defined with the labels as given and must be rechecked once the timing rule is applied. Flag them in processing.
+**Q6.4 Why are some deep-night values positive?** 255 hours on 60 dates show more than 100 MW, up to 413 MW, when the sun is more than 12 degrees below the horizon at Westlands. They fall mostly in February to July 2024 (114 in May 2024) and stay roughly flat through the night, so they do not look like solar output. Cause unknown. "Deep night" was defined with the labels as given. Rechecked after the timing rule (Decision D14) on 2026-11-07: they remain, 373 hours on 72 dates with the sun below -12 degrees at the middle of the hour at the capacity-weighted centre, still mostly February to July 2024 (167 in May 2024). **[Checked]** They are flagged and dropped from training (Decision D16).
 
 **Q6.5 Can EIA values change after we pulled them?** Yes. EIA says values can be revised after metering or telemetry issues. **[Doc]** The file is a 2026-10-27 snapshot. A later re-pull may differ, especially for the most recent days.
 
 ### Benchmark and backup: CAISO OASIS
 
-**Q6.6 What is the `AVA_` hub?** Unknown. It appears in the day-ahead file only, from 2026-09-10 07:00 UTC (912 rows, mean 5.2 MW, max 18.3 MW). The three-hub day-ahead total does not drop against ACTUAL after that date, so there is no sign that capacity moved into it. Kept in raw. Leave it out of the CAISO total until we know what it is. The OASIS spec v5.1.2 lists only NP15, SP15, ZP26 and ALL. **[Doc]**
+**Q6.6 What is the `AVA_` hub?** Unknown. It appears in the day-ahead file only, from 2026-09-10 07:00 UTC (912 rows, mean 5.2 MW, max 18.3 MW). The three-hub day-ahead total does not drop against ACTUAL after that date, so there is no sign that capacity moved into it. Kept in raw. Leave it out of the CAISO total until we know what it is (Decision D21). The OASIS spec v5.1.2 lists only NP15, SP15, ZP26 and ALL. **[Doc]**
 
 **Q6.7 Which days are missing?** DAM has no data for three whole Pacific days, the day before each spring clock change: 2024-03-09, 2025-03-08 and 2026-03-07 (72 hours per hub, 0.29%). OASIS answers "no data" for them. ACTUAL misses 2 hours per solar hub (2024-02-27 19:00 UTC and 2024-08-31 18:00 UTC). Wind at ZP26 starts on 2024-02-08. Not filled.
 
@@ -218,7 +220,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 - **ACTUAL has negative night values**: 7,959 (NP15), 10,671 (SP15) and 9,901 (ZP26) hourly values. DAM solar has none.
 - **DAM runs above ACTUAL in daylight.** In the two windows tested for the `AVA_` question, three-hub DAM minus ACTUAL averaged +929.5 MW (4 weeks before 2026-09-10) and +1,227.0 MW (after), and the same dates in 2025 gave +1,051.7 and +1,374.0 MW. This is not a full-period study. Keep it in mind when reading benchmark errors.
 
-**Q6.9 Why do the capacity and peak figures disagree?** Unresolved, and no figure is chosen. For August 2026: EIA 860M CISO solar nameplate 25,812.8 MW (all CISO, including Arizona and Nevada), 23,134.4 MW (California only); CAISO installed solar 23,920 MW as of 2026-08-05; CAISO peaks 23,367 MW (2026-08-03) and 23,896 MW (August report); EIA hourly peak 20,852 MW; OASIS ACTUAL three-hub peak 19,616 MW. Possible reasons, none checked: CAISO counts only fully commercial units, CAISO peaks use shorter intervals than the hourly series, the CAISO peak includes output outside the three hubs or outside EIA's CISO series, and nameplate is not what a plant delivers at the grid connection. Rule: name the source and scope next to every capacity or peak figure. The full table is in `PULL_LOG.md`, source 4.
+**Q6.9 Why do the capacity and peak figures disagree?** The cause is unresolved. For scoring, the team uses EIA 860M monthly nameplate, all CISO (EIA's code for the CAISO balancing area), as the divisor, with a California-only score reported once as a check (Decisions D18 and D19). That is a choice of divisor, not a finding that this figure is "right". For August 2026: EIA 860M CISO solar nameplate 25,812.8 MW (all CISO, including Arizona and Nevada), 23,134.4 MW (California only); CAISO installed solar 23,920 MW as of 2026-08-05; CAISO peaks 23,367 MW (2026-08-03) and 23,896 MW (August report); EIA hourly peak 20,852 MW; OASIS ACTUAL three-hub peak 19,616 MW. Possible reasons, none checked: CAISO counts only fully commercial units, CAISO peaks use shorter intervals than the hourly series, the CAISO peak includes output outside the three hubs or outside EIA's CISO series, and nameplate is not what a plant delivers at the grid connection. Rule: name the source and scope next to every capacity or peak figure. The full table is in `PULL_LOG.md`, source 4.
 
 ### Inputs: Open-Meteo
 
@@ -226,7 +228,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 **Q6.11 What did the weather pull skip?** Nine variables came back with data for both offsets. These came back empty (all null) and were not saved: `cloud_cover_low`, `cloud_cover_mid`, `cloud_cover_high`, `visibility`, `snow_depth`, `aerosol_optical_depth`, `dust`. **[Checked]** Aerosol and smoke signals are therefore not available from this source.
 
-**Q6.12 Is anything missing in the weather files?** Yes. 129 hours (2026-04-17 15:00 to 2026-04-22 23:00 UTC) are null in two columns, `cloud_cover_previous_day2` and `relative_humidity_2m_previous_day1`, in all 51 files. The other offset of each variable has values. A repeat request returned the same nulls, so the gap is in Open-Meteo's archive. Not filled. It falls inside the test period. The gap is 0.56% of the 22,896 hours.
+**Q6.12 Is anything missing in the weather files?** Yes. 129 hours (2026-04-17 15:00 to 2026-04-22 23:00 UTC) are null in two columns, `cloud_cover_previous_day2` and `relative_humidity_2m_previous_day1`, in all 51 files. The other offset of each variable has values. A repeat request returned the same nulls, so the gap is in Open-Meteo's archive. Not filled. It falls inside the test period. The gap is 0.56% of the 22,896 hours. These hours are dropped for every model and the benchmark, with a `wx_gap` flag column (Decision D17).
 
 **Q6.13 How well do 51 points cover the plants?** 95.8% of CISO solar nameplate is within 50 km of a point (2026-09, all CISO) and 97.0% for California only. The 41 grid points alone reached only 54.4% within 50 km, so Raúl approved 10 cluster points on 2026-10-28. Largest plants still more than 50 km away are ATLAS Solar V and VI (Arizona, 300 MW, 68 km), Pastoria Solar (Kern, 105 MW, 61 km) and Sunshine Valley Solar (Nevada, 104 MW, 90 km). Five San Diego plants (12.8 MW in 2026-09) are more than 100 km from any point; no 11th point was added. 12 of the 41 grid points have a capacity share of zero.
 
@@ -260,7 +262,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 - Missing: the workbook has no rows for 2025-06-16 (the daily report shows 5,396.9 MWh of solar curtailment that day, so it is missing data, not a quiet day); the daily report page for 2025-11-05 does not exist.
 - `Hour` is read as Pacific hour ending (1 to 24). CAISO documentation for this was not found; the reading is inferred from the data (solar curtailment sits in hours 7 to 19). **[Unverified]**
 - The workbook `Date` carries an inconsistent time of day (07:00, 08:00 or 00:00) by month. Use the calendar part only.
-- The daily report always has 24 values, including the 23 and 25 hour days (2025-11-02, 2026-03-08). How CAISO maps them is unknown.
+- The daily report always has 24 values, including the 23 and 25 hour days (2025-11-02, 2026-03-08). How CAISO maps them is unknown. On 2025-11-02, the one clock-change day both files cover, the workbook and the report agree position by position with no shift (1,644.2 and 1,644.4 MWh; total absolute difference 0.2 MWh; curtailment only in positions 7 to 17). **[Checked]** (2026-11-07) That shows the 2 files use the same positions, not how the positions map to clock hours, because no curtailment fell near the repeated hour. The 5 clock-change days are flagged and left out of the hourly curtailment flags (Decision D22).
 
 ### Operations
 
@@ -268,34 +270,529 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 **Q6.20 Is any API key in the repo?** No. Keys live in `.env`, which is not committed, and every log line passes through `redact()`. Only whoever re-runs the pulls needs the EIA key.
 
-### Decisions made while pulling
+### Decision log
 
-| Decision | Choice | Date |
-|---|---|---|
-| Compressed file names | OASIS, weather and curtailment files end in `.csv.gz`, not `.csv` | 2026-10-27 and 2026-10-28 |
-| 860M file | Plain `.csv` | 2026-10-28 |
-| Curtailment | Two files (workbooks and daily report) because granularity and categories differ | 2026-10-28 |
-| OASIS windows | Pacific operating days (31-day limit counts them); keep every returned row | 2026-10-27 |
-| ACTUAL re-pull | Half-month windows starting one operating day early, to avoid the omitted first hour | 2026-10-28 |
-| Weather model | `ecmwf_ifs025` for both offsets and all dates | 2026-10-28 |
-| Weather window | 2024-03-08 to 2026-10-17 | 2026-10-28 |
-| Weather points | 41 grid + 10 cluster points ("option B") | 2026-10-28 |
-| Capacity share | Static, from the 2026-09 860M file | 2026-10-28 |
-| `AVA_` | Kept in raw | 2026-10-28 |
-| EIA timing | Recommended rule only; no raw file shifted | 2026-10-28 |
-| Missing data | None filled anywhere | throughout |
-| San Diego plants beyond 100 km | No extra weather point | 2026-10-28 |
+D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). Every entry has the same 5 headings.
+
+| ID | Decision | Date | Link |
+|---|---|---|---|
+| D1 | OASIS, weather and curtailment files end in `.csv.gz`, not `.csv` | 2026-10-27 and 2026-10-28 | [D1](#d1-compressed-file-names) |
+| D2 | 860M file saved as plain `.csv` | 2026-10-28 | [D2](#d2-860m-file-format) |
+| D3 | Curtailment in 2 files (workbooks and daily report) | 2026-10-28 | [D3](#d3-two-curtailment-files) |
+| D4 | OASIS requests by Pacific operating day; keep every returned row | 2026-10-27 | [D4](#d4-oasis-request-windows) |
+| D5 | ACTUAL re-pulled with half-month windows starting 1 operating day early | 2026-10-28 | [D5](#d5-actual-re-pull) |
+| D6 | Weather model `ecmwf_ifs025` for both offsets and all dates | 2026-10-28 | [D6](#d6-weather-model) |
+| D7 | Weather window 2024-03-08 to 2026-10-17 | 2026-10-28 | [D7](#d7-weather-window) |
+| D8 | 51 weather points: 41 grid + 10 cluster ("option B") | 2026-10-28 | [D8](#d8-weather-points) |
+| D9 | Static capacity share per weather point, from the 2026-09 860M file | 2026-10-28 | [D9](#d9-static-capacity-share) |
+| D10 | `AVA_` rows kept in the raw file | 2026-10-28 | [D10](#d10-ava_-kept-in-raw) |
+| D11 | EIA timing: recommended rule only, no raw file shifted (superseded by D14) | 2026-10-28 | [D11](#d11-eia-timing-at-pull-time) |
+| D12 | No missing data filled in any raw file | throughout | [D12](#d12-no-filling-in-raw-files) |
+| D13 | No extra weather point for San Diego plants beyond 100 km | 2026-10-28 | [D13](#d13-san-diego-plants-beyond-100-km) |
+| D14 | EIA timestamp alignment: shift labels back 1 hour only before 2025-12-02 22:00 UTC | 2026-11-07 | [D14](#d14-eia-timestamp-alignment) |
+| D15 | Negative EIA night values set to 0 in the modeling copy | 2026-11-07 | [D15](#d15-negative-night-values-in-eia) |
+| D16 | Positive deep-night EIA values flagged, then dropped from training | 2026-11-07 | [D16](#d16-positive-deep-night-values-in-eia) |
+| D17 | 129-hour weather gap dropped for every model and the benchmark | 2026-11-07 | [D17](#d17-the-129-hour-weather-gap) |
+| D18 | Capacity scope: all CISO | 2026-11-07 | [D18](#d18-capacity-scope) |
+| D19 | Capacity divisor: EIA 860M monthly nameplate | 2026-11-07 | [D19](#d19-capacity-and-peak-figures-disagree) |
+| D20 | Daylight: sun above the horizon at mid-hour, capacity-weighted centre | 2026-11-07 | [D20](#d20-definition-of-daylight) |
+| D21 | `AVA_` left out of the CAISO total | 2026-11-07 | [D21](#d21-the-ava_-hub-in-the-caiso-day-ahead-file) |
+| D22 | 5 clock-change days left out of the hourly curtailment flags | 2026-11-07 | [D22](#d22-23-hour-and-25-hour-clock-change-days) |
+| D23 | One processed hourly table on a full UTC calendar | 2026-11-07 | [D23](#d23-one-processed-hourly-table) |
+| D24 | Validation folds: the last 4 blocks of 91 days before the test set | 2026-11-07 | [D24](#d24-validation-fold-dates) |
+| D25 | Window end date stays 2026-10-17 | 2026-11-07 | [D25](#d25-the-window-end-date) |
+
+#### D1 Compressed file names
+
+**What issue did we identify?**
+The pull brief named every output file `.csv`. Uncompressed, the OASIS files would be 20.7 MB (DAM) and 23.0 MB (ACTUAL), and the 51 weather files 164.9 MB. **[Checked]** (`PULL_LOG.md`, sources 2 and 3)
+
+**How did we identify it?**
+File sizes measured during the pull. The brief itself asked for gzip CSV for the weather files, because about 50 uncompressed files "would add well over 100 MB to Git". **[Doc]** (`DATA_PULL_BRIEF.md`, source 3)
+
+**Why is it an issue?**
+The raw files are committed so teammates can use them, and the brief's stop rule is any file above 50 MB or more than 100 MB of new files in total. **[Doc]** (`DATA_PULL_BRIEF.md`, "Stop and ask")
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+OASIS, weather and curtailment files are gzip-compressed CSV ending in `.csv.gz` (Raúl, 2026-10-27 for OASIS, 2026-10-28 for curtailment). pandas and R read them directly. Compressed sizes: 1.30 MB (DAM), 1.72 MB (ACTUAL), 29.3 MB (51 weather files). **[Checked]** (`PULL_LOG.md`)
+
+#### D2 860M file format
+
+**What issue did we identify?**
+Choosing the format of the EIA 860M capacity file, 9.8 MB as plain CSV. **[Checked]** (`PULL_LOG.md`, source 4)
+
+**How did we identify it?**
+Not recorded at the time.
+
+**Why is it an issue?**
+Not recorded at the time.
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+Plain `.csv` (Raúl, 2026-10-28). **[Doc]** (`PULL_LOG.md`, source 4)
+
+#### D3 Two curtailment files
+
+**What issue did we identify?**
+CAISO stopped publishing the production and curtailments report on 2025-06-01. **[Doc]** (CAISO page) The replacement, the Daily Renewable Report pages, gives hourly MWh in 6 categories (Economic, Self Schedule Cut, Operator Instruction; each Local or System). The workbooks give 5-minute MW with a `Reason` of Local or System. **[Checked]** (`PULL_LOG.md`, source 5)
+
+**How did we identify it?**
+Reading the CAISO production and curtailments page and both sources during the pull (2026-10-28).
+
+**Why is it an issue?**
+The two sources differ in grain and categories, and the raw files must keep values as published, with no conversion (`DATA_PULL_BRIEF.md`, "Fixed settings").
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+Two files, `caiso_curtailment_2024-01-01_2025-12-31.csv.gz` (workbooks) and `caiso_curtailment_daily_report_2025-06-01_2026-10-17.csv.gz` (daily report) (Raúl, 2026-10-28). They agree hour by hour over the 214 overlap days (solar correlation 0.998). **[Checked]** (`PULL_LOG.md`, source 5)
+
+#### D4 OASIS request windows
+
+**What issue did we identify?**
+OASIS limits a request to 31 days and counts the limit in Pacific operating days. A window from UTC midnight to UTC midnight touched 32 operating days and failed with error 1004. **[Checked]** (`PULL_LOG.md`, source 2)
+
+**How did we identify it?**
+The error during the January 2024 test pull (2026-10-27).
+
+**Why is it an issue?**
+Requests failed, and every UTC hour from 2024-01-01 00:00 to 2026-10-17 23:00 had to be covered.
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+Each request runs from Pacific midnight to Pacific midnight, starting with operating day 2023-12-31, and every row OASIS returned is kept (Raúl's decision): 80 rows (both files) before 2024-01-01 00:00 UTC and 49 (DAM) or 42 (ACTUAL) after 2026-10-17 23:00 UTC. Apply the UTC range in processing. **[Checked]** (`PULL_LOG.md`, source 2)
+
+#### D5 ACTUAL re-pull
+
+**What issue did we identify?**
+The first ACTUAL pull, in monthly windows, missed 13 hours per solar hub, and 11 of them were caused by the request windows: when an ACTUAL request starts at Pacific midnight in winter (08:00 UTC), OASIS leaves out that first hour. **[Checked]** (`PULL_LOG.md`, source 2)
+
+**How did we identify it?**
+A test: operating days 2025-02-28 to 2025-03-01 returned 2025-03-01 08:00 UTC, while operating day 2025-03-01 alone did not.
+
+**Why is it an issue?**
+ACTUAL is the backup target and the timing check for EIA, so hours lost to the request method would leave false gaps.
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+ACTUAL was re-pulled with half-month windows that start 1 operating day early; the extra day is dropped when the file is built (Raúl, 2026-10-28). Result: 69 rows added, 0 removed, every shared row identical except `GROUP`; 2 real gaps per solar hub remain. DAM was not re-pulled, as it has no such gaps. **[Checked]** (`PULL_LOG.md`, source 2)
+
+#### D6 Weather model
+
+**What issue did we identify?**
+The brief asks for one weather model for the whole period and both offsets: `ecmwf_ifs025` if its previous-runs history starts on or before 2024-01-01, otherwise `best_match`. **[Doc]** (`DATA_PULL_BRIEF.md`, source 3) No model has previous-runs data for 2024-01-01. **[Checked]** (`PULL_LOG.md`, source 3)
+
+**How did we identify it?**
+Probes at point g24 (36.5, -119.5) for 4 models, and a comparison of `best_match` with the single models. **[Checked]** (`PULL_LOG.md`, source 3)
+
+**Why is it an issue?**
+Mixing models across dates or offsets would change what a weather column means partway through the data.
+
+**What are our options?**
+The probes and Q3.3 record what each model offered. Pros and cons beyond these facts were not recorded at the time.
+- Option A `ecmwf_ifs025`. Pros: one model with both day 1 and day 2. Cons: radiation starts only on 2024-03-06 (day 1) and 2024-03-07 (day 2).
+- Option B `best_match`. Pros: data from 2024-01-19. Cons: in California it gives HRRR for day 1 and GFS for day 2, which mixes models.
+- Option C `ncep_hrrr_conus`. Pros: day 1 from 2024-01-19. Cons: no day 2.
+- Option D `gfs025`. Pros: not recorded. Cons: returned no previous-runs data in the probe.
+
+**Which course of action will we use?**
+Option A, `ecmwf_ifs025` for both offsets and all dates (Raúl, 2026-10-28). The model name is in every weather file name and in a `model` column.
+
+#### D7 Weather window
+
+**What issue did we identify?**
+Each weather variable starts on a different date in the `ecmwf_ifs025` previous-runs archive. The last to start is day-2 radiation, at 2024-03-07 17:00 UTC. **[Checked]** (`PULL_LOG.md`, source 3)
+
+**How did we identify it?**
+First valid hour per variable, checked at g01 and g41 on 2026-10-28.
+
+**Why is it an issue?**
+A model can only train and be scored on hours where all its inputs exist. Starting earlier would mean blank columns for the first weeks.
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+2024-03-08 to 2026-10-17, the first full UTC day on which all 9 variables have data for both offsets (Raúl, 2026-10-28). This sets the modeling window (954 days) and the test set start (2026-04-10). See Q4.2 and Decision D25 for the end date.
+
+#### D8 Weather points
+
+**What issue did we identify?**
+The 41 grid points alone put only 54.4% of CISO solar nameplate within 50 km of a point (2026-09, all CISO), against the brief's 95% goal. **[Checked]** (`PULL_LOG.md`, source 4)
+
+**How did we identify it?**
+The coverage check the brief requires: distance from each 860M solar plant to its nearest weather point.
+
+**Why is it an issue?**
+Weather far from the plants describes the wrong sky. The brief says to add points near uncovered plants if less than 95% of capacity is within 50 km. **[Doc]** (`DATA_PULL_BRIEF.md`, source 3)
+
+**What are our options?**
+These are the options recorded in `PULL_LOG.md`. Further pros and cons were not recorded at the time.
+- Option A: 6 cluster points at the centres of the 6 largest clusters, as in the brief. Pros: within the brief's "up to 6". Cons: reached only 84.0% to 87.8% within 50 km.
+- Option B: 10 cluster points, each placed where it brought the most uncovered nameplate within 50 km. Pros: reaches 95.8% (2026-09, all CISO). Cons: more points than the brief's 6.
+
+**Which course of action will we use?**
+Option B, 41 grid + 10 cluster points (Raúl, 2026-10-28). See Q6.13.
+
+#### D9 Static capacity share
+
+**What issue did we identify?**
+Each weather point needs a share of CISO solar capacity so the list can be narrowed or weighted. The brief asks for it. **[Doc]** (`DATA_PULL_BRIEF.md`, source 3)
+
+**How did we identify it?**
+Building `weather_locations.csv` after the 860M pull (2026-10-28).
+
+**Why is it an issue?**
+Capacity grew about 27% over the window (Q2.2), so a share fixed at one month fits earlier months only roughly.
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+Static shares from the 2026-09 860M file, all CISO, PV and solar thermal, any status. Each point's share is the nameplate whose nearest weather point it is. **[Checked]** (`PULL_LOG.md`, source 4) Q7.5 notes that the shares apply to 2024 only roughly.
+
+#### D10 AVA_ kept in raw
+
+**What issue did we identify?**
+A 4th hub label, `AVA_`, appears in the day-ahead file only, from 2026-09-10 07:00 UTC (912 rows). **[Checked]** (`PULL_LOG.md`, source 2)
+
+**How did we identify it?**
+The per-hub row counts in the pull checks, then the `AVA_` check (2026-10-28).
+
+**Why is it an issue?**
+Its meaning is unknown, and the raw files must keep every returned row (`DATA_PULL_BRIEF.md`, "Fixed settings").
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+Kept in the raw file (Raúl, 2026-10-28). How to treat it in processing is Decision D21.
+
+#### D11 EIA timing at pull time
+
+**What issue did we identify?**
+EIA's labels looked about 1 hour later than hour ending against the sun and against CAISO ACTUAL. **[Checked]** (`PULL_LOG.md`, sources 1 and 2)
+
+**How did we identify it?**
+Correlation with `pvlib` clear-sky radiation (January and July 2024), then cross-correlation with CAISO ACTUAL in January, March and July 2025. **[Checked]** (`PULL_LOG.md`, source 2)
+
+**Why is it an issue?**
+A target on the wrong hour misaligns it with the weather inputs.
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+At the time: a recommended rule, EIA label L is the hour ending at L minus 1 hour, applied in processing only, and no raw file shifted (Raúl, 2026-10-28). **Superseded by Decision D14**, because the offset ends on 2025-12-02, after the months tested.
+
+#### D12 No filling in raw files
+
+**What issue did we identify?**
+Every source has gaps: EIA (24 hours), DAM (3 days), ACTUAL (2 hours per hub), weather (129 hours in 2 columns), curtailment (2025-06-16 in the workbook, 2025-11-05 in the daily report). **[Checked]** (`PULL_LOG.md`)
+
+**How did we identify it?**
+The row-count and null checks in every pull.
+
+**Why is it an issue?**
+The brief forbids cleaning raw files (no drop, fill, rename, unit change or outlier fix). **[Doc]** (`DATA_PULL_BRIEF.md`, "Fixed settings") Filled values would look like data.
+
+**What are our options?**
+Not recorded at the time.
+
+**Which course of action will we use?**
+Nothing is filled in any raw file. Gaps are handled in processing (Q7.1, Decisions D17 and D23).
+
+#### D13 San Diego plants beyond 100 km
+
+**What issue did we identify?**
+5 San Diego plants, 12.8 MW in 2026-09 (about 0.05% of CISO solar nameplate), are more than 100 km from any weather point. **[Checked]** (`PULL_LOG.md`, source 4)
+
+**How did we identify it?**
+The coverage check; the brief asks to list every plant farther than 100 km. **[Doc]** (`DATA_PULL_BRIEF.md`, source 3)
+
+**Why is it an issue?**
+Their weather is described by a point more than 100 km away.
+
+**What are our options?**
+The log records that an 11th point was considered and not added. Pros and cons were not recorded at the time.
+- Option A: add an 11th weather point.
+- Option B: no extra point.
+
+**Which course of action will we use?**
+Option B, no extra point (Raúl, 2026-10-28). Coverage stays at 95.8% within 50 km (2026-09, all CISO).
+
+#### D14 EIA timestamp alignment
+
+This replaces the earlier "L minus 1 hour for everything" rule (D11).
+
+**What issue did we identify?**
+EIA's hourly solar labels do not match the sun for most of the history, and the offset changes on 2025-12-02.
+
+**How did we identify it?**
+We compared EIA with CAISO actual solar (NP15 + SP15 + ZP26, whose times match the sun) day by day, and with astronomical solar noon. Script: `src/checks/eia_timing_check.py`. **[Checked]** (2026-11-07)
+- The centre of each day's curve, EIA minus CAISO, over 1,016 days with both series: the monthly median is 1.00 to 1.09 hours from 2024-01 to 2025-11 and -0.00 to 0.03 hours from 2025-12 to 2026-10. Daily: 1.03 on 2025-12-01, 0.50 on 2025-12-02, 0.03 on 2025-12-03.
+- Gap to solar noon at longitude -119.5, labels read as hour ending: before 2025-11-25, EIA +0.83 h and CAISO -0.20 h; after 2025-12-05, EIA -0.17 h and CAISO -0.19 h.
+- Hour by hour, the fit is best with the switch at the label 2025-12-02 22:00 UTC. Any switch from 18:00 to 00:00 UTC fits almost as well (mean absolute difference 187 to 190 MW over 2025-11-28 to 2025-12-07, against 210 MW or more outside that range), because the afternoon values are flat, so the exact hour is not sharp.
+
+EIA's page says labels are hour ending. **[Doc]** We found no EIA note about the change. The earlier rule came from sample months in 2025, which all sit before the break.
+
+**Why is it an issue?**
+The model learns "weather at hour X gives solar at hour X". Output falls steeply at sunset: in June to August 2026 the median day's largest 2-hour fall was 13,012 MW **[Checked]** (2026-11-07, D14 rule), so a 1-hour slip distorts the ramps and every error. On training and validation days, CAISO's as-published miss is 5.7% under the old rule and 4.7% under the corrected one; CAISO's adjusted miss is 3.7% and 2.7%. On the test period, CAISO's miss is 13.3% under the old rule and 6.0% corrected. (Recomputed on 2026-11-07 with the Capstone 2 scoring method. The scoring script is not in the repo yet and will be added when the deck numbers are rebuilt.) A blanket shift would be wrong for about 320 days, including the whole test period.
+
+**What are our options?**
+- Option A: shift all labels back 1 hour. Pros: simple, right for 2024-03-08 to 2025-12-02. Cons: wrong from 2025-12-03 on, including the whole test set. Correlation with CAISO falls from 0.9978 (2024-03-08 to 2025-11-25) to 0.8071 (2025-12-06 to 2026-10-17). **[Checked]**
+- Option B: shift only labels before 2025-12-02 22:00 UTC. Pros: right in both periods (0.9978 and 0.9977). **[Checked]** Cons: depends on the exact break hour, the cause is unknown, and it leaves a 1-hour hole at the switch.
+- Option C: trust EIA's documented label everywhere. Pros: matches the documentation. Cons: wrong for about 635 days.
+- Option D: use CAISO actual solar as the target. Pros: its timing matches the sun. Cons: only 3 areas, negative night values too, and the plan and README name EIA.
+
+**Which course of action will we use?**
+Option B. **[Our call]** For a label L before 2025-12-02 22:00 UTC, the hour ending is L minus 1 hour; from that label on, the hour ending is L. The hour ending 2025-12-02 21:00 UTC then has no EIA value and stays missing (not filled). Raw files are never shifted. Open: why EIA changed, and the exact break hour.
+
+```python
+SWITCH = pd.Timestamp("2025-12-02 22:00", tz="UTC")
+lab = pd.to_datetime(e["period"], format="%Y-%m-%dT%H", utc=True)
+e["hour_end_utc"] = lab.where(lab >= SWITCH, lab - pd.Timedelta(hours=1))
+```
+
+#### D15 Negative night values in EIA
+
+**What issue did we identify?**
+9,461 of 24,480 rows (38.6%) are negative, from -74 MW up to 0, all at night or near it, and their size grows over time.
+
+**How did we identify it?**
+The pull checks (`PULL_LOG.md`, source 1) and Q6.3. **[Checked]**
+
+**Why is it an issue?**
+Solar cannot make negative power. A likely cause is plant own use netted out of output. **[Unverified]** Negative values distort averages and what a model learns at night. Scoring uses daylight hours only, but training sees every hour, and scoring night hours would make scores look better.
+
+**What are our options?**
+- Option A: set them to 0 in the modeling copy and keep the original in a separate column. Pros: simple and physically sensible. Cons: relies on the unverified explanation and hides the growth trend.
+- Option B: leave them as they are. Pros: no change. Cons: the model sees impossible values.
+- Option C: drop all night hours from training. Pros: the model sees only daylight. Cons: loses information, needs the daylight rule (D20), and the dawn and dusk hours are edge cases.
+
+**Which course of action will we use?**
+Option A, with the same treatment for the target and the benchmark. The original value is kept in its own column. **[Our call]**
+
+#### D16 Positive deep-night values in EIA
+
+**What issue did we identify?**
+At pull time, 255 hours on 60 dates showed 100 to 413 MW while the sun was more than 12 degrees below the horizon at Westlands, mostly February to July 2024 (114 in May 2024) and roughly flat through the night. Cause unknown. **[Checked]** (`PULL_LOG.md`, source 1)
+
+**How did we identify it?**
+The pull checks and Q6.4. They were found with the labels as given, so they were rechecked after D14 (2026-11-07, `src/checks/eia_timing_check.py`). **[Checked]**
+- Pull-time definition (Westlands, sun below -12 degrees at the label and at the label minus 2 hours, labels as given): 255 hours on 60 dates, reproduced.
+- After D14, EIA above 100 MW with the sun below -12 degrees at the middle of the hour at the capacity-weighted centre (34.79, -117.46): **373 hours on 72 dates**, up to 455 MW. 351 of them are in February to July 2024 (167 in May 2024), 14 in October and November 2024, and 8 spread over 2025 and 2026.
+- Stricter variant, the whole hour (start and end) below -12 degrees at the same centre: 313 hours on 66 dates, up to 413 MW.
+
+The count rises rather than falls after D14 because the new definition tests one hour, where the pull-time one required the sun to be down over a 2-hour span.
+
+**Why is it an issue?**
+They do not look like solar output, so they could teach the model false patterns or inflate errors.
+
+**What are our options?**
+- Option A: flag them. Pros: nothing lost, and the decision stays open. Cons: still in the data.
+- Option B: drop them (about 1% of rows). Pros: removes suspect values. Cons: may drop real data.
+- Option C: set them to 0. Pros: simple. Cons: hides a possible data problem.
+
+**Which course of action will we use?**
+Option A first, then the rule set in advance: if they remain after D14, drop them from training and say so in the report. They remain (373 hours), so they are flagged and dropped from training. **[Our call]**
+
+#### D17 The 129-hour weather gap
+
+**What issue did we identify?**
+129 hours (2026-04-17 15:00 to 2026-04-22 23:00 UTC) are null in `cloud_cover_previous_day2` and `relative_humidity_2m_previous_day1` in all 51 files. The gap is inside the test period, and the main model uses day-2 cloud cover.
+
+**How did we identify it?**
+The pull checks and Q6.12. A repeat request returned the same nulls, so the gap is in Open-Meteo's archive. **[Checked]**
+
+**Why is it an issue?**
+Some models cannot take blanks, and if models are scored on different hours the comparison is unfair.
+
+**What are our options?**
+- Option A: drop those hours for every model and the benchmark. Pros: fair, and invents nothing. Cons: loses about 5.4 of the 191 test days (2.8%).
+- Option B: use a model that accepts blanks. Pros: keeps the hours. Cons: behavior on those hours is a guess, only some models can do it, and models are no longer comparable.
+- Option C: fill with the day-1 forecast. Pros: keeps the hours. Cons: day 1 is issued after the 10 a.m. bid close, so it leaks future information.
+
+**Which course of action will we use?**
+Option A. Add a `wx_gap` flag column and report the number of scored hours. **[Our call]**
+
+#### D18 Capacity scope
+
+**What issue did we identify?**
+The 860M plant list for CISO includes plants in Arizona and Nevada: 1,946.9 MW in 2024-01 and 2,778.4 MW in 2026-09. August 2026 nameplate is 25,812.8 MW for all CISO and 23,134.4 MW for California only. It is not verified whether the EIA hourly CISO series includes those plants.
+
+**How did we identify it?**
+`PULL_LOG.md` source 4 and the 860M file grouped by `Plant State`. **[Checked]**
+
+**Why is it an issue?**
+Capacity is the divisor of our error score. A 1,250 MW average miss is 4.8% of 25,813 MW and 5.4% of 23,134 MW (illustration), so the choice can decide whether we meet the 1.25 times goal.
+
+**What are our options?**
+- Option A: all CISO. Pros: matches the target's name, the benchmark, and the weather capacity shares, which were built this way. Cons: may include plants that are not in the target.
+- Option B: California only. Pros: matches the "California" framing. Cons: if the target includes Arizona and Nevada output, scores look too big.
+- Option C: show both. Pros: shows how much the choice matters. Cons: more clutter.
+
+**Which course of action will we use?**
+Option A. Name the scope on every chart and table, and report the California-only score once as a check. **[Our call]**
+
+#### D19 Capacity and peak figures disagree
+
+**What issue did we identify?**
+For August 2026, the capacity and peak figures range widely. Nameplate: EIA 860M all CISO 25,812.8 MW, California only 23,134.4 MW; CAISO installed solar 23,920 MW (2026-08-05). Peaks: CAISO 23,367 MW (2026-08-03) and 23,896 MW (August report), EIA hourly 20,852 MW, OASIS ACTUAL 3-hub 19,616 MW.
+
+**How did we identify it?**
+`PULL_LOG.md` source 4 and Q6.9. **[Checked]**
+
+**Why is it an issue?**
+Mixing sources makes slides contradict each other and shifts scores. Possible causes, none checked **[Unverified]**: CAISO counts only fully commercial units, CAISO peaks use shorter intervals, CAISO peaks include output outside the 3 hubs or outside EIA's CISO series, and nameplate is not delivered power.
+
+**What are our options?**
+- Option A: EIA 860M monthly nameplate as the divisor. Pros: monthly, plant level, with coordinates. Cons: nameplate overstates delivered power.
+- Option B: CAISO's capacity figures. Pros: official. Cons: 1 number a month in a PDF, with no plant list.
+- Option C: the highest observed output as capacity. Pros: avoids definitions. Cons: depends on weather and curtailment.
+
+**Which course of action will we use?**
+Option A. Name the source and scope next to every capacity or peak figure. The cause of the disagreement stays an open item. **[Our call]**
+
+#### D20 Definition of daylight
+
+**What issue did we identify?**
+The success metrics use daylight hours only, and nobody had fixed what daylight means.
+
+**How did we identify it?**
+The README metrics and Q7.3. The Capstone 2 deck numbers used one definition (11,733 daylight hours in the window, `notebooks/Raul_EDA_v2.ipynb`); the FAQ only suggested options.
+
+**Why is it an issue?**
+Different cutoffs give different scores for the same model. Night hours are easy (solar is 0), so counting them flatters scores and breaks the comparison with CAISO.
+
+**What are our options?**
+- Option A: forecast sunshine above a small threshold. Pros: already in the data. Cons: depends on a forecast, with fuzzy edges.
+- Option B: sun above the horizon, computed with `pvlib`. Pros: exact and independent of weather. Cons: one point for the whole state, and dim edge hours stay in.
+- Option C: hours where actual solar exceeds some MW. Pros: easy. Cons: uses the answer to pick the hours, which biases the test.
+
+**Which course of action will we use?**
+Option B. Daylight means sun elevation above 0 degrees at the middle of the hour (hour ending minus 30 minutes), at the capacity-weighted centre of the weather points with a positive capacity share in `weather_locations.csv` (34.79, -117.46). The same hours score the benchmark and every model. **[Our call]**
+
+#### D21 The AVA_ hub in the CAISO day-ahead file
+
+**What issue did we identify?**
+A 4th label, `AVA_`, appears only in the day-ahead file, from 2026-09-10 07:00 UTC: 912 rows, mean 5.2 MW, max 18.3 MW. The OASIS spec v5.1.2 lists only NP15, SP15, ZP26 and ALL.
+
+**How did we identify it?**
+The pull checks and Q6.6. **[Checked]** **[Doc]**
+
+**Why is it an issue?**
+Adding it could double count, or add something the actual file does not contain. It is tiny (about 5 MW against peaks above 19,000 MW) and sits in the last weeks of the test period.
+
+**What are our options?**
+- Option A: leave it out of the CAISO total. Pros: consistent with the 3 areas in ACTUAL. Cons: a tiny underestimate if it is real.
+- Option B: include it. Pros: complete, if it is real. Cons: we would add a number we do not understand.
+
+**Which course of action will we use?**
+Option A. It stays in the raw file (D10). Ask CAISO or check the OASIS documentation; open item. **[Our call]**
+
+#### D22 23-hour and 25-hour clock-change days
+
+**What issue did we identify?**
+The CAISO daily curtailment report always lists 24 values, also on the 5 clock-change days in our data (2024-03-10, 2024-11-03, 2025-03-09, 2025-11-02, 2026-03-08). How CAISO maps the 24 positions on those days is unknown.
+
+**How did we identify it?**
+The pull checks, Q6.18 and Q6.8. **[Checked]** Cross-check on 2025-11-02, the one clock-change day both curtailment files cover (2026-11-07, `src/checks/eia_timing_check.py`): the workbook (5-minute MW summed over intervals and both reasons, divided by 12) and the report (sum of the 6 `<category>_mwh` columns) line up position by position with no shift. Day totals 1,644.2 and 1,644.4 MWh, total absolute difference 0.2 MWh; correlation 1.000 with no shift and 0.31 with a 1-hour shift either way. Curtailment fell only in positions 7 to 17, far from the repeated 01:00 hour, so this shows the 2 files use the same positions but not how CAISO maps them to clock hours. **[Checked]**
+
+**Why is it an issue?**
+Curtailment hours could land in the wrong hour on 5 of 954 days (0.5%).
+
+**What are our options?**
+- Option A: flag those 5 days and leave them out of the hourly curtailment flags. Pros: avoids wrong hours. Cons: loses 5 days of flags.
+- Option B: guess a mapping. Pros: keeps the days. Cons: errors we cannot see.
+- Option C: accept the error. Pros: no work. Cons: silent errors.
+
+**Which course of action will we use?**
+Option A. **[Our call]** The mapping stays an open item.
+
+#### D23 One processed hourly table
+
+**What issue did we identify?**
+The sources use different clocks and grain: hourly, 5-minute and daily; UTC and Pacific; hour ending and hour starting; 3 areas; 51 weather files.
+
+**How did we identify it?**
+The pull checks, Q7.5, and the merged-table build for the Capstone 2 numbers.
+
+**Why is it an issue?**
+A join that silently drops or duplicates rows, or shifts an hour, gives wrong results with no error.
+
+**What are our options?**
+- Option A: build 1 calendar of every UTC hour in the window (22,896 rows) and left join each source onto it. Pros: gaps show as blanks, and everyone has the same rows. Cons: more work up front.
+- Option B: inner join the files. Pros: quick. Cons: any gap silently removes that hour.
+- Option C: each teammate builds their own. Pros: independence. Cons: different tables, different results.
+
+**Which course of action will we use?**
+Option A, as one re-runnable script. Check the row count (22,896) after every join and report blanks per source. Expected: 24 EIA hours (Q6.2), plus 1 at the D14 switch (hour ending 2025-12-02 21:00 UTC); 72 DAM hours (Q6.7); 129 weather hours (Q6.12). Save to `data/processed/` as Parquet (not committed). **[Our call]**
+
+#### D24 Validation fold dates
+
+**What issue did we identify?**
+The 763 practice days are split into 4 rolling folds of about 3 months, but the exact dates were not written down.
+
+**How did we identify it?**
+The README validation section and Q4.5.
+
+**Why is it an issue?**
+Without fixed dates each teammate cuts differently, scores are not comparable, and the claim "winter is tested in practice" cannot be checked.
+
+**What are our options?**
+- Option A: the last 4 three-month blocks before the test set. Pros: simple, recent, realistic. Cons: only 2 contain winter, and the earliest 12 months are only ever training data.
+- Option B: spread the folds evenly over all 763 days. Pros: every season is validated. Cons: early folds train on very little.
+- Option C: fewer, longer folds. Pros: more validation days per fold. Cons: fewer comparisons.
+
+**Which course of action will we use?**
+Option A. Validation blocks of 91 days each: 2025-04-11 to 2025-07-10, 2025-07-11 to 2025-10-09, 2025-10-10 to 2026-01-08, and 2026-01-09 to 2026-04-09. Training uses all earlier days and stops at least 1 day before each block starts. Winter days (December to February): 39 of 91 in block 3, 51 of 91 in block 4. **[Our call]** (the exact boundaries are derived from the rule and not yet reviewed day by day)
+
+#### D25 The window end date
+
+**What issue did we identify?**
+The end date, 2026-10-17, had no recorded reason (Q4.4).
+
+**How did we identify it?**
+Raúl, 2026-11-07: the end date was set by when we pulled the data (2026-10-27 and 2026-10-28). From there we looked back as far as the sources allowed, which the most constrained source set: the weather forecast archive starts on 2024-03-08.
+
+**Why is it an issue?**
+A reviewer will ask. EIA can also revise its newest values (Q6.5), so the last days may shift slightly.
+
+**What are our options?**
+- Option A: keep 2026-10-17. Pros: no rework, and the test set stays locked. Cons: the newest 2 to 3 weeks are not used.
+- Option B: re-pull to a later date. Pros: 2 to 3 more weeks of data. Cons: moves the test set, and all files and scores must be rebuilt before the Nov 16 deadline.
+- Option C: end earlier. Pros: more settled EIA values. Cons: less data, with no benefit for the deadline.
+
+**Which course of action will we use?**
+Option A. Q4.4 gives the reason. **[Our call]**
 
 ### Open items
 
-| Item | Needed from |
-|---|---|
-| Confirm the EIA alignment rule (Q6.1) | Team |
-| Decide how to treat negative and deep-night EIA values (Q6.3, Q6.4) | Team |
-| Decide how to treat the weather gap (Q6.12) | Team |
-| What `AVA_` is (Q6.6) | Raúl, CAISO documentation |
-| Why capacity and peak figures disagree (Q6.9) | Raúl |
-| How CAISO maps 24 report positions on 23 and 25 hour days | Raúl |
+| Item | Status | Needed from |
+|---|---|---|
+| EIA alignment rule (Q6.1) | Decided: D14 | |
+| Why EIA changed its labeling around 2025-12-02 | Open | EIA documentation, Raúl |
+| The exact hour of the EIA change (best fit 22:00 UTC; 18:00 to 00:00 fit almost as well) | Open | Team |
+| Negative EIA night values (Q6.3) | Decided: D15 | |
+| Deep-night positive EIA values (Q6.4) | Decided: D16 (recount done, dropped from training); cause still unknown | |
+| Weather gap (Q6.12) | Decided: D17 | |
+| Capacity scope and divisor | Decided: D18, D19 | |
+| Why capacity and peak figures disagree (Q6.9) | Open | Raúl |
+| What `AVA_` is (Q6.6) | Treatment decided (D21); meaning open | Raúl, CAISO documentation |
+| How CAISO maps 24 report positions on 23 and 25 hour days | Treatment decided (D22); mapping open | Raúl |
+| Definition of daylight | Decided: D20 | |
+| Validation fold dates | Decided: D24; boundaries not yet reviewed day by day | Team |
 
 ---
 
@@ -309,10 +806,11 @@ First, separate **missing rows** from **null cells**. Only the weather files and
 
 1. **Build a full hourly calendar** for your window (UTC), then join each dataset to it. Count what is missing after the join.
 2. **Do not fill the target.** Leave EIA gaps (2024-11-02) as missing and drop those hours from training and scoring, for every model and for the benchmark, so all are scored on the same hours.
-3. **Weather gap (129 hours).** Keep `NaN`. Options: drop those hours for every model (0.56% of hours), or use a method that accepts missing values. Do not fill them from the other offset without a flag, because day 1 and day 2 are different forecasts. Add a flag column such as `wx_gap`.
-4. **DAM missing days.** Drop the three days from benchmark scoring (and from any comparison with the model), or score the model on the same reduced set.
-5. **Curtailment.** In the workbook, a blank `Solar Curtailment` means no solar curtailment was listed for that interval (our reading of "only intervals with a curtailment are listed"). Fill with 0 only after you have built the full 5-minute or hourly grid, and never for 2025-06-16, which is missing data. In the daily report, 0 means zero.
-6. **860M blanks** are single spaces (Q7.2). Treat them as null.
+3. **Weather gap (129 hours).** Keep `NaN`, add a `wx_gap` flag column, and drop those hours for every model and the benchmark (Decision D17). Do not fill them from the other offset, because day 1 and day 2 are different forecasts and day 1 comes after the bid close.
+4. **EIA switch hour.** Under Decision D14 the hour ending 2025-12-02 21:00 UTC has no EIA value. Leave it missing, like the other EIA gaps.
+5. **DAM missing days.** Drop the three days from benchmark scoring (and from any comparison with the model), or score the model on the same reduced set.
+6. **Curtailment.** In the workbook, a blank `Solar Curtailment` means no solar curtailment was listed for that interval (our reading of "only intervals with a curtailment are listed"). Fill with 0 only after you have built the full 5-minute or hourly grid, and never for 2025-06-16, which is missing data. In the daily report, 0 means zero. Leave the 5 clock-change days out of the hourly curtailment flags (Decision D22).
+7. **860M blanks** are single spaces (Q7.2). Treat them as null.
 
 ### Q7.2 How should I read the files so blanks and types come out right?
 
@@ -324,9 +822,9 @@ First, separate **missing rows** from **null cells**. Only the weather files and
 
 ### Q7.3 How should I handle negative and odd values?
 
-- **Negative night values** (EIA, ACTUAL): a common choice is to set them to zero for modeling, since they are station use, not production (Q6.3, unverified). Keep the original in a separate column, and do the same for both the target and the benchmark.
-- **Positive deep-night values** (EIA): flag them after applying the timing rule (Q6.4). Do not drop them silently.
-- **Night hours in scoring:** the success metrics use daylight hours only. Define daylight once (for example, `shortwave_radiation_previous_day2` above a small threshold, or solar elevation from `pvlib`) and share the definition.
+- **Negative night values** (EIA, ACTUAL): set them to 0 in the modeling copy and keep the original in a separate column, for both the target and the benchmark (Decision D15). The likely cause, station use, is unverified (Q6.3).
+- **Positive deep-night values** (EIA): flag them after applying the timing rule (Decision D14), then drop them from training and say so in the report (Decision D16, Q6.4). Do not drop them silently.
+- **Night hours in scoring:** the success metrics use daylight hours only. Daylight means sun elevation above 0 degrees at the middle of the hour at the capacity-weighted centre of the weather points, computed with `pvlib` (Decision D20). The same hours score the benchmark and every model.
 - **Outliers:** none were removed. Check extreme values against capacity before you drop anything.
 
 ### Q7.4 How should I encode categories and time?
@@ -343,19 +841,19 @@ The rule is: **one key, hour ending in UTC.** Convert every file to it first, th
 
 | Dataset | Hour-ending UTC key |
 |---|---|
-| EIA | `period` as UTC, minus 1 hour (the recommended alignment rule, Q6.1) |
+| EIA | `period` as UTC, minus 1 hour for labels before 2025-12-02 22:00 UTC, unchanged from that label on (Decision D14, Q6.1) |
 | OASIS DAM and ACTUAL | `INTERVALENDTIME_GMT` |
 | Open-Meteo | `time_utc` (radiation is the mean of the hour before this time, **[Doc]**) |
 
-With that key, EIA correlates best with the capacity-weighted day-2 shortwave radiation with no shift (0.9276, against 0.9183 and 0.8553 when the weather is moved one hour in either direction; window 2024-03-08 to 2026-10-17, checked 2026-10-29), which supports the rule.
+With that key, EIA correlates best with the capacity-weighted day-2 shortwave radiation with no shift (0.9439, against 0.9041 and 0.8977 when one series is moved one hour in either direction; window 2024-03-08 to 2026-10-17). **[Checked]** (2026-11-07, `src/checks/eia_timing_check.py`, same method as the earlier 0.9276, which used the old "minus 1 hour everywhere" rule)
 
 Other steps:
 
 1. **OASIS to one CAISO solar series.** Keep `RENEWABLE_TYPE` = Solar and hubs NP15, SP15, ZP26. Sum the three per hour and keep the hour only if all three are present. Leave out `AVA_` and wind.
 2. **Weather to one series.** Either keep per-location features (good for tree models, but 51 x 18 columns), or average the points weighted by `caiso_solar_capacity_share` (points with zero share drop out). The shares are static (2026-09, all CISO) and apply to 2024 only roughly.
-3. **Capacity to hours.** Pick one scope and use it for everything (all CISO, or California only), name it in every chart, and join each hour to the capacity of its own month with `file_month`. 2026-10 has no file: carry the 2026-09 value forward and say so.
+3. **Capacity to hours.** Use EIA 860M monthly nameplate, all CISO, for everything (Decisions D18 and D19), name the source and scope in every chart, and join each hour to the capacity of its own month with `file_month`. 2026-10 has no file: carry the 2026-09 value forward and say so.
 4. **Curtailment to hours.** Workbook: group by calendar date and `Hour`, sum MW across the intervals and both `Reason` values (Local and System can both appear in one interval), divide by 12 to get MWh. Daily report: sum the six `<category>_mwh` columns. Convert Pacific date and hour to UTC from the local clock reading (midnight plus `Hour`), and do not trust the five clock-change days without checking.
-5. **Check after every join.** Row count before and after, number of unmatched keys, and the date range. A join that silently drops rows is the most common error here.
+5. **Check after every join.** Row count before and after, number of unmatched keys, and the date range. A join that silently drops rows is the most common error here. The team builds one table on a full calendar of 22,896 UTC hours with left joins (Decision D23).
 6. **Window.** Filter to 2024-03-08 to 2026-10-17 only after the joins, and keep the test set (from 2026-04-10) out of any tuning.
 
 ### Q7.6 What file formats should I save to?

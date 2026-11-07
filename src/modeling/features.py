@@ -90,14 +90,17 @@ def eia_history(last_hour_end: pd.Timestamp) -> pd.Series:
     return eia[eia.index <= last_hour_end]
 
 
-def build_features(df: pd.DataFrame | None = None) -> pd.DataFrame:
+def build_features(df: pd.DataFrame | None = None, allow_test: bool = False) -> pd.DataFrame:
     """Feature table on the table's rows (training and validation only) with the target and fit mask.
 
     Columns: every name in FEATURE_SPEC, the 2 day-1 comparison columns (and csi_previous_day1),
     plus cf (target), eia_mw, capacity_mw, local_start, fit_row.
+
+    allow_test=True is used only by final_test.py behind its --final-test flag (the one test run).
     """
     df = load_tv_table() if df is None else df
-    assert_tv_only(df, "build_features")
+    if not allow_test:
+        assert_tv_only(df, "build_features")
     idx = df.index
     eia = eia_history(idx.max())
     out = pd.DataFrame(index=idx)

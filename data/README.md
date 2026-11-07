@@ -16,7 +16,7 @@
 
 Read `raw/PULL_LOG.md` first. Points that change how the files are matched:
 
-- **EIA timestamps (open issue).** EIA's hourly label L carries the hour that CAISO reports as ending at L minus 1 hour. Recommended rule for processing: EIA label L = the hour ending at L minus 1 hour (UTC). No raw file is shifted.
+- **EIA timestamps.** Until 2025-12-02, EIA's hourly label L carries the hour that CAISO reports as ending at L minus 1 hour; from about 22:00 UTC that day, label L is the hour ending at L. Team rule for processing (FAQ Decision D14): for labels before 2025-12-02 22:00 UTC the hour ending is L minus 1 hour (UTC), from that label on it is L. No raw file is shifted.
 - **Weather starts later.** Open-Meteo previous-runs data (`ecmwf_ifs025`) starts on 2024-03-08, so models that use weather run from 2024-03-08. The locked test set is about 2026-04-10 to 2026-10-17.
 - **Weather radiation** is the mean over the hour before `time_utc` (Open-Meteo documentation, checked against the sun).
 - **Known gaps**: EIA misses 2024-11-02 (Pacific day); OASIS DAM misses the day before each spring DST change; weather misses `cloud_cover_previous_day2` and `relative_humidity_2m_previous_day1` from 2026-04-17 15:00 to 2026-04-22 23:00 UTC; curtailment misses 2025-06-16 (workbook) and 2025-11-05 (daily report). None is filled.

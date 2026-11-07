@@ -1,6 +1,6 @@
 # Data how-to (Python and R)
 
-How to load the project's raw files, take a first look, and line them up for analysis. Every code block on this page was run against the files on GitHub (`main`) on 2026-10-29 with Python 3.13 (pandas 3.0.5, and again with pandas 2.2.3) and R 4.3.3 (readr 2.1.5, dplyr 1.1.4, lubridate 1.9.3). If a block fails for you, tell the team in the group chat and note the error and your versions.
+How to load the project's raw files, take a first look, and line them up for analysis. Every code block on this page was run against the files on GitHub (`main`) on 2026-10-29 with Python 3.13 (pandas 3.0.5, and again with pandas 2.2.3) and R 4.3.3 (readr 2.1.5, dplyr 1.1.4, lubridate 1.9.3). The EIA lines in section 3.4 were changed to the D14 timing rule on 2026-11-07 and tested on the local files with Python 3.13 (pandas 3.1.0) and R 4.5.2. If a block fails for you, tell the team in the group chat and note the error and your versions.
 
 Read `docs/DATA_FAQ.md` for why the data looks the way it does, and `docs/DATA_DICTIONARY.md` for what each column means.
 
@@ -135,14 +135,16 @@ print((curt.groupby(curt["date"].dt.to_period("M"))["Solar Curtailment"].sum() /
 
 ### 3.4 Put the files on one clock, then merge
 
-The key is **hour ending, in UTC**. EIA's label is shifted by the recommended rule (EIA label L is the hour ending at L minus 1 hour; this is the team's working rule, not yet final, FAQ Q6.1). OASIS has the end time in `INTERVALENDTIME_GMT`. Open-Meteo's `time_utc` is already the end of the hour for radiation.
+The key is **hour ending, in UTC**. EIA's label is converted with the team rule (FAQ Decision D14): a label L before 2025-12-02 22:00 UTC is the hour ending at L minus 1 hour; from that label on, L is the hour ending. The hour ending 2025-12-02 21:00 UTC then has no EIA value. OASIS has the end time in `INTERVALENDTIME_GMT`. Open-Meteo's `time_utc` is already the end of the hour for radiation.
 
 This block builds one hourly table: EIA actuals, CAISO's day-ahead total, and the capacity-weighted average of the day-2 weather forecasts.
 
 ```python
 # 1. Target, on the hour-ending clock
 eia = pd.read_csv(BASE + "eia_ciso_solar_hourly_2024-01-01_2026-10-17.csv", usecols=["period", "value"])
-eia["hour_end_utc"] = pd.to_datetime(eia["period"], format="%Y-%m-%dT%H", utc=True) - pd.Timedelta(hours=1)
+SWITCH = pd.Timestamp("2025-12-02 22:00", tz="UTC")                  # Decision D14
+lab = pd.to_datetime(eia["period"], format="%Y-%m-%dT%H", utc=True)
+eia["hour_end_utc"] = lab.where(lab >= SWITCH, lab - pd.Timedelta(hours=1))
 eia = eia.set_index("hour_end_utc")[["value"]].rename(columns={"value": "eia_mw"})
 
 # 2. CAISO day-ahead forecast: Solar only, the three hubs summed, kept only if all three are present
@@ -257,9 +259,10 @@ Same steps and same result as 3.4.
 library(tidyr)
 
 # 1. Target, on the hour-ending clock
+SWITCH <- as.POSIXct("2025-12-02 22:00:00", tz = "UTC")   # Decision D14
 eia <- read_csv(paste0(BASE, "eia_ciso_solar_hourly_2024-01-01_2026-10-17.csv"), show_col_types = FALSE,
                 col_types = cols_only(period = col_datetime("%Y-%m-%dT%H"), value = col_double())) |>
-  transmute(hour_end_utc = period - hours(1), eia_mw = value)
+  transmute(hour_end_utc = if_else(period >= SWITCH, period, period - hours(1)), eia_mw = value)   # Decision D14
 
 # 2. CAISO day-ahead forecast: Solar only, the three hubs summed, kept only if all three are present
 dam <- read_csv(paste0(BASE, "caiso_dam_solar_forecast_2024-01-01_2026-10-17.csv.gz"), show_col_types = FALSE,
@@ -309,7 +312,7 @@ Keep the test period (from 2026-04-10) out of every exploration that leads to a 
 | Pitfall | What to do |
 |---|---|
 | Joining on text timestamps | Convert to UTC date-times first. The three sources write times in three formats (`2024-01-01T00`, `2023-12-31T08:00:00-00:00`, `2024-03-08T00:00`). |
-| EIA label read as hour ending | Apply the working rule (label L is the hour ending at L minus 1 hour) in processing, never in the raw file. |
+| EIA label read as hour ending, or shifted 1 hour everywhere | Apply Decision D14 in processing, never in the raw file: labels before 2025-12-02 22:00 UTC are the hour ending at L minus 1 hour, later labels are the hour ending at L. A blanket 1-hour shift is wrong from 2025-12-03 on, including the whole test set. |
 | Rebuilding time from `OPR_DT` and `OPR_HR` | Use the UTC columns. `OPR_HR` follows the local clock and breaks on clock-change days. |
 | Counting a missing row as zero | Absent rows are not zeros. Build a full hourly calendar and look at what is missing. |
 | Summing OASIS hubs blindly | Keep Solar, hubs NP15, SP15, ZP26 only, and require all three. Leave out `AVA_` and wind. |

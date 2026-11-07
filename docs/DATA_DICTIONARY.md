@@ -50,7 +50,7 @@ All files are UTF-8 with `\n` line endings. Raw files are exactly as the source 
 | Expected rows | 24,504. Missing 24 (the Pacific day 2024-11-02). |
 | Units | Megawatt-hours per hour, which equals average megawatts for that hour. |
 | Pulled | 2026-10-27. |
-| Timing warning | The label is about one hour later than the hour CAISO reports. Recommended rule: label L is the hour ending at L minus 1 hour (UTC). See FAQ Q6.1. |
+| Timing warning | Until 2025-12-02 the label is 1 hour later than the hour CAISO reports; from about 22:00 UTC that day it is hour ending, as EIA documents. Team rule (FAQ Decision D14): for a label L before 2025-12-02 22:00 UTC the hour ending is L minus 1 hour (UTC); from that label on it is L. The hour ending 2025-12-02 21:00 UTC has no value. See FAQ Q6.1. |
 
 | Column | Type | Meaning | Values and range | Nulls | Basis |
 |---|---|---|---|---|---|

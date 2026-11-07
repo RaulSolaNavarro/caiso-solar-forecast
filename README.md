@@ -80,6 +80,51 @@ The data is split in time order, in whole days, so models never see the answers 
 
 Targets are starting points and get rechecked once the baseline exists. See `docs/` for the full memo.
 
+## Results so far (validation only)
+
+These scores were used to choose the model before the test set was touched; the test results follow in the next section. They are pooled scores over the 4 validation folds (FAQ Decision D29: 2025-03-29 to 2026-04-09, 374 days, 4,508 daylight hours, the D27 common hours). Error is divided by EIA 860M monthly nameplate, all CISO. Persistence uses EIA 48 hours earlier (D-2), the fair version for the 10 a.m. bid close. On these hours the nMAE targets are 3.44% (1.25 times CAISO adjusted) and 5.63% (1.25 times CAISO as published).
+
+| Forecast | nMAE | Skill vs persistence D-2 | P95 overshoot (vs D-2) | P95 undershoot (vs D-2) | MAPE | Bias | Targets met (adj / pub / skill / P95) |
+|---|---|---|---|---|---|---|---|
+| Persistence D-2 (reference) | 6.60% | 0.000 | 4,169 MW | 4,158 MW | 19.3% | -23 MW | no / no / no / no |
+| CAISO as published (reference) | 4.51% | 0.333 | 3,585 MW (-14.0%) | 1,007 MW (-75.8%) | 11.5% | +761 MW | no / yes / yes / no |
+| CAISO adjusted for curtailment (reference) | 2.75% | 0.623 | 1,621 MW (-61.1%) | 1,486 MW (-64.3%) | 8.0% | +25 MW | yes / yes / yes / yes |
+| Climatology (floor) | 6.58% | 0.069 | 4,816 MW (+15.5%) | 3,040 MW (-26.9%) | 20.9% | +95 MW | no / no / no / no |
+| Ridge (dropped) | 4.70% | 0.391 | 2,638 MW (-36.7%) | 2,306 MW (-44.5%) | 13.8% | -68 MW | no / yes / yes / yes |
+| **Gradient-boosted trees (carried forward)** | **4.02%** | **0.473** | **2,033 MW (-51.2%)** | **2,253 MW (-45.8%)** | **10.0%** | **-186 MW** | **no / yes / yes / yes** |
+| Trees with day-1 weather (comparison only, breaks the 10 a.m. rule) | 3.87% | 0.496 | 1,935 MW (-53.6%) | 2,216 MW (-46.7%) | 9.4% | -232 MW | no / yes / yes / yes |
+
+- The trees meet 3 of the 4 targets. They miss 1.25 times CAISO adjusted (4.02% against 3.44%), and part of that gap is by construction, because CAISO measures curtailment against its own forecast.
+- Their lead over CAISO as published comes from spring and curtailed hours: CAISO forecasts output before curtailment, EIA measures it after. In hours without curtailment CAISO scores 2.97% and the trees 3.58%.
+- Respecting the 10 a.m. rule costs about 0.15 points (4.02% against 3.87% with day-1 weather).
+- Details, per fold and by season, hour, cloud cover and curtailment: `reports/model_results_validation.csv`, FAQ Decisions D28 to D30. Re-run: `python -m src.modeling.score_models`.
+
+## Results on the locked test set
+
+The model, its settings and 5 hypotheses with pass rules were frozen and committed first (`reports/final_model_spec.md`, `reports/hypotheses.md`, commit `c242a1c`), then the test set was scored once (FAQ Decision D31). Test period: Pacific dates 2026-04-10 to 2026-10-17, 2,457 daylight hours on 187 days (D27 common hours, the 129-hour weather gap left out). It has no winter. Error is divided by EIA 860M monthly nameplate, all CISO. On these hours the nMAE targets are 7.32% (1.25 times CAISO as published, the headline) and 4.43% (1.25 times CAISO adjusted, partly circular because CAISO measures curtailment against its own forecast).
+
+| Forecast | nMAE | Skill vs persistence D-2 | P95 overshoot (vs D-2) | P95 undershoot (vs D-2) | MAPE | Bias |
+|---|---|---|---|---|---|---|
+| **Gradient-boosted trees (our model)** | **4.43%** | **0.402** | **3,557 MW (-23.3%)** | **1,561 MW (-66.7%)** | **10.2%** | **+494 MW** |
+| Ridge (dropped in validation) | 5.21% | 0.342 | 3,701 MW (-20.2%) | 1,872 MW (-60.1%) | 15.0% | +453 MW |
+| Climatology (floor) | 6.17% | 0.200 | 4,652 MW (+0.3%) | 2,095 MW (-55.3%) | 15.4% | +422 MW |
+| Persistence D-2 (reference) | 7.27% | 0.000 | 4,638 MW | 4,690 MW | 16.9% | +36 MW |
+| Persistence D-1 (comparison only, breaks the 10 a.m. rule) | 5.51% | 0.214 | 3,684 MW (-20.6%) | 3,769 MW (-19.6%) | 13.0% | +19 MW |
+| CAISO as published (reference) | 5.85% | 0.143 | 5,664 MW (+22.1%) | 1,261 MW (-73.1%) | 13.3% | +1,024 MW |
+| CAISO adjusted for curtailment (reference, partly circular) | 3.54% | 0.548 | 1,955 MW (-57.8%) | 2,024 MW (-56.9%) | 7.8% | -322 MW |
+
+| Hypothesis | Test result | Verdict |
+|---|---|---|
+| H1 Weather adds value: skill vs persistence D-2 at least 0.30 | 0.40 | Supported |
+| H2 Close to the pros: nMAE at most 1.25 x CAISO as published (primary) and 1.25 x CAISO adjusted (secondary) | 4.43% vs 7.32% (met); 4.4348% vs 4.4294% (missed by 0.005 points) | Partly supported |
+| H3 Trees beat the straight-line model | 4.43% vs 5.21% | Supported |
+| H4 Clouds are where the error lives: 60 to 100% cloud worse than 0 to 10% | 5.90% vs 3.80% | Supported |
+| H5 It shrinks the reserve: P95 overshoot at least 20% below persistence D-2 | -23.3% | Supported |
+
+- Our error rose from 4.02% in validation to 4.43% on test, mostly in April and May 2026, when far more solar was curtailed than a year earlier. The model forecast too high on average in the test half-year (+494 MW).
+- Backup to cover 95 of 100 daylight hours, for today's fleet (EIA 860M nameplate 2026-09, all CISO, 26,034.5 MW): about 3,630 MW with our forecast, 4,790 MW with persistence D-2 and 5,890 MW with CAISO as published (`reports/reserve_test.csv`).
+- Charts: `deck/capstone3/figures/`; every deck number with its source: `deck/capstone3/CAPSTONE3_NUMBERS.md`.
+
 ## Repo layout
 
 ```

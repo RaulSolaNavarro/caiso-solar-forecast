@@ -34,4 +34,13 @@ BUS 9430 team project: forecast hourly utility-scale solar output (MW) in the CA
   - `python -m src.processing.capstone2_numbers` recomputes every Capstone 2 deck number, old method against new rules, into `reports/capstone2_numbers_corrected.md`.
   - `python -m src.processing.deck_chart_data` writes `reports/deck_chart_data.csv`, the chart data for the deck (season profiles, monthly curtailment share, cloud buckets).
   - `python -m src.processing.deck_figures` draws the 2 charts for the 6-minute deck from `reports/deck_chart_data.csv` into `deck/capstone2/figures/`.
+- Modeling (validation only, test locked; FAQ Decisions D28 to D30; run after `build_hourly_table`):
+  - `python -m src.modeling.features` builds the 20-feature table under the 10 a.m. rule, prints each feature with its reason and runs `assert_no_leak`.
+  - `python -m src.modeling.folds` prints the fold layouts and writes the chosen one (`winter104`) to `reports/folds.csv`.
+  - `python -m src.modeling.score_models` fits every candidate on the 4 folds, saves `data/processed/oof_predictions.parquet`, writes `reports/model_results_validation.csv` and prints the pooled table with the 4 targets.
+- Final test (FAQ Decision D31; the model and hypotheses are frozen in `reports/final_model_spec.md` and `reports/hypotheses.md`):
+  - `python -m src.modeling.final_test` is a dry run: it refits on the 763 training and validation days, checks the frozen settings and reads no test row.
+  - `python -m src.modeling.final_test --final-test` scores the locked test set. It runs once and has run (2026-11-07, commit `c242a1c`). Never run it again, never delete `reports/final_results_test.csv` to rerun it, and never change a frozen file or hypothesis because of a test result. If a bug turns up, tell Raúl.
+  - `python -m src.modeling.reserve` turns the saved test errors into the backup-power estimate, `reports/reserve_test.csv`.
+  - `python -m src.modeling.test_vs_validation` writes `reports/test_vs_validation.csv`; `python -m src.modeling.capstone3_figures` draws the 5 charts into `deck/capstone3/figures/` with their data in `reports/capstone3_*.csv`. Both read saved results only.
 - Plan and owners: the project plan lives in the team's Google Sheet. Ask before changing task scope.

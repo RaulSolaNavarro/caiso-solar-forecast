@@ -32,4 +32,6 @@ BUS 9430 team project: forecast hourly utility-scale solar output (MW) in the CA
   - `python -m src.processing.build_hourly_table` builds `data/processed/hourly_table.parquet` (22,896 rows, UTC hour ending, all flags and the `scorable` mask) and prints and saves `data/processed/build_report.txt`.
   - `python -m src.processing.score_references` writes the 4 reference scores for training and validation to `reports/reference_scores.csv`; add `--with-test` to also write `reports/reference_scores_test.csv` (reference forecasts only, never models).
   - `python -m src.processing.capstone2_numbers` recomputes every Capstone 2 deck number, old method against new rules, into `reports/capstone2_numbers_corrected.md`.
+  - `python -m src.processing.deck_chart_data` writes `reports/deck_chart_data.csv`, the chart data for the deck (season profiles, monthly curtailment share, cloud buckets).
+  - `python -m src.processing.deck_figures` draws the 2 charts for the 6-minute deck from `reports/deck_chart_data.csv` into `deck/capstone2/figures/`.
 - Plan and owners: the project plan lives in the team's Google Sheet. Ask before changing task scope.

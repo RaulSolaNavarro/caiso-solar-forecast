@@ -2,6 +2,47 @@
 
 Team project for BUS 9430, Business Analytics Project Management (Baruch College, Zicklin School of Business, Fall 2026).
 
+## Start here: decks, primer and documents
+
+Web links open in your browser. File links (PowerPoint, PDF, Markdown) open on GitHub, where you can read them or press Download. The PDFs are for reading. Slides go to the professor as PowerPoint or Google Slides.
+
+### Presentations
+
+| Title | What it is | Open |
+|---|---|---|
+| Capstone 2, 6-minute deck | The 7-slide deck we present on Nov 16: the business problem, the data we pulled, how we prepare it, what the data shows, quality and delivery risks. Speaker names and timing are in the notes. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/capstone2/short/) · [PowerPoint](deck/capstone2/short/Capstone2_Deck_6min.pptx) · [PDF](deck/capstone2/short/Capstone2_Deck_6min.pdf) |
+| Capstone 2, full deck | The 20-slide version with a Q&A backup section (extra solar, grid protection, why solar and not demand, what a solar miss is worth), the data dictionary and sources. Use it to answer questions, not to present. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/capstone2/) · [PowerPoint](deck/capstone2/Capstone2_Deck.pptx) · [PDF](deck/capstone2/Capstone2_Deck.pdf) |
+| Capstone 1, 6-minute deck | The issue-selection deck we presented on Oct 19. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/short/) · [PDF](deck/short/Capstone1_6min_deck.pdf) |
+| Capstone 1, full deck | The longer Capstone 1 version. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/) · [PDF](deck/Capstone1_Deck.pdf) |
+
+### Plain-language guides
+
+| Title | What it is | Open |
+|---|---|---|
+| Solar Power, Explained (primer) | A guide for readers with no energy or analytics background. It covers how the grid works, why the day-ahead plan matters, what a forecast miss costs in watts and dollars, what happens to extra solar, and quick answers to likely questions. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/docs/solar-primer.html) · [PDF](docs/Solar_Primer.pdf) |
+
+### Data documents
+
+| Title | What it is | Open |
+|---|---|---|
+| Data FAQ | Where each file comes from, why we use it, its limits, the team decisions (for example D14, the EIA timestamp rule) and advice on cleaning and merging. | [docs/DATA_FAQ.md](docs/DATA_FAQ.md) |
+| Data dictionary | Every file and every column, with units and time zones. | [docs/DATA_DICTIONARY.md](docs/DATA_DICTIONARY.md) |
+| Data how-to | Starter code in Python and R to load, align and merge the raw files. | [docs/DATA_HOWTO.md](docs/DATA_HOWTO.md) |
+| Data pull brief | The instructions used to pull the raw data. | [docs/DATA_PULL_BRIEF.md](docs/DATA_PULL_BRIEF.md) |
+| Data file list | Raw file names, row counts and date ranges. | [data/README.md](data/README.md) |
+| Pull log | How each file was pulled, the checks run, the gaps found and the open issues. | [data/raw/PULL_LOG.md](data/raw/PULL_LOG.md) |
+
+### Numbers and project papers
+
+| Title | What it is | Open |
+|---|---|---|
+| Capstone 2 numbers | Every figure on the Capstone 2 slides, with where it comes from and how to recompute it. | [deck/capstone2/CAPSTONE2_NUMBERS.md](deck/capstone2/CAPSTONE2_NUMBERS.md) |
+| Corrected reference scores | The persistence and CAISO scores after the EIA timestamp fix, on training and validation days and on the test days. | [reports/capstone2_numbers_corrected.md](reports/capstone2_numbers_corrected.md) · [validation scores](reports/reference_scores.csv) · [test scores](reports/reference_scores_test.csv) |
+| Deck chart data | The data behind the Capstone 2 charts. Run `python -m src.processing.deck_figures` to redraw them. | [reports/deck_chart_data.csv](reports/deck_chart_data.csv) |
+| Task 1 memo | Problem statement and success metrics. | [docs/BUS9430_Task1_Problem_Statement_and_Success_Metrics.docx](docs/BUS9430_Task1_Problem_Statement_and_Success_Metrics.docx) |
+| Task 2 memo | Data source list and access plan. | [docs/BUS9430_Task2_Data_Source_List_and_Access_Plan.docx](docs/BUS9430_Task2_Data_Source_List_and_Access_Plan.docx) |
+| Project plan | The team plan, task list and risk register (Google Sheet, team access). | [Open the sheet](https://docs.google.com/spreadsheets/d/1j9riW3-3rDPhrW06x4MkVA4tCawg1OwqKfDuPlwNWjc/edit) |
+
 ## The business problem
 
 California's grid operator, CAISO, plans tomorrow's power supply today. Bids close at 10:00 a.m. Pacific the day before, and the market results come out at about 1:00 p.m. Solar is a large share of that plan, and how much it delivers depends on tomorrow's weather.

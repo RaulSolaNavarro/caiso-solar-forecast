@@ -28,4 +28,8 @@ BUS 9430 team project: forecast hourly utility-scale solar output (MW) in the CA
 ## Tasks
 
 - Data pulls are done. How they were run, what they found and what is still open is in `data/raw/PULL_LOG.md`. To re-run: `python -m src.data_pull.run_all --start 2024-01-01 --end 2026-10-17` (needs the EIA key in `.env`).
+- Processing (run from the repo root, in this order; FAQ Decisions D14 to D27):
+  - `python -m src.processing.build_hourly_table` builds `data/processed/hourly_table.parquet` (22,896 rows, UTC hour ending, all flags and the `scorable` mask) and prints and saves `data/processed/build_report.txt`.
+  - `python -m src.processing.score_references` writes the 4 reference scores for training and validation to `reports/reference_scores.csv`; add `--with-test` to also write `reports/reference_scores_test.csv` (reference forecasts only, never models).
+  - `python -m src.processing.capstone2_numbers` recomputes every Capstone 2 deck number, old method against new rules, into `reports/capstone2_numbers_corrected.md`.
 - Plan and owners: the project plan lives in the team's Google Sheet. Ask before changing task scope.

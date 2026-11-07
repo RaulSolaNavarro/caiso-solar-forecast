@@ -2,7 +2,7 @@
 
 - `raw/` holds the source files exactly as downloaded, saved as CSV (some gzip-compressed, `.csv.gz`) and committed to Git so every teammate starts from the same copy. Raúl runs the pulls (see `docs/DATA_PULL_BRIEF.md` and `src/data_pull/`) and logs each one in `raw/PULL_LOG.md`.
 - Questions about the data? Read `../docs/DATA_FAQ.md` (sources, time frames, limits, cleaning advice), `../docs/DATA_DICTIONARY.md` (every file and column) and `../docs/DATA_HOWTO.md` (Python and R starter code).
-- `processed/` holds cleaned and merged tables (hourly, Pacific time, one row per hour). These are not committed. Each teammate builds their own in their preferred tool, so keep your cleaning in a notebook or script that someone else can re-run.
+- `processed/` holds the cleaned and merged tables. They are not committed; each teammate rebuilds them with the same script. The main one is `processed/hourly_table.parquet`: one row per hour, indexed by the UTC hour ending (`hour_end_utc`, 22,896 rows), built by `src/processing/build_hourly_table.py` (`python -m src.processing.build_hourly_table`), which also writes `processed/build_report.txt`. Pacific columns, such as `local_start`, are derived from the UTC index. See FAQ Decision D23.
 
 ## Rules
 

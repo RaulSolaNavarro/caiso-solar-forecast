@@ -1,0 +1,4 @@
+model,quantile,hours,overshoot_mw_test,share_of_capacity_pct,mw_today_fleet,sentence
+hgb,P95,2457,3557.0,13.94,3630.0,"HGB (our model): hold about 3,630 MW of backup to cover 95 of 100 daylight hours (13.9% of capacity; EIA 860M nameplate 2026-09, all CISO, 26,034.5 MW)"
+persistence_d2,P95,2457,4638.0,18.41,4790.0,"Persistence D-2: hold about 4,790 MW of backup to cover 95 of 100 daylight hours (18.4% of capacity; EIA 860M nameplate 2026-09, all CISO, 26,034.5 MW)"
+caiso_published,P95,2457,5664.0,22.63,5890.0,"CAISO as published: hold about 5,890 MW of backup to cover 95 of 100 daylight hours (22.6% of capacity; EIA 860M nameplate 2026-09, all CISO, 26,034.5 MW)"

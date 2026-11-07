@@ -24,7 +24,7 @@ Every claim carries a tag so you can tell a fact from an opinion.
 | 3 | How we know these are the right sources, and what we passed over |
 | 4 | Time frames and why |
 | 5 | Data dictionary (summary; full version in `DATA_DICTIONARY.md`) |
-| 6 | Issues, risks, limits and the decision log (D1 to D30) |
+| 6 | Issues, risks, limits and the decision log (D1 to D31) |
 | 7 | Recommendations: nulls, encoding, data types, merging |
 
 ---
@@ -192,7 +192,7 @@ The weather files together are 29.3 MB gzip (164.9 MB uncompressed). **[Checked]
 
 ## 6. Issues, risks, limits and the decision log
 
-Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D30).
+Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D31).
 
 ### Target: EIA hourly solar
 
@@ -272,7 +272,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 ### Decision log
 
-D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. Every entry has the same 5 headings.
+D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. D31 records the frozen model and the one test run (2026-11-07). Every entry has the same 5 headings.
 
 | ID | Decision | Date | Link |
 |---|---|---|---|
@@ -306,6 +306,7 @@ D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are w
 | D28 | Model features and the 10 a.m. rule: day-2 weather, EIA lags of 48 h or more | 2026-11-07 | [D28](#d28-model-features-and-the-10-am-rule) |
 | D29 | Validation folds: 4 blocks, the last one Dec 27 to Apr 9 so winter is one fold | 2026-11-07 | [D29](#d29-validation-folds) |
 | D30 | Model families: gradient-boosted trees carried forward, ridge dropped | 2026-11-07 | [D30](#d30-model-families-kept-and-dropped) |
+| D31 | Frozen model and the one test run | 2026-11-07 | [D31](#d31-frozen-model-and-the-one-test-run) |
 
 #### D1 Compressed file names
 
@@ -914,7 +915,31 @@ Carry the gradient-boosted trees forward (Raúl, 2026-11-07). **[Our call]** Dro
 
 How to read the result **[Checked]**: the lead over CAISO as published comes from spring and curtailed hours. By season, CAISO as published against the trees: spring 7.46% and 4.95%, summer 2.89% and 3.04%, fall 3.63% and 3.82%, winter 3.50% and 4.30%. In hours without curtailment (`curt_mwh` at most 1% of `capacity_mw`, 2,344 hours) CAISO scores 2.97% and the trees 3.58%; in curtailed hours (2,164) CAISO 6.17% and the trees 4.51%, against EIA. CAISO forecasts output before curtailment and EIA measures it after, so the trees partly learn curtailment rather than better weather. The 1% threshold is used because `curt_mwh` is above 0 in 94% of scored hours (open item).
 
-`reports/model_results_validation.csv` holds every score by model, fold, month, season, Pacific hour, day-2 cloud cover and curtailment. Per-hour predictions are in `data/processed/oof_predictions.parquet` (not committed). The test set has not been scored by any model.
+`reports/model_results_validation.csv` holds every score by model, fold, month, season, Pacific hour, day-2 cloud cover and curtailment. Per-hour predictions are in `data/processed/oof_predictions.parquet` (not committed). When D30 was made, the test set had not been scored by any model.
+
+Note: the frozen model and its one test run are in Decision D31.
+
+#### D31 Frozen model and the one test run
+
+**What issue did we identify?**
+The model chosen on validation (D30) had to be scored once on the locked test set (Pacific dates 2026-04-10 to 2026-10-17), with the model, the settings and the pass rules fixed before any test row was read, so the result could not be tuned to the test.
+
+**How did we identify it?**
+The README validation plan, D27 and the final-test brief (`briefs/04_final_test_brief.md`).
+
+**Why is it an issue?**
+Choosing or adjusting anything after seeing test results would make the reported score look better than a real day-ahead forecast would do.
+
+**What are our options?**
+- Option A: freeze the model, the settings and 5 hypotheses with pass rules, commit them, then run the test once and report whatever comes out. Pros: an honest, final number. Cons: no second chance if something goes wrong.
+- Option B: run the test, then adjust. Pros: a better-looking number. Cons: the number no longer measures the future.
+
+**Which course of action will we use?**
+Option A (Raúl, 2026-11-07). **[Our call]** Frozen in commit `c242a1c` on branch `raul/final-test`: `reports/final_model_spec.md` (HGB refit on all 763 training and validation days, 9,187 fit rows; settings chosen on the inner split of the last 76 days: depth 5, absolute-error loss, 86 iterations; seed 0) and `reports/hypotheses.md`. `src/modeling/final_test.py` refuses a second run, uncommitted frozen files, or settings that differ from the frozen ones. The test ran once, on 2026-11-07, without errors. **[Checked]**
+
+Result, 2,457 test hours on 187 days (`reports/final_results_test.csv`): our model 4.43% nMAE, CAISO as published 5.85%, CAISO adjusted 3.54%, persistence D-2 7.27%, persistence D-1 5.51%, ridge 5.21%, climatology 6.17%. The 4 reference scores match the earlier reference-only test scores (D14). Verdicts: H1 supported (skill 0.40), H2 partly supported (4.43% against 7.32%, met; against 1.25 x CAISO adjusted 4.4294%, missed by 0.005 points), H3 supported, H4 supported (5.90% against 3.80%), H5 supported (P95 overshoot 23.3% below persistence D-2).
+
+Surprises **[Checked]**: (1) The model over-forecasts on test (bias +494 MW, against -186 MW in validation), most in April and May 2026 (+1,009 and +1,223 MW), when curtailment was 24.0% and 20.7% of solar against 13.2% and 6.6% a year earlier. Our model's spring error rose from 4.95% to 6.34%. Why the bias also appears in hours without curtailment (+508 MW) is not known **[Unverified]**. (2) The reserve gain shrank: P95 overshoot 23.3% below persistence D-2 on test, against 51.2% in validation. (3) CAISO as published did much worse on test than in validation (5.85% against 4.51%; 12.1% in spring), again in curtailed months. (4) Our pooled error moved by only 0.41 points, but 141 of 231 comparisons by group move by more than 0.5 points (`reports/test_vs_validation.csv`). Reserve estimate: `src/modeling/reserve.py` and `reports/reserve_test.csv`; deck numbers: `deck/capstone3/CAPSTONE3_NUMBERS.md`.
 
 ### Open items
 

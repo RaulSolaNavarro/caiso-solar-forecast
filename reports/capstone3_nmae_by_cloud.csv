@@ -1,0 +1,13 @@
+model,cloud_d2,nmae_pct,hours
+hgb,0-10,3.8019,1364
+hgb,10-30,5.2107,621
+hgb,30-60,4.9845,339
+hgb,60-100,5.9008,133
+caiso_published,0-10,4.8042,1364
+caiso_published,10-30,6.6361,621
+caiso_published,30-60,7.3842,339
+caiso_published,60-100,9.0539,133
+persistence_d2,0-10,5.7812,1364
+persistence_d2,10-30,8.4557,621
+persistence_d2,30-60,8.3912,339
+persistence_d2,60-100,14.1014,133

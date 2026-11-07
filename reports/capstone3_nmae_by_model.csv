@@ -1,0 +1,10 @@
+model,label,nmae_pct
+caiso_adjusted,CAISO adjusted**,3.5435
+hgb,Our model (HGB),4.4348
+ridge,Ridge (dropped),5.2124
+persistence_d1,Same as yesterday*,5.5094
+caiso_published,CAISO as published,5.8532
+climatology,Climatology (floor),6.1671
+persistence_d2,Same as 2 days ago,7.2677
+target_1.25x_caiso_published,target,7.3165
+target_1.25x_caiso_adjusted,target (partly circular),4.4294

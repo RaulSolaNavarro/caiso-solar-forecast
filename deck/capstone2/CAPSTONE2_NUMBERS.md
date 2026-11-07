@@ -40,3 +40,18 @@ Decisions that were open in the first version:
 | Correlation after the timing fix | 0.998 | EIA solar against CAISO's own actual solar (D14) |
 | History length | 2.6 years | 954 days / 365 |
 | Weather sources | 51 spots | `data/raw/weather_locations.csv` |
+
+Long deck (20 slides: the same 4 Capstone 2 points in more depth, then backup slides for questions). Slides 15 to 18 are Q&A backup, not part of the 6 minutes. Their numbers:
+
+| Number on slides | Value | How it was computed |
+|---|---|---|
+| Solar miss, energy per year | 1 point = 1.06 TWh; 4.7% = 5.0 TWh; 6.1% = 6.5 TWh | miss % x 23.6 GW average installed solar (EIA 860M, Mar 2024 to Oct 2026) x 4,489 daylight hours a year (11,733 / 954 x 365) |
+| Solar miss, share of all power | 1.8% | 4.98 TWh / 273 TWh (California Energy Commission) |
+| Solar miss, dollars | $43 million per point; $204 million at 4.7% | TWh x $41 per MWh, CAISO's 2024 average day-ahead price. The size of the energy at stake, not a cost |
+| Real cost anchor | $205 million (2025); $234 million (2024) | CAISO Department of Market Monitoring annual reports, real-time imbalance offset costs. Solar misses are one cause among several |
+| Open model value | 1.5 TWh, about $61 million | (6.1% - 4.7%) x the per-point figures. A size, not a savings promise: our model is not built or scored yet |
+| Demand miss, 4 sample days | about 650 to 750 MW, 2.3% to 3.4% | Mean absolute gap between CAISO's day-ahead demand plan and actual demand, the 15th of Jan, Apr, Jul, Oct 2025 (CAISO daily files). 4 days, not a study |
+| Fastest 2-hour move, sample days | demand up 1.9 to 2.7 GW; solar down 7.2 to 9.2 GW | Largest change over 2 hours in CAISO daily files, same 4 days |
+| Outside demand check | 4.55% | Yes Energy blog, CAISO load forecast, July 4 to 12, 2024. A vendor that sells a competing forecast wrote it, so treat it with care |
+| Batteries, western market | 8.0 GW (2023), 11.6 GW (2024); 274 GWh of turn-downs avoided in 2024 (about 8%) | EIA Today in Energy, curtailment in California |
+| Solar turned down in 2025 | about 3.5 TWh | Our hourly table (CAISO curtailment reports, solar only, 5 clock-change days left out). Primer only |

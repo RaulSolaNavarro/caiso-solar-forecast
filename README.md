@@ -10,6 +10,8 @@ Web links open in your browser. File links (PowerPoint, PDF, Markdown) open on G
 
 | Title | What it is | Open |
 |---|---|---|
+| Capstone 3, 6-minute deck | The deck we present on Dec 14, 2026 (Models and Results). 8 slides, all 5 of us speaking: how we tested, the one test run, the five verdicts, clouds, backup power, limits. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/capstone3/Capstone3_Deck_6min.html) · [PowerPoint](deck/capstone3/Capstone3_Deck_6min.pptx) · [PDF](deck/capstone3/Capstone3_Deck_6min.pdf) |
+| Capstone 3, backup slides | 12 slides for the question period after the talk: three sample days, error by month, practice runs against the test, why CAISO adjusted is partly circular, the 20 inputs, backup power detail, the dollar figure, limits and sources. Use them to answer questions, not to present. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/capstone3/Capstone3_Backup.html) · [PowerPoint](deck/capstone3/Capstone3_Backup.pptx) · [PDF](deck/capstone3/Capstone3_Backup.pdf) |
 | Capstone 2, 6-minute deck | The 7-slide deck we present on Nov 16: the business problem, the data we pulled, how we prepare it, what the data shows, quality and delivery risks. Speaker names and timing are in the notes. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/capstone2/short/) · [PowerPoint](deck/capstone2/short/Capstone2_Deck_6min.pptx) · [PDF](deck/capstone2/short/Capstone2_Deck_6min.pdf) |
 | Capstone 2, full deck | The 20-slide version with a Q&A backup section (extra solar, grid protection, why solar and not demand, what a solar miss is worth), the data dictionary and sources. Use it to answer questions, not to present. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/capstone2/) · [PowerPoint](deck/capstone2/Capstone2_Deck.pptx) · [PDF](deck/capstone2/Capstone2_Deck.pdf) |
 | Capstone 1, 6-minute deck | The issue-selection deck we presented on Oct 19. | [Web](https://raulsolanavarro.github.io/caiso-solar-forecast/deck/short/) · [PDF](deck/short/Capstone1_6min_deck.pdf) |
@@ -36,6 +38,7 @@ Web links open in your browser. File links (PowerPoint, PDF, Markdown) open on G
 
 | Title | What it is | Open |
 |---|---|---|
+| Capstone 3 numbers | Every number on the Capstone 3 slides, with its source and a plain caveat. | [deck/capstone3/CAPSTONE3_NUMBERS.md](deck/capstone3/CAPSTONE3_NUMBERS.md) |
 | Capstone 2 numbers | Every figure on the Capstone 2 slides, with where it comes from and how to recompute it. | [deck/capstone2/CAPSTONE2_NUMBERS.md](deck/capstone2/CAPSTONE2_NUMBERS.md) |
 | Corrected reference scores | The persistence and CAISO scores after the EIA timestamp fix, on training and validation days and on the test days. | [reports/capstone2_numbers_corrected.md](reports/capstone2_numbers_corrected.md) · [validation scores](reports/reference_scores.csv) · [test scores](reports/reference_scores_test.csv) |
 | Deck chart data | The data behind the Capstone 2 charts. Run `python -m src.processing.deck_figures` to redraw them. | [reports/deck_chart_data.csv](reports/deck_chart_data.csv) |

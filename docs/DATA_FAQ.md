@@ -24,7 +24,7 @@ Every claim carries a tag so you can tell a fact from an opinion.
 | 3 | How we know these are the right sources, and what we passed over |
 | 4 | Time frames and why |
 | 5 | Data dictionary (summary; full version in `DATA_DICTIONARY.md`) |
-| 6 | Issues, risks, limits and the decision log (D1 to D31) |
+| 6 | Issues, risks, limits and the decision log (D1 to D32) |
 | 7 | Recommendations: nulls, encoding, data types, merging |
 
 ---
@@ -192,7 +192,7 @@ The weather files together are 29.3 MB gzip (164.9 MB uncompressed). **[Checked]
 
 ## 6. Issues, risks, limits and the decision log
 
-Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D31).
+Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D32).
 
 ### Target: EIA hourly solar
 
@@ -272,7 +272,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 ### Decision log
 
-D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. D31 records the frozen model and the one test run (2026-11-07). Every entry has the same 5 headings.
+D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. D31 records the frozen model and the one test run (2026-11-07); D32 the check of its 2 timing assumptions (2026-11-07). Every entry has the same 5 headings.
 
 | ID | Decision | Date | Link |
 |---|---|---|---|
@@ -307,6 +307,7 @@ D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are w
 | D29 | Validation folds: 4 blocks, the last one Dec 27 to Apr 9 so winter is one fold | 2026-11-07 | [D29](#d29-validation-folds) |
 | D30 | Model families: gradient-boosted trees carried forward, ridge dropped | 2026-11-07 | [D30](#d30-model-families-kept-and-dropped) |
 | D31 | Frozen model and the one test run | 2026-11-07 | [D31](#d31-frozen-model-and-the-one-test-run) |
+| D32 | Checking the timing assumptions behind the 10 a.m. rule | 2026-11-07 | [D32](#d32-checking-the-timing-assumptions-behind-the-10-am-rule) |
 
 #### D1 Compressed file names
 
@@ -863,6 +864,8 @@ Day-1 comparison (labeled, never the main model): day-2 cloud cover, GHI and `cs
 
 Two assumptions are not verified **[Unverified]**: (1) the day-2 weather forecast for every hour of D is issued before 10 a.m. Pacific on D-1; for late-evening hours of D the run behind the day-2 value may be published later, and Open-Meteo's run times were not checked. (2) EIA has published the D-2 hourly values by 10 a.m. Pacific on D-1 (as in D27).
 
+Note: both assumptions were checked later; see Decision D32.
+
 #### D29 Validation folds
 
 **What issue did we identify?**
@@ -941,6 +944,32 @@ Result, 2,457 test hours on 187 days (`reports/final_results_test.csv`): our mod
 
 Surprises **[Checked]**: (1) The model over-forecasts on test (bias +494 MW, against -186 MW in validation), most in April and May 2026 (+1,009 and +1,223 MW), when curtailment was 24.0% and 20.7% of solar against 13.2% and 6.6% a year earlier. Our model's spring error rose from 4.95% to 6.34%. Why the bias also appears in hours without curtailment (+508 MW) is not known **[Unverified]**. (2) The reserve gain shrank: P95 overshoot 23.3% below persistence D-2 on test, against 51.2% in validation. (3) CAISO as published did much worse on test than in validation (5.85% against 4.51%; 12.1% in spring), again in curtailed months. (4) Our pooled error moved by only 0.41 points, but 141 of 231 comparisons by group move by more than 0.5 points (`reports/test_vs_validation.csv`). Reserve estimate: `src/modeling/reserve.py` and `reports/reserve_test.csv`; deck numbers: `deck/capstone3/CAPSTONE3_NUMBERS.md`.
 
+Note: the 2 timing assumptions behind the frozen model were checked after the test run, without changing the model or rescoring; see Decision D32.
+
+#### D32 Checking the timing assumptions behind the 10 a.m. rule
+
+**What issue did we identify?**
+D28 rests on 2 assumptions that were not verified: (1) the day-2 weather forecast for every hour of day D comes from a model run that is available by 10 a.m. Pacific on D-1; (2) EIA's hourly values for D-2 are published by then and do not change much afterwards. The Capstone 3 backup deck lists both as not verified.
+
+**How did we identify it?**
+D28, D27 and the assumption-check brief (`briefs/05_assumption_checks.md`). Open-Meteo defines `_previous_day2` as the value predicted 48 hours before the valid time but does not say which run supplies it or when (https://open-meteo.com/en/docs/previous-runs-api). EIA says net generation by source for yesterday is typically available by 11:00 a.m. Eastern, 8:00 a.m. Pacific, and that values can be corrected later ("About the EIA-930 data", https://www.eia.gov/electricity/gridmonitor/about). **[Doc]**
+
+**Why is it an issue?**
+If either input arrives after the bid close, the model used information a bidder would not have, and the validation and test scores would look better than real use allows. A time-zone or hour-ending slip in the weather files would matter even more.
+
+**What are our options?**
+- Option A: check with data: trace `previous_day2` back to individual runs with the Single Runs API, re-pull EIA and compare, and confirm in the code that no later hour enters. Pros: evidence rather than assumption; small API use. Cons: samples only; first-published EIA values cannot be recovered.
+- Option B: keep the assumptions as stated. Pros: no work. Cons: the claim "only information available at 10 a.m." stays unsupported.
+- Option C: rebuild the features with longer lags (for example day-3 weather). Pros: removes the doubt. Cons: changes the frozen model and would need a new test set.
+
+**Which course of action will we use?**
+Option A (Raúl, 2026-11-07). **[Our call]** `src/modeling/assumption_checks.py` (not part of the pipeline; 33 Open-Meteo calls, 4 EIA requests); full report in `reports/assumption_checks.md`. The model and the one test run (D31) are unchanged, and the test set was not scored again.
+- File alignment **[Checked]**: weather is requested in UTC (`openmeteo.py` line 102), saved as returned (line 117), read as the UTC hour ending and checked against the table's calendar (`build_hourly_table.py` lines 156 to 158), with `local_start` = hour ending minus 1 hour (line 105); the model takes the columns unshifted (`features.py` lines 109 and 110). No time-zone or hour-ending mismatch.
+- Check 1, weather: **Verified with a limit.** At point c01 (35.00, -118.04), for 5 Pacific dates from 2026-10-27 to 2026-11-04 and hours starting 9 a.m., 1 p.m. and 5 p.m., `shortwave_radiation_previous_day2` and `cloud_cover_previous_day2` matched the 18:00 UTC run of D-2 or the 00:00 UTC run of D-1 exactly in 7 of 15 hours and nearest in 8 (differences up to 20 W/m2 and 5 points of cloud). All 15 trace to a run started by 06:00 UTC on D-1, which leaves at least 11 hours before the bid close; the 11 hours are Raúl's conservative allowance, not an ECMWF fact. Limits: 1 location, 15 hours, recent dates only; how older parts of the archive were assembled was not checked. **[Checked]**
+- Check 2, EIA: **Verified with a limit.** A re-pull on 2026-11-07 matched all 1,872 hourly values from 2026-08-01 to 2026-10-17 in `data/raw/` exactly (0 changed, 0 MW mean and largest difference; pass rule below 0.1% of capacity on average and below 1% on every Pacific day). In `features.py`, `cf_lag48` uses the hour ending 48 hours earlier (line 129) and `cf_d2_daily` groups hours by the Pacific date they start on and takes date D-2 (lines 131 to 135); on all 19,904 training and validation EIA hours no hour ends after its date, so no D-1 hour enters. Limits: revisions are measured only between our pull (2026-10-27 and 28) and 2026-11-07, not from first publication, which EIA's API does not keep; publication time comes from EIA's note (about 2 hours before the close), not from a measurement. **[Checked]**
+
+Nothing suggests the frozen model used information that was not available at 10 a.m.
+
 ### Open items
 
 | Item | Status | Needed from |
@@ -957,8 +986,8 @@ Surprises **[Checked]**: (1) The model over-forecasts on test (bias +494 MW, aga
 | How CAISO maps 24 report positions on 23 and 25 hour days | Treatment decided (D22); mapping open | Raúl |
 | Definition of daylight | Decided: D20 | |
 | Validation fold dates | Decided: D29 (replaces the D24 dates); table in `reports/folds.csv` | |
-| Are day-2 weather forecasts issued before 10 a.m. Pacific on D-1 for every hour of D? | Assumed in D28; Open-Meteo run times not checked | Team |
-| Are EIA's D-2 hourly values published by 10 a.m. Pacific on D-1? | Assumed in D27 and D28; not checked | Team |
+| Are day-2 weather forecasts issued before 10 a.m. Pacific on D-1 for every hour of D? | Checked in D32: verified with a limit (1 location, 15 hours, recent dates) | |
+| Are EIA's D-2 hourly values published by 10 a.m. Pacific on D-1? | Checked in D32: verified with a limit (no revisions since our pull; first-publication values and time not measurable) | |
 | Is `curt_mwh` above 0 in nearly every daylight hour real? (94% of scored validation hours; every scored hour from 2026-01, when the source switches to the daily report) | Breakdowns use a 1% of capacity threshold (D30); cause open | Team |
 
 ---

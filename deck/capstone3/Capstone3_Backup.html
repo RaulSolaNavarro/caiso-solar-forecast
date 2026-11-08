@@ -554,7 +554,7 @@ ul.lim li { font-size: 40px; line-height: 1.3; margin-bottom: 26px; }
       <div class="m fragment rise"><span class="tag">Size and recent output (3)</span><p>Installed capacity that month, output 2 days earlier, average output on the day 2 days earlier.</p></div>
     </div>
     <p class="tagline">Left out on purpose: output from 1 day earlier, CAISO's forecast, and day-1 weather, because they arrive after the 10 a.m. bid close.</p>
-    <p class="foot">FAQ Decision D28. Two assumptions are not verified: the 2-day-old weather forecast is available by 10 a.m., and EIA's values from 2 days earlier are published by then.</p>
+    <p class="foot">FAQ Decision D28. Timing assumptions were checked after the test run (Decision D32): both verified with limits, no change to the model.</p>
   </div>
   <aside class="notes">
     The model is a tree model, many small decision trees, each fixing the mistakes of the one before. All 20 inputs are known at 10 a.m. We left out anything that arrives later.
@@ -645,7 +645,7 @@ ul.lim li { font-size: 40px; line-height: 1.3; margin-bottom: 26px; }
     <ul class="why lim">
       <li><b>No winter in the test.</b> Winter was checked only in practice runs.</li>
       <li><b>2.6 years of history.</b> Each month appears 2 or 3 times.</li>
-      <li><b>Two timing assumptions.</b> The 2-day-old weather forecast is available by 10 a.m., and EIA's values from 2 days earlier are published by then. Neither is verified.</li>
+      <li><b>Two timing assumptions, checked with limits.</b> Weather: 15 sample hours at 1 location all trace to a model run that started at least 11 hours before the bid close. EIA: all 1,872 hourly values checked were unchanged since our pull, but first-published values cannot be recovered.</li>
       <li><b>One capacity source.</b> Errors are shares of EIA 860M nameplate, all CISO, and we name it next to every MW figure.</li>
       <li><b>Turned-down solar is a rough series.</b> It is above zero in 94% of hours, probably because CAISO defines it against its own forecast.</li>
       <li><b>Forecast high on test.</b> Bias +494 MW, cause only partly understood.</li>
@@ -653,7 +653,7 @@ ul.lim li { font-size: 40px; line-height: 1.3; margin-bottom: 26px; }
     <p class="foot">FAQ open items and Decision D31 (team repository).</p>
   </div>
   <aside class="notes">
-    These are the limits we know about. We would rather list them than have them found.
+    These are the limits we know about. On the timing assumptions: we checked the weather forecast against 15 sample hours and EIA against a fresh pull, and neither check found information from after 10 a.m. Both checks are small samples, and EIA does not keep its first-published values. We did this after the test run and did not change the model.
   </aside>
 </section>
 

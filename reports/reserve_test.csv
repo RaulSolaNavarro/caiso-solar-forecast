@@ -35,4 +35,4 @@ caiso_published,summer,P99,1274,5974.0,23.51,6120.0,"CAISO as published: hold ab
 caiso_published,fall,P90,550,1747.0,6.71,1750.0,"CAISO as published: hold about 1,750 MW of backup to cover 90 of 100 daylight hours in fall (6.7% of capacity; EIA 860M nameplate 2026-09, all CISO, 26,034.5 MW)"
 caiso_published,fall,P95,550,2531.0,9.72,2530.0,"CAISO as published: hold about 2,530 MW of backup to cover 95 of 100 daylight hours in fall (9.7% of capacity; EIA 860M nameplate 2026-09, all CISO, 26,034.5 MW)"
 caiso_published,fall,P99,550,3757.0,14.43,3760.0,"CAISO as published: hold about 3,760 MW of backup to cover 99 of 100 daylight hours in fall (14.4% of capacity; EIA 860M nameplate 2026-09, all CISO, 26,034.5 MW)"
-value_sizing,all,,2457,,2.83,,"nMAE gap persistence D-2 minus HGB on the test hours: 2.83 points, about 3.0 TWh and $122 million a year at $41 per MWh: a size, not a savings promise"
+value_sizing,all,,2457,,2.83,,"nMAE gap persistence D-2 minus HGB on the test hours: 2.83 points, about 3.0 TWh and $117 million a year at $39 per MWh: a size, not a savings promise"

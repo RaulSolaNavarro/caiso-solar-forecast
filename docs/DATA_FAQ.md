@@ -24,7 +24,7 @@ Every claim carries a tag so you can tell a fact from an opinion.
 | 3 | How we know these are the right sources, and what we passed over |
 | 4 | Time frames and why |
 | 5 | Data dictionary (summary; full version in `DATA_DICTIONARY.md`) |
-| 6 | Issues, risks, limits and the decision log (D1 to D32) |
+| 6 | Issues, risks, limits and the decision log (D1 to D33) |
 | 7 | Recommendations: nulls, encoding, data types, merging |
 
 ---
@@ -192,7 +192,7 @@ The weather files together are 29.3 MB gzip (164.9 MB uncompressed). **[Checked]
 
 ## 6. Issues, risks, limits and the decision log
 
-Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D32).
+Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D33).
 
 ### Target: EIA hourly solar
 
@@ -272,7 +272,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 ### Decision log
 
-D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. D31 records the frozen model and the one test run (2026-11-07); D32 the check of its 2 timing assumptions (2026-11-07). Every entry has the same 5 headings.
+D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. D31 records the frozen model and the one test run (2026-11-07); D32 the check of its 2 timing assumptions (2026-11-07). D33 sets the price behind the dollar figures (2026-11-14). Every entry has the same 5 headings.
 
 | ID | Decision | Date | Link |
 |---|---|---|---|
@@ -308,6 +308,7 @@ D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are w
 | D30 | Model families: gradient-boosted trees carried forward, ridge dropped | 2026-11-07 | [D30](#d30-model-families-kept-and-dropped) |
 | D31 | Frozen model and the one test run | 2026-11-07 | [D31](#d31-frozen-model-and-the-one-test-run) |
 | D32 | Checking the timing assumptions behind the 10 a.m. rule | 2026-11-07 | [D32](#d32-checking-the-timing-assumptions-behind-the-10-am-rule) |
+| D33 | Price behind the dollar figures: $39 per MWh, CAISO 2025 average day-ahead | 2026-11-14 | [D33](#d33-price-behind-the-dollar-figures) |
 
 #### D1 Compressed file names
 
@@ -969,6 +970,44 @@ Option A (Raúl, 2026-11-07). **[Our call]** `src/modeling/assumption_checks.py`
 - Check 2, EIA: **Verified with a limit.** A re-pull on 2026-11-07 matched all 1,872 hourly values from 2026-08-01 to 2026-10-17 in `data/raw/` exactly (0 changed, 0 MW mean and largest difference; pass rule below 0.1% of capacity on average and below 1% on every Pacific day). In `features.py`, `cf_lag48` uses the hour ending 48 hours earlier (line 129) and `cf_d2_daily` groups hours by the Pacific date they start on and takes date D-2 (lines 131 to 135); on all 19,904 training and validation EIA hours no hour ends after its date, so no D-1 hour enters. Limits: revisions are measured only between our pull (2026-10-27 and 28) and 2026-11-07, not from first publication, which EIA's API does not keep; publication time comes from EIA's note (about 2 hours before the close), not from a measurement. **[Checked]**
 
 Nothing suggests the frozen model used information that was not available at 10 a.m.
+
+#### D33 Price behind the dollar figures
+
+**What issue did we identify?**
+Every volume in our dollar figures is from 2025: 273 TWh of California net energy to serve load, 66.5 TWh of solar (both California Energy Commission, 2025) and about 3.5 TWh of solar turned down (our hourly table, 2025). The price used to turn them into dollars was $41 per MWh, CAISO's 2024 average day-ahead price, so volumes and price came from different years.
+
+**How did we identify it?**
+Raúl's review of the primer and the decks (`briefs/07_price_2025.md`). The CAISO Department of Market Monitoring 2025 annual report, executive summary p. 3, says: "Day-ahead market prices averaged about $39/MWh." (https://www.caiso.com/documents/2025-annual-report-on-market-issues-and-performance.pdf). **[Doc]**
+
+**Why is it an issue?**
+Pairing 2025 volumes with a 2024 price mixes years and overstates every dollar figure by about 5% ($41 against $39).
+
+**What are our options?**
+- Option A: use $39 per MWh, CAISO's 2025 average day-ahead price, for every dollar figure built on 2025 volumes. Pros: volumes and price from the same year and the same source family. Cons: every deck, numbers file and the primer must change, and the PDFs must be rebuilt.
+- Option B: keep $41. Pros: no work. Cons: the year mismatch stays.
+
+**Which course of action will we use?**
+Option A (Raúl, 2026-11-14). **[Our call]** Each figure was recomputed from its exact energy input times $39, not by scaling the old rounded dollars. 1 point of miss is 23.6 GW x 4,489 daylight hours = 1.0594 TWh a year, about $41.3 million. **[Checked]**
+
+| Figure | Energy | Old ($41) | New ($39) |
+|---|---|---|---|
+| 1 point of solar miss | 1.06 TWh | $43 million | $41 million |
+| Miss 6.1% (same as 2 days ago) | 6.5 TWh | $265 million | $252 million |
+| Miss 4.7% (CAISO as published) | 5.0 TWh | $204 million | $194 million |
+| Miss 2.7% (CAISO adjusted) | 2.9 TWh | $117 million | $112 million |
+| Open model value (1.4 points) | 1.5 TWh | $61 million | $58 million |
+| Capstone 3 value size (2.83 points) | 3.0 TWh | $122 million | $117 million |
+| Solar turned down, 2025 | 3.5 TWh | $143 million | $137 million |
+| All California | 273 TWh | $11.2 billion | $10.6 billion |
+| All utility-scale solar | 66.5 TWh | $2.7 billion | $2.6 billion |
+
+What changed: `deck/capstone2/CAPSTONE2_NUMBERS.md`, `deck/capstone2/index.html` and `Capstone2_Deck.pptx`; `deck/capstone3/CAPSTONE3_NUMBERS.md`, `Capstone3_Backup.html` and `.pptx`, `Capstone3_Deck_6min.html` and `.pptx` (slide 7 footer); the primer (`docs/solar-primer.html`, `docs/Solar_Primer.pdf`). The Capstone 3 main deck's "about 3 TWh and $120 million" stays, because $117 million still rounds to it.
+
+Change after the freeze: `src/modeling/reserve.py` and the `value_sizing` row of `reports/reserve_test.csv` changed after the test run (D31). Only the dollar conversion constants changed (`MUSD_PER_POINT` 43 to 41.3, `USD_PER_MWH` 41 to 39). `reserve.py` was rerun; `final_test.py` was not, and nothing was rescored. The diff showed one changed cell, the `value_sizing` sentence ($122 million at $41 to $117 million at $39); every reserve MW, share of capacity and nMAE value is unchanged. **[Checked]**
+
+What did not change: figures labeled 2024 ($41 day-ahead in 2024, $234 million of real-time imbalance offsets in 2024), the model, the frozen files, `reports/final_*` and every test and validation score.
+
+Limit: the dollar figure sizes the energy at stake; it is not what anyone paid or would save. It also uses the all-hours average, and day-ahead prices around noon, when solar output peaks, are lower than that average, so the figures overstate the value of solar energy at those hours **[Unverified for our hours]**. The 3 deck PDFs (`deck/capstone2/Capstone2_Deck.pdf`, `deck/capstone3/Capstone3_Backup.pdf`, `deck/capstone3/Capstone3_Deck_6min.pdf`) were regenerated from the updated HTML on 2026-11-14.
 
 ### Open items
 

@@ -47,9 +47,9 @@ Long deck (20 slides: the same 4 Capstone 2 points in more depth, then backup sl
 |---|---|---|
 | Solar miss, energy per year | 1 point = 1.06 TWh; 4.7% = 5.0 TWh; 6.1% = 6.5 TWh | miss % x 23.6 GW average installed solar (EIA 860M, Mar 2024 to Oct 2026) x 4,489 daylight hours a year (11,733 / 954 x 365) |
 | Solar miss, share of all power | 1.8% | 4.98 TWh / 273 TWh (California Energy Commission) |
-| Solar miss, dollars | $43 million per point; $204 million at 4.7% | TWh x $41 per MWh, CAISO's 2024 average day-ahead price. The size of the energy at stake, not a cost |
+| Solar miss, dollars | $41 million per point; $194 million at 4.7% | TWh x $39 per MWh, CAISO's 2025 average day-ahead price (D33). The size of the energy at stake, not a cost |
 | Real cost anchor | $205 million (2025); $234 million (2024) | CAISO Department of Market Monitoring annual reports, real-time imbalance offset costs. Solar misses are one cause among several |
-| Open model value | 1.5 TWh, about $61 million | (6.1% - 4.7%) x the per-point figures. A size, not a savings promise: our model is not built or scored yet |
+| Open model value | 1.5 TWh, about $58 million | (6.1% - 4.7%) x the per-point figures. A size, not a savings promise: our model is not built or scored yet |
 | Demand miss, 4 sample days | about 650 to 750 MW, 2.3% to 3.4% | Mean absolute gap between CAISO's day-ahead demand plan and actual demand, the 15th of Jan, Apr, Jul, Oct 2025 (CAISO daily files). 4 days, not a study |
 | Fastest 2-hour move, sample days | demand up 1.9 to 2.7 GW; solar down 7.2 to 9.2 GW | Largest change over 2 hours in CAISO daily files, same 4 days |
 | Outside demand check | 4.55% | Yes Energy blog, CAISO load forecast, July 4 to 12, 2024. A vendor that sells a competing forecast wrote it, so treat it with care |

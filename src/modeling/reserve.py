@@ -12,7 +12,8 @@ Each is shown 3 ways: MW on the test hours; as a share of that hour's capacity_m
 the EIA 860M nameplate of 2026-09, all CISO, to express it for today's fleet.
 
 Value sizing (from deck/capstone2/CAPSTONE2_NUMBERS.md): 1 point of nMAE is about 1.06 TWh a year and
-about $43 million at $41 per MWh. The nMAE gap between persistence D-2 and HGB on the test hours times
+about $41.3 million at $39 per MWh (1.0594 TWh x $39, CAISO 2025 average day-ahead price, Decision D33).
+The nMAE gap between persistence D-2 and HGB on the test hours times
 those figures is a size, not a savings promise.
 
 Writes reports/reserve_test.csv.
@@ -31,7 +32,7 @@ MODELS = {"hgb": "HGB (our model)", "persistence_d2": "Persistence D-2", "caiso_
 QUANTILES = {"P90": 0.90, "P95": 0.95, "P99": 0.99}
 SEASON = {4: "spring", 5: "spring", 6: "summer", 7: "summer", 8: "summer", 9: "fall", 10: "fall"}
 FLEET_MONTH = "2026-09"
-TWH_PER_POINT, MUSD_PER_POINT, USD_PER_MWH = 1.06, 43, 41      # CAPSTONE2_NUMBERS.md, "Solar miss" rows
+TWH_PER_POINT, MUSD_PER_POINT, USD_PER_MWH = 1.06, 41.3, 39    # CAPSTONE2_NUMBERS.md, "Solar miss" rows (D33)
 
 
 def fleet_mw() -> float:

@@ -58,7 +58,7 @@ All MW for today's fleet use the share of capacity times EIA 860M nameplate 2026
 | Same, same as 2 days ago | about 4,790 MW (18.4%) | `persistence_d2` | |
 | Same, CAISO as published | about 5,890 MW (22.6%) | `caiso_published` | Overstated most, because CAISO forecasts before curtailment. Spring alone: 7,770 MW |
 | 90 and 99 of 100 hours, our model | about 2,650 MW and 5,740 MW | `P90`, `P99` | The 99 figure rests on about 25 hours |
-| Value size | 2.83 points, about 3.0 TWh and $122 million a year | `reserve_test.csv`, `value_sizing`: (7.268 - 4.435) x 1.06 TWh and x $43 million per point | From `deck/capstone2/CAPSTONE2_NUMBERS.md` ($41 per MWh, CAISO's 2024 average day-ahead price). A size, not a savings promise |
+| Value size | 2.83 points, about 3.0 TWh and $117 million a year | `reserve_test.csv`, `value_sizing`: (7.268 - 4.435) x 1.06 TWh and x $41.3 million per point | From `deck/capstone2/CAPSTONE2_NUMBERS.md` ($39 per MWh, CAISO's 2025 average day-ahead price, D33). A size, not a savings promise |
 
 ## Sample days (chart `sample_days.png`, data `reports/capstone3_sample_days.csv`)
 

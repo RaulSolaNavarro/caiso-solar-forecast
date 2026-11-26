@@ -24,7 +24,7 @@ Every claim carries a tag so you can tell a fact from an opinion.
 | 3 | How we know these are the right sources, and what we passed over |
 | 4 | Time frames and why |
 | 5 | Data dictionary (summary; full version in `DATA_DICTIONARY.md`) |
-| 6 | Issues, risks, limits and the decision log (D1 to D33) |
+| 6 | Issues, risks, limits and the decision log (D1 to D34) |
 | 7 | Recommendations: nulls, encoding, data types, merging |
 
 ---
@@ -192,7 +192,7 @@ The weather files together are 29.3 MB gzip (164.9 MB uncompressed). **[Checked]
 
 ## 6. Issues, risks, limits and the decision log
 
-Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D33).
+Each entry says what we found, what we did, and where it stands. Counts come from `PULL_LOG.md` unless a date says otherwise. Nothing in a raw file was dropped, filled, shifted or converted. The decisions are collected in the "Decision log" at the end of this section (D1 to D34).
 
 ### Target: EIA hourly solar
 
@@ -272,7 +272,7 @@ Each entry says what we found, what we did, and where it stands. Counts come fro
 
 ### Decision log
 
-D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. D31 records the frozen model and the one test run (2026-11-07); D32 the check of its 2 timing assumptions (2026-11-07). D33 sets the price behind the dollar figures (2026-11-14). Every entry has the same 5 headings.
+D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are written only from what `PULL_LOG.md`, `docs/DATA_PULL_BRIEF.md`, Q3.3 and `src/data_pull/` record. Where those files do not record the options or their pros and cons, the entry says so. D14 to D25 are processing decisions the team agreed on 2026-11-07 (Raúl). D26 and D27 were written down with the processing scripts in `src/processing/` on the same day (Raúl). D28 to D30 were made with the modeling code in `src/modeling/` on 2026-11-07 (Raúl), on training and validation days only. D31 records the frozen model and the one test run (2026-11-07); D32 the check of its 2 timing assumptions (2026-11-07). D33 sets the price behind the dollar figures (2026-11-14). D34 records the post-hoc evidence checks for Capstone 3 (2026-11-26), on validation folds and saved predictions only. Every entry has the same 5 headings.
 
 | ID | Decision | Date | Link |
 |---|---|---|---|
@@ -309,6 +309,7 @@ D1 to D13 were made while pulling the data (2026-10-27 and 2026-10-28) and are w
 | D31 | Frozen model and the one test run | 2026-11-07 | [D31](#d31-frozen-model-and-the-one-test-run) |
 | D32 | Checking the timing assumptions behind the 10 a.m. rule | 2026-11-07 | [D32](#d32-checking-the-timing-assumptions-behind-the-10-am-rule) |
 | D33 | Price behind the dollar figures: $39 per MWh, CAISO 2025 average day-ahead | 2026-11-14 | [D33](#d33-price-behind-the-dollar-figures) |
+| D34 | Post-hoc evidence checks: curtailment split, bootstrap, input groups, overfitting, diagnostics | 2026-11-26 | [D34](#d34-post-hoc-evidence-checks-for-capstone-3) |
 
 #### D1 Compressed file names
 
@@ -1009,6 +1010,47 @@ What did not change: figures labeled 2024 ($41 day-ahead in 2024, $234 million o
 
 Limit: the dollar figure sizes the energy at stake; it is not what anyone paid or would save. It also uses the all-hours average, and day-ahead prices around noon, when solar output peaks, are lower than that average, so the figures overstate the value of solar energy at those hours **[Unverified for our hours]**. The 3 deck PDFs (`deck/capstone2/Capstone2_Deck.pdf`, `deck/capstone3/Capstone3_Backup.pdf`, `deck/capstone3/Capstone3_Deck_6min.pdf`) were regenerated from the updated HTML on 2026-11-14.
 
+#### D34 Post-hoc evidence checks for Capstone 3
+
+**What issue did we identify?**
+The course (Provost and Fawcett, Chapters 3, 5, 7 and 8; Lectures 2, 4 and 6) expects evidence the Capstone 3 deck did not show: which inputs earn their place, a ranking of inputs, training error next to out-of-sample error with a fitting graph, the spread of fold scores and some confidence in a single holdout, results with and without curtailed hours (promised in Capstone 2, slide 6), and error diagnostics.
+
+**How did we identify it?**
+Raúl's review against the course material, written up as `briefs/09_evidence_checks.md`. Chapter 7 compares a model with and without a data source and against a one-input model; Chapter 5 drops features and shows fitting graphs; Chapter 3 ranks attributes by information gain and says the numeric-target version is the reduction in variance. **[Doc]**
+
+**Why is it an issue?**
+Without these checks the deck claims a lead over CAISO without showing how much of it comes from curtailed hours, how certain it is, or whether the inputs and the number of trees are justified.
+
+**What are our options?**
+- Option A: run the checks on training and validation rows (D29 folds, D27 hours) and on saved predictions only, label every number post-hoc, and change nothing frozen. Pros: answers the course's questions; the test set stays scored once (D31). Cons: no number is a pre-registered test, and a finding that points to a better model cannot be confirmed, because the test set is spent.
+- Option B: also refit and score variants on the test set. Pros: test evidence for each variant. Cons: breaks D31; the test score would no longer measure the future.
+- Option C: skip the checks. Pros: no work. Cons: the deck lacks the evidence the course expects.
+
+**Which course of action will we use?**
+Option A (Raúl, 2026-11-26). **[Our call]** New package `src/evidence/` (new files only; it imports from `src.modeling` and edits nothing there or in `src/processing/`). Every number below is a post-hoc check, not a pre-registered test. `final_test.py` was not run, no new model was scored on test, and the frozen model, `reports/hypotheses.md` and every verdict are unchanged. Numbers for the slides, with source and caveat: `deck/capstone3/CAPSTONE3_NUMBERS.md`, "Evidence checks (post-hoc)".
+
+Results **[Checked]** (2026-11-26):
+- Reproduction: HGB validation 4.02% (folds 4.60, 3.12, 3.91, 4.47), the curtailment split of D30, the reserve P90, P95 and P99 (2,650, 3,630, 5,740 MW) and the test 4.4348% all came back from the saved files within 0.01 points or exactly.
+- Curtailed hours (`curt_mwh` above 1% of `capacity_mw`, D30), `reports/evidence_curtailment_split.csv`: in hours without curtailment CAISO as published beats our model in validation (2.97% against 3.58%, 2,344 hours) and on test (3.31% against 3.59%, 929 hours); in curtailed hours we beat it (4.51% against 6.17%, 2,164 hours; 4.95% against 7.40%, 1,528 hours). 62% of test hours are curtailed, against 48% in validation. CAISO adjusted beats our model in both groups in both periods. Our test bias is about the same in both groups (+508 and +486 MW).
+- Cloud by curtailment, `reports/evidence_cloud_by_curtailment.csv`: in curtailed hours we beat CAISO in all 8 cells (4 cloud buckets, 2 periods); without curtailment CAISO wins 6 of 8, 1 is a tie and we win 1 (test, 60 to 100% cloud, 68 hours). CAISO's widest lead is clear days without curtailment (2.33% against 3.09% in validation, 2.08% against 2.42% on test). No cell has fewer than 50 hours.
+- Day-block bootstrap (10,000 draws, seed 0), `reports/evidence_bootstrap.csv`: on test, CAISO as published minus our model is +1.42 points (95% interval +0.86 to +2.00 with single days; +0.43 to +2.54 with 7-day blocks). In validation it is +0.48 (+0.11 to +0.87 with single days; -0.14 to +0.98 with 7-day blocks), so the validation lead is not clearly above zero once neighboring days are kept together. The H2 secondary margin on test (1.25 x CAISO adjusted minus our model, -0.005 points) has an interval of -0.53 to +0.50 (7-day blocks: -0.86 to +0.85) and is met in 51.1% of draws (54.4%): the miss is not distinguishable from zero, and a pass by the same margin would not have been either. The verdict follows the pre-registered rule and stays "partly supported". Leads over persistence D-2 and ridge stay clearly above zero in both periods and both versions. 7-day blocks widen most intervals 1.2 to 1.9 times.
+- Input groups (D28 groups, same folds, tuning and hours as `score_models`), `reports/evidence_input_groups.csv`: removing day-2 weather costs 2.07 points (6.09%; skill 0.13). Removing time and sun costs 0.44, recent output 0.19. Removing capacity improves the model by 0.31 points (3.72%), in all 4 seasons and 3 of 4 folds. Training-mean capacity factor scores 18.96%, a one-split tree on the best single input (day-2 direct normal irradiance in 3 folds, direct radiation in 1) 10.39%.
+- Input ranking, `reports/evidence_input_ranking.csv`: share of the capacity factor's variance removed by the best single split, mean of 4 folds. Top: `direct_normal_irradiance_previous_day2` 0.707, `direct_radiation_previous_day2` 0.705, `shortwave_radiation_previous_day2` 0.699. `cloud_cover_previous_day2` ranks 16th (0.069), `capacity_mw` 17th (0.043). It ranks each input alone, so it understates inputs that matter together. Blanks are left in place; the one-split tree, like the HGB model, sends them to the better side of the split.
+- Capacity against the date, `reports/evidence_capacity_check.csv`: in each fold 95.0% to 97.1% of validation hours have more capacity than any training hour, and capacity correlates 0.93 to 0.98 with the date in the training rows. Reading: the trees use capacity as a stand-in for the date and cannot extrapolate it, which fits the 0.31-point gain from removing it. This is checked on the validation folds only. Whether it contributes to the +494 MW test bias (D31) is only a possibility: checking it would mean scoring a variant on test, which Option A rules out.
+- Overfitting, `reports/evidence_fit_gap.csv` and `reports/evidence_fitting_graph.csv`: the frozen settings refit on the 9,187 training rows score 3.07% in-sample, against 4.02% pooled validation and 4.43% on test. On the inner split of the final window, inner-validation nMAE is lowest at 86 trees (4.452%, as in the spec); at 400 trees it is 4.73% while the inner-fit error keeps falling to 2.30%.
+- Fold spread, `reports/evidence_fold_spread.csv`: our model 3.12% to 4.60% (standard deviation 0.67), CAISO as published 2.67% to 6.20% (1.62). Our model is below ridge and persistence D-2 in 4 of 4 folds and below CAISO as published in 2 of 4 (folds 1 and 4).
+- Test diagnostics (saved predictions; charts `deck/capstone3/figures/evidence_*.png`): our model over-forecasts in every Pacific hour (+219 to +793 MW) and beats CAISO from 7 a.m. to 5 p.m.; CAISO is better at 6 a.m., 6 p.m. and 7 p.m. Backup against coverage: our model needs less backup than persistence D-2 from 76% coverage up, and more below; the 90, 95 and 99% points equal `reports/reserve_test.csv`.
+
+What was not done, and why:
+- Information gain (entropy) was not used, because our target is numeric; the variance-reduction ranking above is the Chapter 3 equivalent.
+- Confusion matrix, ROC and lift curves were not used, because they are for class targets (Chapters 7 and 8). The backup-against-coverage curve plays the role of the Chapter 8 curves: it shows every operating point, so it needs no assumed cost.
+- No new model or variant was scored on test (D31).
+- Permutation importance was skipped, because dropping whole input groups is simpler to explain and matches Chapter 5.
+- k-nearest-neighbor and single regression tree models were skipped, because they could only be scored on validation.
+- The learning curve (Brief 9, Task 2c) was skipped (Raúl, 2026-11-26).
+
+Next steps (not done): a future model should drop or replace `capacity_mw` (for example by a time trend handled outside the trees) and be judged on new data, since the test set is spent.
+
 ### Open items
 
 | Item | Status | Needed from |
@@ -1028,6 +1070,7 @@ Limit: the dollar figure sizes the energy at stake; it is not what anyone paid o
 | Are day-2 weather forecasts issued before 10 a.m. Pacific on D-1 for every hour of D? | Checked in D32: verified with a limit (1 location, 15 hours, recent dates) | |
 | Are EIA's D-2 hourly values published by 10 a.m. Pacific on D-1? | Checked in D32: verified with a limit (no revisions since our pull; first-publication values and time not measurable) | |
 | Is `curt_mwh` above 0 in nearly every daylight hour real? (94% of scored validation hours; every scored hour from 2026-01, when the source switches to the daily report) | Breakdowns use a 1% of capacity threshold (D30); cause open | Team |
+| Does `capacity_mw` hurt the model? | Checked on validation folds in D34: removing it lowers nMAE by 0.31 points and it behaves like a date; frozen model not refit; effect on the test bias not checked | New data |
 
 ---
 

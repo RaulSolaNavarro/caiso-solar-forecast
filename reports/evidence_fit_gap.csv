@@ -1,0 +1,6 @@
+row,settings,train_rows,train_nmae_pct,train_common_rows,train_common_nmae_pct,val_hours,val_nmae_pct,test_hours,test_nmae_pct,note
+fold 1,"max_depth 3, squared_error, 662 iterations",4630,2.0007,4560,1.9877,1231,4.5969,,,"post-hoc check, not a pre-registered test"
+fold 2,"max_depth 5, squared_error, 207 iterations",5859,2.2816,5789,2.2727,1212,3.117,,,"post-hoc check, not a pre-registered test"
+fold 3,"max_depth 5, squared_error, 84 iterations",7073,2.8822,7003,2.8746,951,3.9141,,,"post-hoc check, not a pre-registered test"
+fold 4,"max_depth 5, squared_error, 111 iterations",8039,2.7008,7956,2.6939,1114,4.4742,,,"post-hoc check, not a pre-registered test"
+frozen model (763 days),"max_depth 5, absolute_error, 86 iterations (frozen)",9187,3.0719,9080,3.0561,4508,4.0246,2457.0,4.4348,"post-hoc check, not a pre-registered test"

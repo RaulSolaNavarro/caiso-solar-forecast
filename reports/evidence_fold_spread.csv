@@ -1,0 +1,5 @@
+model,label,fold1,fold2,fold3,fold4,mean,min,max,std_sample,folds_hgb_below,note
+hgb,HGB (our model),4.5969,3.117,3.9141,4.4742,4.0256,3.117,4.5969,0.6747,,"post-hoc check, not a pre-registered test"
+ridge,Ridge,5.065,3.9577,4.5021,5.288,4.7032,3.9577,5.288,0.597,4.0,"post-hoc check, not a pre-registered test"
+caiso_published,CAISO as published,6.1965,2.6731,3.5831,5.4229,4.4689,2.6731,6.1965,1.6232,2.0,"post-hoc check, not a pre-registered test"
+persistence_d2,Persistence D-2,6.5663,4.6982,7.2402,8.1622,6.6667,4.6982,8.1622,1.4663,4.0,"post-hoc check, not a pre-registered test"

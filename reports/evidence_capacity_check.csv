@@ -1,0 +1,5 @@
+fold,train_start,train_end,train_fit_rows,val_start,val_end,val_hours,train_capacity_min_mw,train_capacity_max_mw,val_capacity_min_mw,val_capacity_max_mw,share_val_above_train_max_pct,corr_capacity_vs_date_train,note
+1,2024-03-08,2025-03-27,4630,2025-03-29,2025-06-27,1231,20975.800000000003,23485.0,23360.3,23730.6,97.08,0.9301,"post-hoc check, not a pre-registered test"
+2,2024-03-08,2025-06-26,5859,2025-06-28,2025-09-26,1212,20975.800000000003,23730.6,23633.800000000003,24167.5,96.53,0.9622,"post-hoc check, not a pre-registered test"
+3,2024-03-08,2025-09-25,7073,2025-09-27,2025-12-26,951,20975.800000000003,24167.5,24167.5,24854.5,94.95,0.9726,"post-hoc check, not a pre-registered test"
+4,2024-03-08,2025-12-25,8039,2025-12-27,2026-04-09,1114,20975.800000000003,24854.5,24854.5,24964.9,95.51,0.9758,"post-hoc check, not a pre-registered test"
